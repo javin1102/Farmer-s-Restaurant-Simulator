@@ -23,7 +23,7 @@ public class FirstPersonMovement : MonoBehaviour
 
     void Start()
     {
-        Cursor.lockState = CursorLockMode.Locked;
+        //Cursor.lockState = CursorLockMode.Locked;
         m_GroundMask = Utils.FarmGroundMask | Utils.RestaurantGroundMask | Utils.GroundMask;
 
         m_PlayerInput = GetComponent<PlayerInput>();

@@ -26,3 +26,11 @@ public abstract class Item : MonoBehaviour
         TryGetComponent( out m_ItemRaycastAction );
     }
 }
+
+public enum ItemType
+{
+    Equipment,
+    Ingredient,
+    Furniture,
+    Seed
+}

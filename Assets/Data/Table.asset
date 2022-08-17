@@ -12,4 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8c9c36c8f20505d47bfff2820a3a6d92, type: 3}
   m_Name: Table
   m_EditorClassIdentifier: 
+  name: table
   prefab: {fileID: 5678666934421968375, guid: f7929b6cda6640047bc84f6187169006, type: 3}
+  icon: {fileID: 10913, guid: 0000000000000000f000000000000000, type: 0}
+  type: 2

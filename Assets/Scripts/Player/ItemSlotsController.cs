@@ -1,11 +1,10 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
-using UnityEngine.Events;
 public class ItemSlotsController : MonoBehaviour
 {
-    public ItemSlot CurrentSelectedSlot { get => m_ItemSlots[m_SelectedSlotIndex]; }
+    public Old.ItemSlot CurrentSelectedSlot { get => m_ItemSlots[m_SelectedSlotIndex]; }
 
-    [SerializeField] private ItemSlot[] m_ItemSlots = new ItemSlot[4];
+    [SerializeField] private Old.ItemSlot[] m_ItemSlots = new Old.ItemSlot[4];
     [SerializeField] private Transform m_Hand;
     [SerializeField] private ItemMainActionChannel m_DeacreasableItemChannel;
 
@@ -217,10 +216,14 @@ public class ItemSlotsController : MonoBehaviour
 
 }
 
-[System.Serializable]
-public class ItemSlot
-{
-    public GameObject prefab;
-    public Item ItemRef;
-    public int quantity;
+namespace Old {
+    [System.Serializable]
+    public class ItemSlot
+    {
+        public GameObject prefab;
+        public Item ItemRef;
+        public int quantity;
+    }
 }
+
+
