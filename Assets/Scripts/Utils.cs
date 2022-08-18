@@ -19,5 +19,7 @@ public class Utils
     public const string TILE_TAG = "Tile";
     public const string PROP_TAG = "Props";
     public const string TILE_PARENT_TAG = "Tile Parent";
+    public const string CROP_TAG = "Crop";
+    public const string TILE_WET_TAG = "Tile Wet";
 
 }

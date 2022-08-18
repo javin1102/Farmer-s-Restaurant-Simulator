@@ -99,6 +99,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Plant: {fileID: 0}
+  cornGO: {fileID: 0}
 --- !u!114 &5523690768382460362
 MonoBehaviour:
   m_ObjectHideFlags: 0

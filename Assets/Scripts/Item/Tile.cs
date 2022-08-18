@@ -1,18 +1,20 @@
 using UnityEngine;
 
+/// <summary>
+/// 
+/// SCRIPT BUAT SPAWN SEED [WIP]
+/// 
+/// HARUSNYA BUAT TILE DOANG JANGAN LGSUNG INSTATIATE SEEDNYA
+/// 
+/// </summary>
 public class Tile : MonoBehaviour
 {
-    [HideInInspector] public Plant Plant;
-
-    // Start is called before the first frame update
-    void Start()
+    public GameObject cornGO;
+ 
+    private void Awake()
     {
-                
+        cornGO = Instantiate(Resources.Load("Plant_Corn"),this.gameObject.transform.position,Quaternion.identity) as GameObject;
+        cornGO.transform.SetParent(this.transform);
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
 }
