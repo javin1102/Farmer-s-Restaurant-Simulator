@@ -1,18 +1,18 @@
 using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
-
+using UnityEngine.Events;
 public class PlayerAction : MonoBehaviour
 {
+    public event UnityAction OnPerformItemMainAction;
     private PlayerInput m_PlayerInput;
     private InputAction m_MainInputAction;
     private InputAction m_StoreInputAction;
-    private readonly InputAction[] m_SelectSlotAction = new InputAction[6];
+    private readonly InputAction[] m_SelectSlotInputAction = new InputAction[6];
     private Camera m_Cam;
     private readonly float m_RaycastDistance = 5f;
     private ActionSlotsController m_ActionSlotsController;
     private InventoryController m_InventoryController;
-
     private void Awake()
     {
         m_Cam = Camera.main;
@@ -37,6 +37,7 @@ public class PlayerAction : MonoBehaviour
     private void OnDisable()
     {
         UnitializeSelectSlotAction();
+        m_MainInputAction.performed -= PerformMainAction;
         m_InventoryController.OnEnableInventoryUI -= UnlockCursor;
         m_InventoryController.OnDisableInventoryUI -= LockCursor;
         m_InventoryController.OnEnableInventoryUI -= DisablePlayerInput;
@@ -63,20 +64,27 @@ public class PlayerAction : MonoBehaviour
         }
 
 
-        if ( m_MainInputAction.triggered && m_ActionSlotsController.CurrEquippedItem != null )
-        {
-            m_ActionSlotsController.CurrEquippedItem.MainAction();
-        }
     }
 
     private void InitializeInputAction()
     {
         m_MainInputAction = m_PlayerInput.actions[Utils.MAIN_ACTION];
         m_StoreInputAction = m_PlayerInput.actions[Utils.STORE_ACTION];
+        m_MainInputAction.performed += PerformMainAction;
         for ( int i = 0; i < 6; i++ )
-            m_SelectSlotAction[i] = m_PlayerInput.actions[Utils.SELECT_SLOT_ACTION[i]];
+            m_SelectSlotInputAction[i] = m_PlayerInput.actions[Utils.SELECT_SLOT_ACTION[i]];
         InitializeSelectSlotAction();
     }
+
+    private void PerformMainAction( InputAction.CallbackContext context )
+    {
+        if ( m_ActionSlotsController.CurrEquippedItem != null )
+        {
+            m_ActionSlotsController.CurrEquippedItem.MainAction();
+            OnPerformItemMainAction?.Invoke();
+        }
+    }
+
     private void TryPerformSelectedItemRaycastAction( RaycastHit hitInfo )
     {
         m_ActionSlotsController.CurrEquippedItem.ItemRaycastAction?.PerformRaycastAction( hitInfo );
@@ -84,22 +92,22 @@ public class PlayerAction : MonoBehaviour
 
     private void InitializeSelectSlotAction()
     {
-        m_SelectSlotAction[0].performed += _ => m_ActionSlotsController.SelectActionSlot( 0 );
-        m_SelectSlotAction[1].performed += _ => m_ActionSlotsController.SelectActionSlot( 1 );
-        m_SelectSlotAction[2].performed += _ => m_ActionSlotsController.SelectActionSlot( 2 );
-        m_SelectSlotAction[3].performed += _ => m_ActionSlotsController.SelectActionSlot( 3 );
-        m_SelectSlotAction[4].performed += _ => m_ActionSlotsController.SelectActionSlot( 4 );
-        m_SelectSlotAction[5].performed += _ => m_ActionSlotsController.SelectActionSlot( 5 );
+        m_SelectSlotInputAction[0].performed += _ => m_ActionSlotsController.SelectActionSlot( 0 );
+        m_SelectSlotInputAction[1].performed += _ => m_ActionSlotsController.SelectActionSlot( 1 );
+        m_SelectSlotInputAction[2].performed += _ => m_ActionSlotsController.SelectActionSlot( 2 );
+        m_SelectSlotInputAction[3].performed += _ => m_ActionSlotsController.SelectActionSlot( 3 );
+        m_SelectSlotInputAction[4].performed += _ => m_ActionSlotsController.SelectActionSlot( 4 );
+        m_SelectSlotInputAction[5].performed += _ => m_ActionSlotsController.SelectActionSlot( 5 );
     }
 
     private void UnitializeSelectSlotAction()
     {
-        m_SelectSlotAction[0].performed -= _ => m_ActionSlotsController.SelectActionSlot( 0 );
-        m_SelectSlotAction[1].performed -= _ => m_ActionSlotsController.SelectActionSlot( 1 );
-        m_SelectSlotAction[2].performed -= _ => m_ActionSlotsController.SelectActionSlot( 2 );
-        m_SelectSlotAction[3].performed -= _ => m_ActionSlotsController.SelectActionSlot( 3 );
-        m_SelectSlotAction[4].performed -= _ => m_ActionSlotsController.SelectActionSlot( 4 );
-        m_SelectSlotAction[5].performed -= _ => m_ActionSlotsController.SelectActionSlot( 5 );
+        m_SelectSlotInputAction[0].performed -= _ => m_ActionSlotsController.SelectActionSlot( 0 );
+        m_SelectSlotInputAction[1].performed -= _ => m_ActionSlotsController.SelectActionSlot( 1 );
+        m_SelectSlotInputAction[2].performed -= _ => m_ActionSlotsController.SelectActionSlot( 2 );
+        m_SelectSlotInputAction[3].performed -= _ => m_ActionSlotsController.SelectActionSlot( 3 );
+        m_SelectSlotInputAction[4].performed -= _ => m_ActionSlotsController.SelectActionSlot( 4 );
+        m_SelectSlotInputAction[5].performed -= _ => m_ActionSlotsController.SelectActionSlot( 5 );
     }
 
     private void LockCursor()

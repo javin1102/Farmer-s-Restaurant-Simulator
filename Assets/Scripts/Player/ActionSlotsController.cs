@@ -6,23 +6,20 @@ public class ActionSlotsController : ItemSlotsController
     [SerializeField] private Transform m_Hand;
     [SerializeField] private ItemMainActionChannel m_DeacreasableItemChannel;
     [SerializeField] private ItemData s;
+    [SerializeField] private Item m_CurrEquippedItem;
 
     private int m_SelectedSlotIndex;
-    private Item m_CurrEquippedItem;
-    private InventoryController m_InventoryController;
 
 
     private void OnEnable()
     {
         m_InventoryController = GetComponent<InventoryController>();
-        m_InventoryController.OnDisableInventoryUI += CheckEquippedItem;
         OnStoreItem += CheckEquippedItem;
         m_DeacreasableItemChannel.OnMainAction += CheckQuantity;
     }
 
     private void OnDisable()
     {
-        m_InventoryController.OnDisableInventoryUI -= CheckEquippedItem;
         m_DeacreasableItemChannel.OnMainAction -= CheckQuantity;
         OnStoreItem -= CheckEquippedItem;
     }
@@ -45,12 +42,12 @@ public class ActionSlotsController : ItemSlotsController
         return go.GetComponent<Item>();
     }
 
-    private void CheckEquippedItem()
+    public void CheckEquippedItem()
     {
+        DestroyAllItemsInHand();
         if ( m_ItemSlots[m_SelectedSlotIndex] == null ) return;
 
         //if ( m_CurrEquippedItem != null && m_CurrEquippedItem.Data == m_ItemSlots[m_SelectedSlotIndex].data ) return;
-        DestroyAllItemsInHand();
         m_CurrEquippedItem = InstantiateItemToHand( m_ItemSlots[m_SelectedSlotIndex] );
     }
 

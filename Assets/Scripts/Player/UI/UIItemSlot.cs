@@ -28,13 +28,14 @@ public abstract class UIItemSlot : MonoBehaviour, IDropHandler
     }
     public void UpdateUI()
     {
+        m_ItemSlotData = m_ItemsController.ItemSlots[m_SlotIndex];
         if ( m_ItemsController.ItemSlots[m_SlotIndex] == null )
         {
             transform.GetChild( 0 ).gameObject.SetActive( false );
             return;
         }
 
-        m_ItemSlotData = m_ItemsController.ItemSlots[m_SlotIndex];
+        
         transform.GetChild( 0 ).gameObject.SetActive( true );
         m_IconImage.sprite = m_ItemSlotData.data.icon;
         m_QuantityText.text = m_ItemSlotData.quantity.ToString();

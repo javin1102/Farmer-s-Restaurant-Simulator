@@ -16,4 +16,5 @@ public class UIInventoryController : MonoBehaviour
     {
         m_InventoryController.InvokeDisableInventoryUIEvent();
     }
+
 }
