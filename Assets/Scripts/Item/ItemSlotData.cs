@@ -1,13 +1,13 @@
 [System.Serializable]
-public class ItemSlotData
+public class ItemSlot
 {
-    public ItemData itemData;
+    public ItemData data;
     public int quantity;
-    public ItemSlotData( ItemData itemData, int quantity = 1 ) { this.itemData = itemData; this.quantity = quantity; }
-    public void SwapValue(ItemSlotData targetData)
+    public ItemSlot( ItemData itemData, int quantity = 1 ) { this.data = itemData; this.quantity = quantity; }
+    public void SwapValue(ItemSlot targetData)
     {
-        (itemData, targetData.itemData) = (targetData.itemData, itemData);
+        (data, targetData.data) = (targetData.data, data);
         (quantity, targetData.quantity) = (targetData.quantity, quantity);
     }
-    public ItemSlotData() { }
+    public ItemSlot() { }
 }

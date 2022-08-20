@@ -3,24 +3,35 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class UIActionSlot : MonoBehaviour, IDropHandler
+public class UIActionSlot : UIItemSlot
 {
-    private ItemSlotData m_ItemSlotData;
-    [SerializeField] private Image m_IconImage;
-    [SerializeField] private TMP_Text m_QuantityText;
-    public ItemSlotData ItemSlotData { get => m_ItemSlotData; set => m_ItemSlotData = value; }
-
-    public void OnDrop( PointerEventData eventData )
+    private InventoryController m_InventoryController;
+    protected override void OnEnable()
     {
-        Transform target = eventData.pointerDrag.transform;
-        target.SetParent( transform );
-        eventData.pointerDrag.GetComponent<RectTransform>().anchoredPosition = Vector2.zero;
+        m_ItemsController = transform.root.GetComponent<ActionSlotsController>();
+        m_InventoryController = transform.root.GetComponent<InventoryController>();
+        base.OnEnable();
+        UpdateUI();
     }
 
-    public void UpdateUI()
+    protected override void OnDisable()
     {
-        m_IconImage.sprite = m_ItemSlotData.itemData.icon;
-        m_QuantityText.text = m_ItemSlotData.quantity.ToString();
+        base.OnDisable();
     }
 
+    protected override void OnDropAction( UIItemSlot originItemSlot )
+    {
+        
+        if ( originItemSlot.GetType() == typeof( UIActionSlot ) )
+            m_ItemsController.SwapSlotItem( m_SlotIndex, originItemSlot.SlotIndex );
+
+        else
+        {
+            //From inventory slot, remove from inventory and set action slot
+            m_ItemsController.SetSlotItem( originItemSlot.ItemSlotData, m_SlotIndex );
+            m_InventoryController.SetSlotItem( null, originItemSlot.SlotIndex );
+        }
+
+        
+    }
 }

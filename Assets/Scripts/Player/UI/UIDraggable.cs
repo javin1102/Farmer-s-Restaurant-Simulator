@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class UIDragDrop : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDragHandler
+public class UIDraggable : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDragHandler
 {
     private RectTransform m_RectTransform;
     private CanvasGroup m_CanvasGroup;
@@ -26,7 +26,6 @@ public class UIDragDrop : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDr
         m_CanvasGroup.alpha = 1f;
         m_Canvas.sortingOrder = 5;
         m_RectTransform.anchoredPosition = Vector3.zero;
-
     }
 
     public void OnBeginDrag( PointerEventData eventData )

@@ -51,18 +51,63 @@
                     "initialStateCheck": true
                 },
                 {
-                    "name": "Item Selection",
+                    "name": "Store",
                     "type": "Button",
-                    "id": "faf5d939-b41b-41e0-aad5-3efb6d60ca9c",
+                    "id": "712e8960-9e7b-4d70-ba08-03ad64cd8596",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
                 },
                 {
-                    "name": "Store",
+                    "name": "SelectActionSlot1",
                     "type": "Button",
-                    "id": "712e8960-9e7b-4d70-ba08-03ad64cd8596",
+                    "id": "6a99e3e9-13c9-43f3-b434-89c169d9ee81",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "SelectActionSlot2",
+                    "type": "Button",
+                    "id": "8d9913ae-3361-4b45-87c6-9f0c2db5698a",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "SelectActionSlot3",
+                    "type": "Button",
+                    "id": "8cb3ba1c-bf29-457c-a8b5-05af68952399",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "SelectActionSlot4",
+                    "type": "Button",
+                    "id": "46f57b7b-e0a3-4396-950b-b5299548d57b",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "SelectActionSlot5",
+                    "type": "Button",
+                    "id": "260e4997-abb3-4d62-9684-028a04df864b",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "SelectActionSlot6",
+                    "type": "Button",
+                    "id": "27c0acd3-13b8-4722-8187-39aae8c01294",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
@@ -192,61 +237,6 @@
                     "isPartOfComposite": true
                 },
                 {
-                    "name": "2D Vector",
-                    "id": "e02fa4ba-63a7-4dd2-8d7b-f3952b70715d",
-                    "path": "2DVector",
-                    "interactions": "Press",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Item Selection",
-                    "isComposite": true,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "up",
-                    "id": "484d0a5e-2a81-42d1-909a-8a7fe5a24335",
-                    "path": "<Keyboard>/4",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Item Selection",
-                    "isComposite": false,
-                    "isPartOfComposite": true
-                },
-                {
-                    "name": "down",
-                    "id": "ac40ce07-093d-4b79-a012-87f675860b22",
-                    "path": "<Keyboard>/3",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Item Selection",
-                    "isComposite": false,
-                    "isPartOfComposite": true
-                },
-                {
-                    "name": "left",
-                    "id": "a133626c-2da9-4184-9a4d-7e2ede4cd0ff",
-                    "path": "<Keyboard>/1",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Item Selection",
-                    "isComposite": false,
-                    "isPartOfComposite": true
-                },
-                {
-                    "name": "right",
-                    "id": "02c78e2b-6a88-47b6-a3db-937172f7b648",
-                    "path": "<Keyboard>/2",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Item Selection",
-                    "isComposite": false,
-                    "isPartOfComposite": true
-                },
-                {
                     "name": "",
                     "id": "35489281-de6c-4e93-b7d7-f9b08be3aa66",
                     "path": "<Keyboard>/g",
@@ -254,6 +244,72 @@
                     "processors": "",
                     "groups": "",
                     "action": "Store",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "502624b7-cf6d-4ace-a9d2-05ef8295a622",
+                    "path": "<Keyboard>/1",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "SelectActionSlot1",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "b1bcbeae-7d27-4e2a-8494-789ff47da8f7",
+                    "path": "<Keyboard>/2",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "SelectActionSlot2",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "1594c0df-e263-4cb5-8577-77babbe49585",
+                    "path": "<Keyboard>/3",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "SelectActionSlot3",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "b0139b70-b39b-4fb3-9d8b-953c9130d890",
+                    "path": "<Keyboard>/4",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "SelectActionSlot4",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "5e77d154-b1e5-44c6-ab77-a6418f886eef",
+                    "path": "<Keyboard>/5",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "SelectActionSlot5",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "a2ac75e5-b729-4a95-ad7d-9720b7cfbe8b",
+                    "path": "<Keyboard>/6",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "SelectActionSlot6",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

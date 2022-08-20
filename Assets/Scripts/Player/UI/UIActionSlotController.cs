@@ -4,15 +4,21 @@ using UnityEngine;
 
 public class UIActionSlotController : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    private InventoryController m_InventoryController;
+
+    private void OnEnable()
     {
-        
+        m_InventoryController = transform.root.GetComponent<InventoryController>();
+        m_InventoryController.OnDisableInventoryUI += Enable;
+        m_InventoryController.OnEnableInventoryUI += Disable;
     }
 
-    // Update is called once per frame
-    void Update()
+    private void OnDisable()
     {
-        
+        m_InventoryController.OnDisableInventoryUI -= Enable;
+        m_InventoryController.OnEnableInventoryUI -= Disable;
     }
+    private void Enable() => gameObject.SetActive( true );
+    private void Disable() => gameObject.SetActive( false );
+
 }
