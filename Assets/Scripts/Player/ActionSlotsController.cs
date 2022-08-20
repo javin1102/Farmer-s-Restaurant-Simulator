@@ -13,7 +13,6 @@ public class ActionSlotsController : ItemSlotsController
 
     private void OnEnable()
     {
-        m_InventoryController = GetComponent<InventoryController>();
         OnStoreItem += CheckEquippedItem;
         m_DeacreasableItemChannel.OnMainAction += CheckQuantity;
     }
