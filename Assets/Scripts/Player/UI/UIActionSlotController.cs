@@ -1,8 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using UnityEngine;
-
+//NOTE:Must attach to parent obj
 public class UIActionSlotController : UIItemSlotsController
 {
     private ActionSlotsController m_ActionSlotsController;
@@ -10,9 +6,8 @@ public class UIActionSlotController : UIItemSlotsController
     {
         base.Awake();
         m_ActionSlotsController = transform.root.GetComponent<ActionSlotsController>();
-        m_ActionSlotsController.OnStoreNewItem += SetUISlotReference;
-        m_ActionSlotsController.OnDropItem += UpdateActionSlots;
     }
+
 
     protected override void SetUISlotReference( ItemSlot itemSlot )
     {
@@ -28,7 +23,16 @@ public class UIActionSlotController : UIItemSlotsController
             m_UIItemSlots[i].UpdateUI();
         }
 
+        m_ActionSlotsController.OnStoreNewItem += SetUISlotReference;
+        m_ActionSlotsController.OnDropItem += UpdateActionSlots;
     }
+
+    private void OnDisable()
+    {
+        m_ActionSlotsController.OnStoreNewItem -= SetUISlotReference;
+        m_ActionSlotsController.OnDropItem -= UpdateActionSlots;
+    }
+
     private void UpdateActionSlots()
     {
         for ( int i = 0; i < m_ActionSlotsController.ActionSlots.Length; i++ )
@@ -37,5 +41,5 @@ public class UIActionSlotController : UIItemSlotsController
         }
     }
 
-    
+
 }

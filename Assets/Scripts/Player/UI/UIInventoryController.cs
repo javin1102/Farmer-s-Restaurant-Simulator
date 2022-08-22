@@ -1,3 +1,4 @@
+//Must attach to active obj
 public class UIInventoryController : UIItemSlotsController
 {
     private InventoryController m_InventoryController;
