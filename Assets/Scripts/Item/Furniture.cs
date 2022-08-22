@@ -8,24 +8,13 @@ public class Furniture : Item, IRaycastAction
     [SerializeField] private InputActionReference m_ObjRotationInputRef;
     private float m_ObjRot;
     private MaterialChanger m_MaterialChanger;
-    private new MeshCollider collider;
     private Matrix4x4 m_PreviewMatrix;
     private Mesh m_PreviewMesh;
     private bool m_IsInstantiable;
 
     private void Start()
     {
-        collider = GetComponent<MeshCollider>();
         m_PreviewMesh = GetComponent<MeshFilter>().sharedMesh;
-    }
-
-    private void Update()
-    {
-        // Item is selected by player
-        if ( m_IsSelected )
-            collider.enabled = false;
-        else
-            collider.enabled = true;
     }
 
     public override void MainAction()
@@ -33,16 +22,17 @@ public class Furniture : Item, IRaycastAction
         if ( !gameObject.activeInHierarchy || !m_IsInstantiable ) return;
         m_DecreaseableEvent.RaiseEvent();
 
-        gameObject.name = "Table";
-        gameObject.layer = 8;
-        gameObject.SetActive( true );
-        transform.SetParent( null );
+        GameObject go = Instantiate( gameObject );
+        go.name = "Table";
+        go.layer = 8;
+        go.SetActive( true );
+        go.transform.SetParent( null );
 
         Vector3 pos = m_PreviewMatrix.MultiplyPoint3x4( Vector3.zero );
         pos.Set( pos.x, pos.y, pos.z );
-        transform.SetPositionAndRotation( pos, m_PreviewMatrix.rotation );
-        transform.localScale = Vector3.one;
-
+        go.transform.SetPositionAndRotation( pos, m_PreviewMatrix.rotation );
+        go.transform.localScale = Vector3.one;
+        go.GetComponent<Collider>().enabled = true;
         ResetProps();
     }
 
@@ -81,7 +71,6 @@ public class Furniture : Item, IRaycastAction
     }
     private void ResetProps()
     {
-        m_IsSelected = false;
         m_IsInstantiable = false;
     }
 }
