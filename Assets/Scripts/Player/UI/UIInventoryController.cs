@@ -1,20 +1,24 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
-public class UIInventoryController : MonoBehaviour
+public class UIInventoryController : UIItemSlotsController
 {
     private InventoryController m_InventoryController;
-
-    private void OnEnable()
+    protected override void Awake()
     {
+        base.Awake();
         m_InventoryController = transform.root.GetComponent<InventoryController>();
-        m_InventoryController.InvokeEnableInventoryUIEvent();
+        m_InventoryController.OnStoreNewItem += SetUISlotReference;
     }
 
-    private void OnDisable()
+    protected override void SetUISlotReference( ItemSlot itemSlot )
     {
-        m_InventoryController.InvokeDisableInventoryUIEvent();
+        for ( int i = 0; i < m_UIItemSlots.Length; i++ )
+        {
+            if ( m_UIItemSlots[i].ItemSlot == null )
+            {
+                m_UIItemSlots[i].ItemSlot = itemSlot;
+                m_UIItemSlots[i].UpdateUI();
+                break;
+            }
+        }
     }
 
 }

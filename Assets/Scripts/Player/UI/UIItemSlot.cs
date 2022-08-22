@@ -5,40 +5,36 @@ using UnityEngine.EventSystems;
 
 public abstract class UIItemSlot : MonoBehaviour, IDropHandler
 {
-    public ItemSlot ItemSlotData { get => m_ItemSlotData; set => m_ItemSlotData = value; }
-    public int SlotIndex { get => m_SlotIndex; set => m_SlotIndex = value; }
-
-    [SerializeReference] protected ItemSlot m_ItemSlotData;
+    public ItemSlot ItemSlot { get => m_ItemSlot; set => m_ItemSlot = value; }
+    public int SlotIndex { get => m_SlotIndex; }
+    [SerializeReference] protected ItemSlot m_ItemSlot;
     [SerializeField] protected Image m_IconImage;
     [SerializeField] protected TMP_Text m_QuantityText;
-
-
-    protected ItemSlotsController m_ItemsController;
     [SerializeField] protected int m_SlotIndex;
+    protected ItemSlotsController m_ItemsController;
+   
+    protected virtual void Awake()
+    {
+        m_SlotIndex = transform.GetSiblingIndex();
+    }
 
     protected virtual void OnEnable()
     {
-        m_SlotIndex = transform.GetSiblingIndex();
-        m_ItemsController.OnStoreItem += UpdateUI;
+        UpdateUI();
     }
 
-    protected virtual void OnDisable()
-    {
-        m_ItemsController.OnStoreItem -= UpdateUI;
-    }
     public void UpdateUI()
     {
-        m_ItemSlotData = m_ItemsController.ItemSlots[m_SlotIndex];
-        if ( m_ItemsController.ItemSlots[m_SlotIndex] == null )
+        if ( m_ItemSlot == null || m_ItemSlot.quantity == 0 )
         {
+            m_ItemSlot = null;
             transform.GetChild( 0 ).gameObject.SetActive( false );
             return;
         }
-
-        
         transform.GetChild( 0 ).gameObject.SetActive( true );
-        m_IconImage.sprite = m_ItemSlotData.data.icon;
-        m_QuantityText.text = m_ItemSlotData.quantity.ToString();
+        m_IconImage.sprite = m_ItemSlot.data.icon;
+        m_QuantityText.text = m_ItemSlot.quantity.ToString();
+
     }
 
 
@@ -51,11 +47,17 @@ public abstract class UIItemSlot : MonoBehaviour, IDropHandler
     public void OnDrop( PointerEventData eventData )
     {
         Transform targetContentTf = eventData.pointerDrag.transform;
-        UIItemSlot OriginUIInventorySlot = targetContentTf.parent.GetComponent<UIItemSlot>();
-        OnDropAction( OriginUIInventorySlot );
+        UIItemSlot OriginUISlot = targetContentTf.parent.GetComponent<UIItemSlot>();
+        OnDropAction( OriginUISlot );
+        
         UpdateUI();
-        OriginUIInventorySlot.UpdateUI();
+        OriginUISlot.UpdateUI();
         targetContentTf.GetComponent<UIDraggable>().OnEndDrag( eventData );
+    }
+
+    protected void SwapUIItemSlot( UIItemSlot UIItemSlot )
+    {
+        (m_ItemSlot, UIItemSlot.ItemSlot) = (UIItemSlot.ItemSlot, m_ItemSlot);
     }
 
     protected abstract void OnDropAction( UIItemSlot originItemSlot );

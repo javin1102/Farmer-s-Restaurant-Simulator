@@ -1,16 +1,18 @@
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
-
+using System.Linq;
 public abstract class ItemSlotsController : MonoBehaviour
 {
-    public ItemSlot[] ItemSlots { get => m_ItemSlots; }
+    public Dictionary<string, ItemSlot> ItemSlotsDictionary => m_ItemSlotsDictionary;
+    public event UnityAction<ItemSlot> OnStoreNewItem;
+    public event UnityAction OnStoreExistingItem;
+    [SerializeReference] protected readonly Dictionary<string, ItemSlot> m_ItemSlotsDictionary = new( );
 
-    [SerializeReference] protected ItemSlot[] m_ItemSlots;
-    public event UnityAction OnStoreItem;
 
-    public void SetSlotItem( ItemSlot itemSlotData, int index ) => m_ItemSlots[index] = itemSlotData;
-    public void SwapSlotItem( int index1, int index2 ) => (m_ItemSlots[index1], m_ItemSlots[index2]) = (m_ItemSlots[index2], m_ItemSlots[index1]);
 
+    public void InvokeStoreNewItemEvent( ItemSlot itemSlot ) => OnStoreNewItem?.Invoke( itemSlot );
+    public void InvokeStoreExistingItemEvent( ) => OnStoreExistingItem?.Invoke();
     /**
      *<summary>Return true if store is successfull</summary>
      **/
@@ -27,30 +29,8 @@ public abstract class ItemSlotsController : MonoBehaviour
     }
 
 
-    protected bool Store( ItemData itemData )
-    {
-        int length = m_ItemSlots.Length;
-        for ( int i = 0; i < length; i++ )
-        {
-            if ( m_ItemSlots[i] == null )
-            {
-                ItemSlot itemSlotData = new( itemData );
-                m_ItemSlots[i] = itemSlotData;
-                OnStoreItem?.Invoke();
-                return true;
-            }
-            else
-            {
-                if ( m_ItemSlots[i].data == itemData )
-                {
-                    m_ItemSlots[i].quantity += 1;
-                    OnStoreItem?.Invoke();
-                    return true;
-                }
-            }
 
-        }
+    //protected abstract bool Store(ItemData itemData);
+    public abstract bool Store( ItemData itemData );
 
-        return false;
-    }
 }
