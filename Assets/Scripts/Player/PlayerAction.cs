@@ -1,7 +1,7 @@
-using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.Events;
+
 public class PlayerAction : MonoBehaviour
 {
     public event UnityAction OnPerformItemMainAction;
@@ -51,9 +51,8 @@ public class PlayerAction : MonoBehaviour
         {
             if ( m_ActionSlotsController.CurrEquippedItem != null ) TryPerformSelectedItemRaycastAction( hitInfo );
 
-            if ( m_StoreInputAction.triggered && hitInfo.collider.CompareTag( Utils.PROP_TAG ) )
+            if ( m_StoreInputAction.triggered && hitInfo.collider.TryGetComponent( out Item raycastedItem ) )
             {
-                Item raycastedItem = hitInfo.collider.GetComponent<Item>();
                 if ( m_ActionSlotsController.Store( raycastedItem ) ) return;
                 if ( m_InventoryController.Store( raycastedItem ) ) return;
 
