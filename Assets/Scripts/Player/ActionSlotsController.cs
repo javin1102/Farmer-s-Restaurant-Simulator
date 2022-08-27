@@ -11,6 +11,7 @@ public class ActionSlotsController : ItemSlotsController
     [SerializeField] private Transform m_Hand;
     [SerializeField] private ItemMainActionChannel m_DeacreasableItemChannel;
     [SerializeField] private ItemData s;
+    [SerializeField] private ItemData x;
     [SerializeField] private Item m_CurrEquippedItem;
     [SerializeReference] private ItemSlot[] m_ActionSlots;
 
@@ -20,6 +21,18 @@ public class ActionSlotsController : ItemSlotsController
     private void Awake()
     {
         m_ActionSlots = new ItemSlot[6];
+        StoreS();
+        StoreS();
+        StoreS();
+        StoreS();
+        SelectActionSlot( 1 );
+        StoreX();
+        StoreX();
+        StoreX();
+        StoreX();
+        StoreX();
+        StoreX();
+
     }
     private void OnEnable()
     {
@@ -44,6 +57,8 @@ public class ActionSlotsController : ItemSlotsController
 
     [ContextMenu( "Store S" )]
     public void StoreS() => Store( s );
+    [ContextMenu( "Store X" )]
+    public void StoreX() => Store( x );
     public override bool Store( ItemData itemData )
     {
         if ( m_ItemSlotsDictionary.Count >= 6 ) return false;

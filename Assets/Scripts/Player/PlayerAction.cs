@@ -15,6 +15,7 @@ public class PlayerAction : MonoBehaviour
     private InventoryController m_InventoryController;
     private void Awake()
     {
+        LockCursor();
         m_Cam = Camera.main;
         m_PlayerInput = GetComponent<PlayerInput>();
         m_ActionSlotsController = GetComponent<ActionSlotsController>();

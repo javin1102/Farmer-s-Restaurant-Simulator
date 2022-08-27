@@ -11,7 +11,6 @@ public abstract class Item : MonoBehaviour
     protected void OnEnable()
     {
         TryGetComponent( out m_ItemRaycastAction );
-        m_TileManager = TileManager.instance;
     }
     public abstract void MainAction();
 }
