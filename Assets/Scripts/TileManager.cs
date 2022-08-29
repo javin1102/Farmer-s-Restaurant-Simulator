@@ -20,7 +20,8 @@ public class TileManager : MonoBehaviour
     {
         Vector3Int cellPos = Grid.WorldToCell( worldPoint );
         Vector3 tilePos = Grid.GetCellCenterWorld( cellPos );
-        return tilePos;
+        Vector3 finalPos = new( tilePos.x, worldPoint.y, tilePos.z );
+        return finalPos;
     }
 
 

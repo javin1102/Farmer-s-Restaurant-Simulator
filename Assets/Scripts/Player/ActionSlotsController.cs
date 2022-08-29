@@ -1,26 +1,49 @@
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 public class ActionSlotsController : ItemSlotsController
 {
+    public event UnityAction OnDropItem;
     public Item CurrEquippedItem { get => m_CurrEquippedItem; }
+    public ItemSlot[] ActionSlots { get => m_ActionSlots; }
+    public int SelectedSlotIndex { get => m_SelectedSlotIndex; }
+
     [SerializeField] private Transform m_Hand;
     [SerializeField] private ItemMainActionChannel m_DeacreasableItemChannel;
     [SerializeField] private ItemData s;
+    [SerializeField] private ItemData x;
     [SerializeField] private Item m_CurrEquippedItem;
+    [SerializeReference] private ItemSlot[] m_ActionSlots;
 
     private int m_SelectedSlotIndex;
+    public void InvokeUIDropItemEvent() => OnDropItem?.Invoke();
 
+    private void Awake()
+    {
+        m_ActionSlots = new ItemSlot[6];
+        //StoreS();
+        //StoreS();
+        //StoreS();
+        //StoreS();
+        //SelectActionSlot( 1 );
+        //StoreX();
+        //StoreX();
+        //StoreX();
+        //StoreX();
+        //StoreX();
+        //StoreX();
 
+    }
     private void OnEnable()
     {
-        OnStoreItem += CheckEquippedItem;
+        OnStoreNewItem += _ => CheckEquippedItem();
         m_DeacreasableItemChannel.OnMainAction += CheckQuantity;
     }
 
     private void OnDisable()
     {
         m_DeacreasableItemChannel.OnMainAction -= CheckQuantity;
-        OnStoreItem -= CheckEquippedItem;
+        OnStoreNewItem -= _ => CheckEquippedItem();
     }
 
     public void SelectActionSlot( int index )
@@ -28,10 +51,44 @@ public class ActionSlotsController : ItemSlotsController
         m_SelectedSlotIndex = index;
         DestroyAllItemsInHand();
         m_CurrEquippedItem = null;
-        if ( m_ItemSlots[index] == null ) return;
-        m_CurrEquippedItem = InstantiateItemToHand( m_ItemSlots[index] );
+        if ( m_ActionSlots[index] == null ) return;
+        m_CurrEquippedItem = InstantiateItemToHand( m_ActionSlots[index] );
     }
 
+    [ContextMenu( "Store S" )]
+    public void StoreS() => Store( s );
+    [ContextMenu( "Store X" )]
+    public void StoreX() => Store( x );
+    public override bool Store( ItemData itemData )
+    {
+        if ( m_ItemSlotsDictionary.Count >= 6 ) return false;
+        if ( m_ItemSlotsDictionary.TryGetValue( itemData.id, out ItemSlot slot ) )
+        {
+            slot.quantity += 1;
+            InvokeStoreExistingItemEvent();
+            return true;
+        }
+        else
+        {
+            ItemSlot itemSlotData = new( itemData );
+            m_ItemSlotsDictionary.Add( itemData.id, itemSlotData );
+
+            //Todo::Drop curr item
+            m_ActionSlots[m_SelectedSlotIndex] = itemSlotData;
+            InvokeStoreNewItemEvent( itemSlotData );
+            return true;
+        }
+
+    }
+
+    public void CheckEquippedItem()
+    {
+        DestroyAllItemsInHand();
+        if ( m_ActionSlots[m_SelectedSlotIndex] == null ) return;
+
+        //if ( m_CurrEquippedItem != null && m_CurrEquippedItem.Data == m_ItemSlots[m_SelectedSlotIndex].data ) return;
+        m_CurrEquippedItem = InstantiateItemToHand( m_ActionSlots[m_SelectedSlotIndex] );
+    }
 
     private Item InstantiateItemToHand( ItemSlot item )
     {
@@ -41,14 +98,6 @@ public class ActionSlotsController : ItemSlotsController
         return go.GetComponent<Item>();
     }
 
-    public void CheckEquippedItem()
-    {
-        DestroyAllItemsInHand();
-        if ( m_ItemSlots[m_SelectedSlotIndex] == null ) return;
-
-        //if ( m_CurrEquippedItem != null && m_CurrEquippedItem.Data == m_ItemSlots[m_SelectedSlotIndex].data ) return;
-        m_CurrEquippedItem = InstantiateItemToHand( m_ItemSlots[m_SelectedSlotIndex] );
-    }
 
     private void ResetItemTf( Transform item )
     {
@@ -70,14 +119,16 @@ public class ActionSlotsController : ItemSlotsController
 
     private void CheckQuantity()
     {
-        m_ItemSlots[m_SelectedSlotIndex].quantity -= 1;
-        if ( m_ItemSlots[m_SelectedSlotIndex].quantity <= 0 )
+        m_ActionSlots[m_SelectedSlotIndex].quantity -= 1;
+        if ( m_ActionSlots[m_SelectedSlotIndex].quantity <= 0 )
         {
-            m_ItemSlots[m_SelectedSlotIndex] = null;
+
+            m_ItemSlotsDictionary.Remove( m_ActionSlots[m_SelectedSlotIndex].data.id );
+            m_ActionSlots[m_SelectedSlotIndex] = null;
             m_CurrEquippedItem = null;
             DestroyAllItemsInHand();
         }
     }
-    [ContextMenu( "Store S" )]
-    public void StoreS() => Store( s );
+
+
 }

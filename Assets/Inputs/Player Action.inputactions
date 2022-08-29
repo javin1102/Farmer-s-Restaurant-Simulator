@@ -43,9 +43,9 @@
                 },
                 {
                     "name": "Object Rotation",
-                    "type": "Value",
+                    "type": "Button",
                     "id": "d0b77266-5238-4a8a-811c-8a07afb1f387",
-                    "expectedControlType": "Axis",
+                    "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": true

@@ -1,22 +1,45 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
-public class UIActionSlotController : MonoBehaviour
+//NOTE:Must attach to parent obj
+public class UIActionSlotController : UIItemSlotsController
 {
-    private InventoryController m_InventoryController;
-    private void Awake()
+    private ActionSlotsController m_ActionSlotsController;
+    protected override void Awake()
     {
-        m_InventoryController = transform.root.GetComponent<InventoryController>();
-        m_InventoryController.OnDisableInventoryUI += Enable;
-        m_InventoryController.OnEnableInventoryUI += Disable;
+        base.Awake();
+        m_ActionSlotsController = transform.root.GetComponent<ActionSlotsController>();
     }
-    private void OnDestroy()
+
+
+    protected override void SetUISlotReference( ItemSlot itemSlot )
     {
-        m_InventoryController.OnDisableInventoryUI -= Enable;
-        m_InventoryController.OnEnableInventoryUI -= Disable;
+        m_UIItemSlots[m_ActionSlotsController.SelectedSlotIndex].ItemSlot = itemSlot;
+        m_UIItemSlots[m_ActionSlotsController.SelectedSlotIndex].UpdateUI();
     }
-    private void Enable() => gameObject.SetActive( true );
-    private void Disable() => gameObject.SetActive( false );
+
+    private void OnEnable()
+    {
+        for ( int i = 0; i < m_ActionSlotsController.ActionSlots.Length; i++ )
+        {
+            m_UIItemSlots[i].ItemSlot = m_ActionSlotsController.ActionSlots[i];
+            m_UIItemSlots[i].UpdateUI();
+        }
+
+        m_ActionSlotsController.OnStoreNewItem += SetUISlotReference;
+        m_ActionSlotsController.OnDropItem += UpdateActionSlots;
+    }
+
+    private void OnDisable()
+    {
+        m_ActionSlotsController.OnStoreNewItem -= SetUISlotReference;
+        m_ActionSlotsController.OnDropItem -= UpdateActionSlots;
+    }
+
+    private void UpdateActionSlots()
+    {
+        for ( int i = 0; i < m_ActionSlotsController.ActionSlots.Length; i++ )
+        {
+            m_ActionSlotsController.ActionSlots[i] = m_UIItemSlots[i].ItemSlot;
+        }
+    }
+
 
 }

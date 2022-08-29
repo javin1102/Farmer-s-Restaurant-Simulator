@@ -9,7 +9,6 @@ public class Shovel : Item, IRaycastAction
     [SerializeField] private bool m_Collided;
 
 
-    private TileManager m_TileManager;
     private Mesh m_PreviewTileMesh;
     private Matrix4x4 m_TileMatrix;
 
@@ -18,12 +17,6 @@ public class Shovel : Item, IRaycastAction
         tileParent = GameObject.FindGameObjectWithTag( Utils.TILE_PARENT_TAG ).transform;
         m_PreviewTileMesh = m_TilePrefab.GetComponent<MeshFilter>().sharedMesh;
     }
-    private new void OnEnable()
-    {
-        base.OnEnable();
-        m_TileManager = TileManager.instance;
-    }
-
     private void OnDisable()
     {
         if ( m_PreviewTile != null ) m_PreviewTile.SetActive( false );

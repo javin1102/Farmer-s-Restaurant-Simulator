@@ -10,8 +10,9 @@ TagManager:
   - Restaurant Ground
   - Farm Ground
   - Tile Parent
-  - Crop
-  - Tile Wet
+  - Restaurant
+  - Seat
+  - Table
   layers:
   - Default
   - TransparentFX
@@ -25,7 +26,7 @@ TagManager:
   - Farm Ground
   - Ground
   - Hand
-  - Crop
+  - Restaurant
   - 
   - 
   - 
