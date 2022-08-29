@@ -21,17 +21,17 @@ public class ActionSlotsController : ItemSlotsController
     private void Awake()
     {
         m_ActionSlots = new ItemSlot[6];
-        StoreS();
-        StoreS();
-        StoreS();
-        StoreS();
-        SelectActionSlot( 1 );
-        StoreX();
-        StoreX();
-        StoreX();
-        StoreX();
-        StoreX();
-        StoreX();
+        //StoreS();
+        //StoreS();
+        //StoreS();
+        //StoreS();
+        //SelectActionSlot( 1 );
+        //StoreX();
+        //StoreX();
+        //StoreX();
+        //StoreX();
+        //StoreX();
+        //StoreX();
 
     }
     private void OnEnable()
