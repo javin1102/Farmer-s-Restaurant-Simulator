@@ -10,7 +10,6 @@ public class Citizen : NPCManager
     private new void Start()
     {
         base.Start();
-
     }
 
 
@@ -20,6 +19,11 @@ public class Citizen : NPCManager
         {
             ChangeState( m_VisitRestaurantState );
             m_CurrentState.OnUpdateState( this );
+        }
+        else
+        {
+            m_CurrentState?.OnExitState( this );
+            m_CurrentState = null;
         }
 
         

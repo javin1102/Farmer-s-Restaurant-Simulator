@@ -22,11 +22,11 @@ public class InventoryController : ItemSlotsController
 
     private void Start()
     {
-        StoreS();
-        StoreS();
-        StoreS();
-        StoreX();
-        StoreX();
+        //StoreS();
+        //StoreS();
+        //StoreS();
+        //StoreX();
+        //StoreX();
     }
 
     public override bool Store( ItemData itemData )

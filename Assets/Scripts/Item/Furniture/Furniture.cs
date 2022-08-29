@@ -16,13 +16,10 @@ public abstract class Furniture : Item, IRaycastAction
     private MaterialChanger m_MaterialChanger;
     private Matrix4x4 m_PreviewMatrix;
 
-    protected void Start()
-    {
-        m_Restaurant = RestaurantManager.Instance;
-    }
 
     private new void OnEnable()
     {
+        m_Restaurant = RestaurantManager.Instance;
         m_PreviewMesh = GetComponent<MeshFilter>().sharedMesh;
         m_TileManager = TileManager.instance;
         base.OnEnable();
@@ -50,6 +47,8 @@ public abstract class Furniture : Item, IRaycastAction
         m_InstantiatedGO.transform.SetPositionAndRotation( pos, m_PreviewMatrix.rotation );
         m_InstantiatedGO.transform.localScale = m_PreviewMatrix.lossyScale;
         m_InstantiatedGO.GetComponent<Collider>().enabled = true;
+        Furniture furniture = m_InstantiatedGO.GetComponent<Furniture>();
+        furniture.m_ObjRotationInputRef.action.performed -= furniture.RotateObj;
         ResetProps();
     }
     public void PerformRaycastAction( RaycastHit hitInfo )

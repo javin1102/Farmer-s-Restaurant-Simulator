@@ -5,30 +5,28 @@ public class RestaurantManager : MonoBehaviour
 {
     public static RestaurantManager Instance { get => m_Instance; }
     public List<Table> Tables { get => m_Tables; }
+    public List<Seat> UnoccupiedSeats { get => m_Seats; }
 
     private static RestaurantManager m_Instance;
 
     [SerializeField] private List<Table> m_Tables = new();
+    [SerializeField] private  List<Seat> m_Seats = new();
 
     private void Awake()
     {
         if ( m_Instance == null ) m_Instance = this;
         else Destroy( gameObject );
     }
-
-    public bool FindUnoccupiedTable( out Table table )
+    private int RandomIndex { get => Random.Range( 0, m_Seats.Count ); }
+    public bool FindUnoccupiedSeat( out Seat seat )
     {
-        foreach ( Table t in m_Tables )
+        if (m_Seats.Count == 0 )
         {
-            if ( !t.IsOccupied )
-            {
-                Debug.Log( "YES" );
-                table = t;
-                return true;
-            }
+            seat = null;
+            return false;
         }
 
-        table = null;
-        return false;
+        seat = m_Seats[RandomIndex];
+        return true;
     }
 }

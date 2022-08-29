@@ -3,17 +3,15 @@ using UnityEngine;
 
 public class Table : Furniture
 {
-    public bool IsFull { get => m_Seats.Count >= 4; }
+    public bool HasMaxSeats { get => m_Seats.Count >= 4; }
     public bool HasSeat { get => m_Seats.Count > 0; }
     public List<Seat> Seats => m_Seats;
 
-    public bool IsOccupied { get => m_IsOccupied; set => m_IsOccupied =  value ; }
-    public Citizen Citizen { get => m_Citizen; set => m_Citizen =  value ; }
+    //public Citizen Citizen { get => m_Citizen; set => m_Citizen =  value ; }
 
     [SerializeField] private List<Seat> m_Seats = new();
     private Table m_InstantiatedTable;
-    private Citizen m_Citizen;
-    private bool m_IsOccupied;
+    //private Citizen m_Citizen;
 
     public override void MainAction()
     {

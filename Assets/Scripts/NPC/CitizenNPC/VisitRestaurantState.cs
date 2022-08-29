@@ -1,18 +1,18 @@
 using System.Collections;
 using System.Collections.Generic;
-using System.Drawing.Printing;
 using UnityEngine;
 using UnityEngine.AI;
-using UnityEngine.SceneManagement;
+
 public class VisitRestaurantState : NPCBaseState
 {
     private RestaurantManager m_Restaurant;
     private Citizen m_Citizen;
+    private Seat m_Seat;
     public override void OnEnterState( NPCManager NPC )
     {
         m_Restaurant = RestaurantManager.Instance;
         m_Citizen = NPC as Citizen;
-        if ( !m_Restaurant.FindUnoccupiedTable( out Table table ) || !FindSeat( NPC, table ) )
+        if ( !m_Restaurant.FindUnoccupiedSeat( out m_Seat ) || !FindSeatDest( NPC, m_Seat ) )
         {
 
             //TODO::Can't find unoccupied table, or all seats has no path -> Exit State
@@ -25,7 +25,11 @@ public class VisitRestaurantState : NPCBaseState
 
     public override void OnExitState( NPCManager NPC )
     {
-        //Pay player based on the food
+        //Pay player based on the food, leave restaurant
+        if ( m_Seat != null )
+        {
+            m_Restaurant.UnoccupiedSeats.Add( m_Seat );
+        }
 
 
     }
@@ -41,16 +45,15 @@ public class VisitRestaurantState : NPCBaseState
         //If food has arrived, switch to eat animation
     }
 
-    private bool FindSeat( NPCManager NPC, Table table )
+    private bool FindSeatDest( NPCManager NPC, Seat seat )
     {
-        foreach ( Seat seat in table.Seats )
+        if ( NPC.Agent.SetDestination( seat.transform.position ) )
         {
-            if ( NPC.Agent.SetDestination( seat.transform.position ) )
-            {
-                table.IsOccupied = true;
-                table.Citizen = m_Citizen;
-                return true;
-            }
+            seat.IsOccupied = true;
+            m_Restaurant.UnoccupiedSeats.Remove( seat );
+
+            //seat.table.Citizen = m_Citizen;
+            return true;
         }
 
         Debug.Log( "NOPE" );
