@@ -15,12 +15,14 @@ public class VisitRestaurantState : NPCBaseState
         if ( !m_Restaurant.FindUnoccupiedSeat( out m_Seat ) || !FindSeatDest( NPC, m_Seat ) )
         {
 
-            //TODO::Can't find unoccupied table, or all seats has no path -> Exit State
+            //TODO::Can't find unoccupied seat, or all seats has no path -> Exit State
             return;
         }
 
         //Order food from restaurant
+        
         Debug.Log( "Enter" );
+
     }
 
     public override void OnExitState( NPCManager NPC )

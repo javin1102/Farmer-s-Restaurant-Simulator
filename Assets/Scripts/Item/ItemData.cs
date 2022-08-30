@@ -1,8 +1,8 @@
 using UnityEngine;
-[CreateAssetMenu( fileName = "Item", menuName = "New Item" )]
+[CreateAssetMenu( fileName = "Item", menuName = "Custom Data/New Item" )]
 public class ItemData : ScriptableObject
 {
-    public new string id;
+    public string id;
     public GameObject prefab;
     public Sprite icon;
     public ItemType type;
