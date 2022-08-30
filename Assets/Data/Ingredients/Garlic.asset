@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8c9c36c8f20505d47bfff2820a3a6d92, type: 3}
   m_Name: Garlic
   m_EditorClassIdentifier: 
-  id: Carrot
+  id: Garlic
   prefab: {fileID: 100000, guid: 4d7659eaa2dbe2e46a70e6a4a2a8bf1a, type: 3}
   icon: {fileID: 10913, guid: 0000000000000000f000000000000000, type: 0}
   type: 1

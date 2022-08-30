@@ -15,7 +15,4 @@ MonoBehaviour:
   foodPrefab: {fileID: 1620823866523042, guid: 31f2ecfec20d54541ace8f82e1071325, type: 3}
   price: 50
   cookDuration: 5
-  recipeIngredients: []
-  references:
-    version: 2
-    RefIds: []
+  ingredients: []
