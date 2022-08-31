@@ -19215,6 +19215,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Tables: []
   m_Seats: []
+  garlic: {fileID: 11400000, guid: c2629dcb0d8b8eb4e876c62f1f5c6d62, type: 2}
+  onion: {fileID: 11400000, guid: 37dc22333acdd0d4c8e0b65b7d76d0c7, type: 2}
+  carrot: {fileID: 11400000, guid: 4aaa6f74f17019741b20cb5b2754220f, type: 2}
 --- !u!1 &1342518883
 GameObject:
   m_ObjectHideFlags: 0
