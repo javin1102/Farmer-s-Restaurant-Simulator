@@ -36,7 +36,7 @@ public class RecipeDataEditor : Editor
             fontStyle = FontStyle.Bold
         };
 
-        GUIStyle button = new(GUI.skin.button)
+        GUIStyle button = new( GUI.skin.button )
         {
             padding = new RectOffset( 10, 10, 10, 10 ),
             fixedHeight = 30,
@@ -65,7 +65,7 @@ public class RecipeDataEditor : Editor
             }
 
             EditorGUILayout.Space( 20 );
-           
+
             if ( GUILayout.Button( "Search", popup ) )
             {
                 Vector2 searchModalPos = Event.current.mousePosition;
@@ -78,11 +78,27 @@ public class RecipeDataEditor : Editor
 
             if ( m_SelectedIngredient != null && GUILayout.Button( "Add", button ) )
             {
+                if ( ingredientQuantity <= 0 )
+                {
+                    Debug.LogError( "Quantity must bigger than 0" );
+                    return;
+                }
+                for ( int i = 0; i < m_Ingredients.arraySize; i++ )
+                {
+                    SerializedProperty el = m_Ingredients.GetArrayElementAtIndex( i );
+                    if ( el.FindPropertyRelative( "ingredient" ).objectReferenceValue == m_SelectedIngredient )
+                    {
+                        Debug.LogError( $"{m_SelectedIngredient.name} exists in list at index ({i})" );
+                        return;
+                    }
+                }
+
                 m_Ingredients.arraySize += 1;
                 int index = m_Ingredients.arraySize - 1;
                 SerializedProperty arrEl = m_Ingredients.GetArrayElementAtIndex( index );
                 arrEl.FindPropertyRelative( "ingredient" ).objectReferenceValue = m_SelectedIngredient;
                 arrEl.FindPropertyRelative( "quantity" ).intValue = ingredientQuantity;
+
             }
 
         }
