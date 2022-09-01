@@ -1,37 +1,40 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
-public class Citizen : NPCManager
+namespace NPC.Citizen
 {
-    private NPCBaseState m_CurrentState;
-    private readonly VisitRestaurantState m_VisitRestaurantState = new();
-    [SerializeField] private bool visit;
-    private new void Start()
+    [RequireComponent( typeof( NavMeshAgent ) )]
+    public class Citizen : NPCManager
     {
-        base.Start();
-    }
-
-
-    private void Update()
-    {
-        if ( visit )
+        public NavMeshAgent Agent { get => m_Agent; }
+        public ServedFood ServedFood { get => m_ServedFood; set => m_ServedFood = value; }
+        private ServedFood m_ServedFood;
+        private readonly VisitRestaurantState m_VisitRestaurantState = new();
+        private NavMeshAgent m_Agent;
+        private bool m_IsEating;
+        [SerializeField] private bool visit;
+        private new void Start()
         {
-            ChangeState( m_VisitRestaurantState );
-            m_CurrentState.OnUpdateState( this );
-        }
-        else
-        {
-            m_CurrentState?.OnExitState( this );
-            m_CurrentState = null;
+            base.Start();
+            m_Agent = GetComponent<NavMeshAgent>();
         }
 
-        
-    }
-    private void ChangeState( NPCBaseState state )
-    {
-        if ( state == m_CurrentState ) return;
-        m_CurrentState = state;
-        m_CurrentState.OnEnterState( this );
+        private void Update()
+        {
+            if ( visit )
+            {
+                ChangeState( m_VisitRestaurantState );
+                m_CurrentState.OnUpdateState( this );
+            }
+            else
+            {
+                m_CurrentState?.OnExitState( this );
+                m_CurrentState = null;
+            }
+        }
+
     }
 }
+

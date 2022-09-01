@@ -1,3 +1,5 @@
+using NPC.Chef;
+using NPC.Waiter;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEditor;
@@ -8,6 +10,10 @@ public class RestaurantManager : MonoBehaviour
     public static RestaurantManager Instance { get => m_Instance; }
     public List<Table> Tables { get => m_Tables; }
     public List<Seat> UnoccupiedSeats { get => m_Seats; }
+    public Transform FoodPlace { get => m_FoodPlace; }
+    public List<Chef> Chefs => m_Chefs;
+    public List<Waiter> Waiters => m_Waiters;
+    public int WaiterIndex => ( int ) Mathf.PingPong( m_WaiterIndexOffset++, m_Waiters.Count - 1 );
 
     //Furniture
     [SerializeField] private List<Table> m_Tables = new();
@@ -15,12 +21,22 @@ public class RestaurantManager : MonoBehaviour
     private int RandomSeatIndex { get => Random.Range( 0, m_Seats.Count ); }
 
     //Food
-    private readonly Dictionary<RecipeData, bool> m_AllRecipes = new();
-    private readonly List<RecipeData> m_UnlockedRecipes = new();
+    private readonly Dictionary<FoodData, bool> m_AllFoods = new();
+    private readonly List<FoodData> m_UnlockedFoods = new();
     private readonly Dictionary<string, StockIngredient> m_StockIngredients = new();
+
+    //Chefs
+    private readonly List<Chef> m_Chefs = new();
+    private int m_ChefIndexOffset;
+    private int ChefIndex => ( int ) Mathf.PingPong( m_ChefIndexOffset++, m_Chefs.Count - 1 );
+
+    //Waiters
+    private readonly List<Waiter> m_Waiters = new();
+    private int m_WaiterIndexOffset;
 
     //Others
     private static RestaurantManager m_Instance;
+    [SerializeField] private Transform m_FoodPlace;
     private bool m_FirstLoad = true;
 
     //Debug
@@ -35,14 +51,13 @@ public class RestaurantManager : MonoBehaviour
 
         //Check if player has save file
         if ( m_FirstLoad ) LoadRecipeData();
-        m_AllRecipes.ToList().ForEach( AddUnlockRecipeToList );
+        m_AllFoods.ToList().ForEach( AddUnlockRecipeToList );
         StockIngredient garlicStock = new( garlic, 10 );
         StockIngredient onionStock = new( onion, 10 );
         StockIngredient carrotStock = new( carrot, 10 );
         m_StockIngredients.Add( garlic.id, garlicStock );
         m_StockIngredients.Add( onion.id, onionStock );
         m_StockIngredients.Add( carrot.id, carrotStock );
-        Debug.Log( GetRecipeToCook() );
 
     }
     public bool FindUnoccupiedSeat( out Seat seat )
@@ -56,11 +71,10 @@ public class RestaurantManager : MonoBehaviour
         seat = m_Seats[RandomSeatIndex];
         return true;
     }
-    public void OrderFood()
+    public void OrderFood( Seat seat )
     {
-        RecipeData food = GetRecipeToCook();
-        //Add to chef queue
-
+        if ( !TryGetRecipeToCook( out FoodData food ) ) return;
+        m_Chefs[ChefIndex].OrderQueue.Enqueue( KeyValuePair.Create( seat, food ) );
     }
     public void StoreIngredient( ItemData itemData )
     {
@@ -85,26 +99,30 @@ public class RestaurantManager : MonoBehaviour
 
         var guids = AssetDatabase.FindAssets( "t:RecipeData", new[] { "Assets/Data/Recipes" } );
         var paths = guids.Select( AssetDatabase.GUIDToAssetPath );
-        var recipeData = paths.Select( AssetDatabase.LoadAssetAtPath<RecipeData> ).ToList();
-        recipeData.ForEach( recipe => m_AllRecipes.Add( recipe, true ) );
+        var recipeData = paths.Select( AssetDatabase.LoadAssetAtPath<FoodData> ).ToList();
+        recipeData.ForEach( recipe => m_AllFoods.Add( recipe, true ) );
     }
-    private void AddUnlockRecipeToList( KeyValuePair<RecipeData, bool> recipe )
+    private void AddUnlockRecipeToList( KeyValuePair<FoodData, bool> recipe )
     {
         if ( recipe.Value == false ) return;
-        m_UnlockedRecipes.Add( recipe.Key );
+        m_UnlockedFoods.Add( recipe.Key );
     }
-    
+
     [ContextMenu( "Get Recipe" )]
-    private RecipeData GetRecipeToCook()
+    private bool TryGetRecipeToCook( out FoodData recipe )
     {
-        var availableRecipes = m_UnlockedRecipes.Where( RecipeIsAvailable ).ToList();
-        if ( availableRecipes.Count == 0 ) return null;
-        var randomRecipe = availableRecipes[Random.Range( 0, availableRecipes.Count )];
-        return randomRecipe;
+        var availableRecipes = m_UnlockedFoods.Where( RecipeIsAvailable ).ToList();
+        if ( availableRecipes.Count == 0 )
+        {
+            recipe = null;
+            return false;
+        }
+        recipe = availableRecipes[Random.Range( 0, availableRecipes.Count )];
+        return true;
     }
 
     //Check stock is sufficient to make food/recipe
-    private bool RecipeIsAvailable( RecipeData recipe )
+    private bool RecipeIsAvailable( FoodData recipe )
     => recipe.ingredients.All( i => m_StockIngredients.TryGetValue( i.ingredient.id, out StockIngredient stockIngredient ) && stockIngredient.quantity >= i.quantity );
 
 }

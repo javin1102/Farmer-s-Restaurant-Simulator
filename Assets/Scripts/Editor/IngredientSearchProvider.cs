@@ -7,8 +7,8 @@ using UnityEngine;
 
 public class IngredientSearchProvider : ScriptableObject, ISearchWindowProvider
 {
-    private List<ItemData> ingredients;
-    private Action<ItemData> callBack;
+    private readonly List<ItemData> ingredients;
+    private readonly Action<ItemData> callBack;
     public IngredientSearchProvider( List<ItemData> recipes, Action<ItemData> callBack )
     {
         this.ingredients = recipes;

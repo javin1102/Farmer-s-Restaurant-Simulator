@@ -1,11 +1,16 @@
+using NPC.Citizen;
 using UnityEngine;
 
 public class Seat : Furniture
 {
     public bool IsOccupied { get => m_IsOccupied; set => m_IsOccupied = value; }
+    public Table Table { get => m_Table; }
+    public Citizen Citizen { get => m_Citizen; set => m_Citizen =  value ; }
+
     [SerializeField] private Table m_Table;
     private Seat m_InstantiatedSeat;
     private bool m_IsOccupied;
+    private Citizen m_Citizen;
     public override void MainAction()
     {
         if ( !gameObject.activeInHierarchy || !m_IsInstantiable ) return;

@@ -7,11 +7,8 @@ public class Table : Furniture
     public bool HasSeat { get => m_Seats.Count > 0; }
     public List<Seat> Seats => m_Seats;
 
-    //public Citizen Citizen { get => m_Citizen; set => m_Citizen =  value ; }
-
     [SerializeField] private List<Seat> m_Seats = new();
     private Table m_InstantiatedTable;
-    //private Citizen m_Citizen;
 
     public override void MainAction()
     {

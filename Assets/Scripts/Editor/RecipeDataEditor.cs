@@ -4,7 +4,7 @@ using UnityEditor;
 using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 
-[CustomEditor( typeof( RecipeData ) )]
+[CustomEditor( typeof( FoodData ) )]
 public class RecipeDataEditor : Editor
 {
     public int ingredientQuantity;

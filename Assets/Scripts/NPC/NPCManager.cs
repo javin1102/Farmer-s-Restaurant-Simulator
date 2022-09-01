@@ -2,22 +2,24 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
-
-public abstract class NPCManager : MonoBehaviour
+namespace NPC
 {
-    private NavMeshAgent m_Agent;
-
-    public NavMeshAgent Agent { get => m_Agent; }
-
-    // Start is called before the first frame update
-    protected void Start()
+    public abstract class NPCManager : MonoBehaviour
     {
-        m_Agent = GetComponent<NavMeshAgent>();
-    }
+        protected NPCBaseState m_CurrentState;
 
-    // Update is called once per frame
-    void Update()
-    {
-        
+        // Start is called before the first frame update
+        protected void Start()
+        {
+            GameObject x = Object.Instantiate( gameObject );
+        }
+
+        public void ChangeState( NPCBaseState state )
+        {
+            if ( state == m_CurrentState ) return;
+            m_CurrentState?.OnExitState( this );
+            m_CurrentState = state;
+            m_CurrentState?.OnEnterState( this );
+        }
     }
 }
