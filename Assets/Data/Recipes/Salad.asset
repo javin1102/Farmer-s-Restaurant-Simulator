@@ -15,4 +15,8 @@ MonoBehaviour:
   foodPrefab: {fileID: 1620823866523042, guid: 31f2ecfec20d54541ace8f82e1071325, type: 3}
   price: 50
   cookDuration: 5
-  ingredients: []
+  ingredients:
+  - ingredient: {fileID: 11400000, guid: c2629dcb0d8b8eb4e876c62f1f5c6d62, type: 2}
+    quantity: 4
+  - ingredient: {fileID: 11400000, guid: 37dc22333acdd0d4c8e0b65b7d76d0c7, type: 2}
+    quantity: 2

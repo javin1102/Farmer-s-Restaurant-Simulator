@@ -17,7 +17,8 @@ namespace NPC.Chef
             m_Chef = NPC as Chef;
             m_Restaurant = RestaurantManager.Instance;
             m_FoodPlace = m_Restaurant.FoodPlace.position;
-            if ( m_HasFood = m_Chef.OrderQueue.TryPeek( out m_Food ) ) m_CookTime = m_Food.Value.cookDuration;
+            m_Food = m_Chef.OrderQueue.Peek();
+            m_CookTime = m_Food.Value.cookDuration;
         }
 
         public override void OnExitState( NPCManager NPC )
@@ -26,7 +27,8 @@ namespace NPC.Chef
 
         public override void OnUpdateState( NPCManager NPC )
         {
-            if ( !m_HasFood ) return;
+
+
             //TODO::Switch to cook anim
             if ( m_CookTime <= 0 )
             {
@@ -35,7 +37,13 @@ namespace NPC.Chef
                 ServedFood servedFood = new( foodGO, m_Food.Value.price );
                 m_Restaurant.Waiters[m_Restaurant.WaiterIndex].FoodsToServe.Enqueue( KeyValuePair.Create( m_Food.Key, servedFood ) );
                 m_Chef.OrderQueue.Dequeue();
-                OnEnterState( NPC );
+                m_Restaurant.DecreaseStock( m_Food.Value );
+                if ( m_Chef.OrderQueue.TryPeek( out m_Food ) ) m_CookTime = m_Food.Value.cookDuration;
+                else
+                {
+                    IdleState idleState = new();
+                    NPC.ChangeState( idleState );
+                }
                 return;
             }
 

@@ -11,7 +11,6 @@ namespace NPC
         // Start is called before the first frame update
         protected void Start()
         {
-            GameObject x = Object.Instantiate( gameObject );
         }
 
         public void ChangeState( NPCBaseState state )

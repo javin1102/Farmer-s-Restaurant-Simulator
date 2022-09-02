@@ -18,6 +18,10 @@ namespace NPC.Chef
 
         public override void OnUpdateState( NPCManager NPC )
         {
+            if ( !m_Chef.OrderQueue.TryPeek( out _ ) ) return;
+            CookState cookState = new();
+            NPC.ChangeState( cookState );
+            Debug.Log( "Cook State" );
         }
     }
 }

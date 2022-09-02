@@ -63,8 +63,6 @@ public class Seat : Furniture
     {
         if ( m_Table != null ) m_Table.Seats.Remove( this );
         m_Restaurant = RestaurantManager.Instance;
-        print( $"Restaurant: {m_Restaurant}" );
-        print( $"This: {this} " );
         m_Restaurant.UnoccupiedSeats.Remove( this );
     }
 }

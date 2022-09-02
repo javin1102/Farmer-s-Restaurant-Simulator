@@ -10,29 +10,22 @@ namespace NPC.Citizen
     {
         public NavMeshAgent Agent { get => m_Agent; }
         public ServedFood ServedFood { get => m_ServedFood; set => m_ServedFood = value; }
+        //Debug
+        public Vector3 initPos;
         private ServedFood m_ServedFood;
-        private readonly VisitRestaurantState m_VisitRestaurantState = new();
         private NavMeshAgent m_Agent;
-        private bool m_IsEating;
-        [SerializeField] private bool visit;
+        private readonly IdleState m_IdleState = new();
         private new void Start()
         {
             base.Start();
             m_Agent = GetComponent<NavMeshAgent>();
+            initPos = transform.position;
+            ChangeState( m_IdleState );
         }
 
         private void Update()
         {
-            if ( visit )
-            {
-                ChangeState( m_VisitRestaurantState );
-                m_CurrentState.OnUpdateState( this );
-            }
-            else
-            {
-                m_CurrentState?.OnExitState( this );
-                m_CurrentState = null;
-            }
+            m_CurrentState.OnUpdateState( this );
         }
 
     }

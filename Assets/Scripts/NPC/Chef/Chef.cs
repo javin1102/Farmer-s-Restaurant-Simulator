@@ -18,19 +18,14 @@ namespace NPC.Chef
             base.Start();
             m_Restaurant = RestaurantManager.Instance;
             m_Restaurant.Chefs.Add( this );
+            m_CurrentState = m_IdleState;
+            m_CurrentState.OnEnterState( this );
         }
 
 
 
         private void Update()
         {
-            if ( m_OrderQueue.Count <= 0 )
-            {
-                ChangeState( m_IdleState );
-                return;
-            }
-
-            ChangeState( m_CookState );
             m_CurrentState.OnUpdateState( this );
         }
 

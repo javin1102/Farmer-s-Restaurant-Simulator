@@ -9,7 +9,6 @@ namespace NPC.Waiter
         private bool m_HasFood;
         private KeyValuePair<Seat, ServedFood> m_Food;
         private ServedFood ServedFood => m_Food.Value;
-        private readonly ServeState m_ServeState = new();
         public override void OnEnterState( NPCManager NPC )
         {
             m_Waiter = NPC as Waiter;
@@ -24,12 +23,13 @@ namespace NPC.Waiter
 
         public override void OnUpdateState( NPCManager NPC )
         {
-            if ( m_Waiter.Agent.isStopped )
+            if ( m_Waiter.Agent.remainingDistance <= m_Waiter.Agent.stoppingDistance )
             {
                 ServedFood.foodGO.transform.SetParent( m_Waiter.transform );
                 //TODO::Set food position on waiter
                 //TODO::Set anim
-                NPC.ChangeState( m_ServeState );
+                ServeState serveState = new();
+                NPC.ChangeState( serveState );
             }
         }
     }

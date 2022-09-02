@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Drawing.Printing;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -10,14 +11,14 @@ namespace NPC.Citizen
         private RestaurantManager m_Restaurant;
         private Citizen m_Citizen;
         private Seat m_Seat;
-        private bool m_HasOrder;
+        private bool m_HasOrder, m_IsEating;
         public override void OnEnterState( NPCManager NPC )
         {
             m_Restaurant = RestaurantManager.Instance;
             m_Citizen = NPC as Citizen;
             if ( !m_Restaurant.FindUnoccupiedSeat( out m_Seat ) || !FindSeatDest( m_Citizen, m_Seat ) )
             {
-                //TODO::Can't find unoccupied seat, or all seats has no path -> Exit State
+                //TODO::Can't find unoccupied seat, or all seats has no path -> Exit State/ Go to other state
                 return;
             }
 
@@ -29,32 +30,38 @@ namespace NPC.Citizen
             {
                 m_Restaurant.UnoccupiedSeats.Add( m_Seat );
             }
-            
+
             if ( m_Citizen.ServedFood == null ) return;
 
             //TODO::ADD PLAYER MONEY FROM SERVED FOOD
-
+            GameObject.Destroy( m_Citizen.ServedFood.foodGO );
             m_HasOrder = false;
             m_Seat = null;
             m_Citizen.ServedFood = null;
+            m_IsEating = false;
 
         }
 
         public override void OnUpdateState( NPCManager NPC )
         {
             if ( m_Seat == null ) return;
-            if ( !m_HasOrder && m_Citizen.Agent.isStopped )
+            if ( !m_HasOrder && m_Citizen.Agent.remainingDistance <= m_Citizen.Agent.stoppingDistance )
             {
                 m_Restaurant.OrderFood( m_Seat );
                 m_HasOrder = true;
                 //Switch to sit animation
             }
 
-            
-            if ( m_Citizen.ServedFood != null )
+
+            if ( !m_IsEating && m_Citizen.ServedFood != null )
             {
+                NPC.StartCoroutine( EatFinish( 10 ) );
+                m_IsEating = true;
                 //Switch to eat animation
             }
+
+            //TODO::Finish Eating -> leave
+
         }
 
         private bool FindSeatDest( Citizen citizen, Seat seat )
@@ -70,6 +77,14 @@ namespace NPC.Citizen
             Debug.Log( "NOPE" );
             //All seat has no path, go to exit state
             return false;
+        }
+
+        private IEnumerator EatFinish( float delay )
+        {
+            yield return new WaitForSeconds( delay );
+            TravelState travelState = new();
+            m_Citizen.ChangeState( travelState );
+
         }
     }
 }
