@@ -12,4 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8c9c36c8f20505d47bfff2820a3a6d92, type: 3}
   m_Name: WateringCan
   m_EditorClassIdentifier: 
+  id: WaterCan
   prefab: {fileID: 7680515037815010289, guid: a629c2bfeee8ad04caf8b6c230c16cfd, type: 3}
+  icon: {fileID: 0}
+  type: 0
