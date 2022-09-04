@@ -16,6 +16,7 @@ public class Shovel : Item, IRaycastAction
     {
         tileParent = GameObject.FindGameObjectWithTag( Utils.TILE_PARENT_TAG ).transform;
         m_PreviewTileMesh = m_TilePrefab.GetComponent<MeshFilter>().sharedMesh;
+        m_TileManager = TileManager.instance;
     }
     private void OnDisable()
     {

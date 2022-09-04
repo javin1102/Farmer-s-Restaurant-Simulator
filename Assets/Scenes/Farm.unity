@@ -10365,6 +10365,10 @@ MonoBehaviour:
   m_DeacreasableItemChannel: {fileID: 11400000, guid: 45b5ab5fff5be0b4e9c4366e438f6d25, type: 2}
   s: {fileID: 11400000, guid: d5bf6ee8fdb369a47b79960b2e7e3977, type: 2}
   x: {fileID: 0}
+  DefaultItem:
+  - {fileID: 11400000, guid: d5bf6ee8fdb369a47b79960b2e7e3977, type: 2}
+  - {fileID: 11400000, guid: 26458a084aae21a439108d3db177e9bb, type: 2}
+  - {fileID: 11400000, guid: b5b7a065aa545474f9c25a9f945f7b2d, type: 2}
   m_CurrEquippedItem: {fileID: 0}
   m_ActionSlots: []
   references:
@@ -12768,6 +12772,37 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1843507421}
   m_CullTransparentMesh: 1
+--- !u!1 &1851438396
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1851438397}
+  m_Layer: 0
+  m_Name: TileParent
+  m_TagString: Tile Parent
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1851438397
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1851438396}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -2.17, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 6
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1852170419
 PrefabInstance:
   m_ObjectHideFlags: 0

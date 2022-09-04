@@ -12,6 +12,7 @@ public class ActionSlotsController : ItemSlotsController
     [SerializeField] private ItemMainActionChannel m_DeacreasableItemChannel;
     [SerializeField] private ItemData s;
     [SerializeField] private ItemData x;
+    [SerializeField] private ItemData[] DefaultItem;
     [SerializeField] private Item m_CurrEquippedItem;
     [SerializeReference] private ItemSlot[] m_ActionSlots;
 
@@ -21,7 +22,7 @@ public class ActionSlotsController : ItemSlotsController
     private void Awake()
     {
         m_ActionSlots = new ItemSlot[6];
-        StoreS();
+        StoreAllDefault();
         //StoreS();
         //StoreS();
         //StoreS();
@@ -59,6 +60,8 @@ public class ActionSlotsController : ItemSlotsController
     public void StoreS() => Store( s );
     [ContextMenu( "Store X" )]
     public void StoreX() => Store( x );
+
+    
     public override bool Store( ItemData itemData )
     {
         if ( m_ItemSlotsDictionary.Count >= 6 ) return false;
@@ -79,6 +82,15 @@ public class ActionSlotsController : ItemSlotsController
             return true;
         }
 
+    }
+
+    public void StoreAllDefault()
+    {
+        for (int i = 0; i < DefaultItem.Length; i++)
+        {
+            Store(DefaultItem[i]);
+            m_SelectedSlotIndex++;
+        }
     }
 
     public void CheckEquippedItem()
