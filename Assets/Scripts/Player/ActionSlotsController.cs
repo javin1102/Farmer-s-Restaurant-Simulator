@@ -21,7 +21,7 @@ public class ActionSlotsController : ItemSlotsController
     private void Awake()
     {
         m_ActionSlots = new ItemSlot[6];
-        //StoreS();
+        StoreS();
         //StoreS();
         //StoreS();
         //StoreS();
