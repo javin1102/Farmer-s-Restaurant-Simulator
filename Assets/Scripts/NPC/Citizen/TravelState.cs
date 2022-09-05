@@ -10,7 +10,7 @@ namespace NPC.Citizen
         public override void OnEnterState( NPCManager NPC )
         {
             m_Citizen = NPC as Citizen;
-            m_Citizen.Agent.SetDestination( m_Citizen.initPos );
+            m_Citizen.Agent.SetDestination( m_Citizen.currentWaypoint.GetPosition() );
         }
 
         public override void OnExitState( NPCManager NPC )
@@ -19,10 +19,10 @@ namespace NPC.Citizen
 
         public override void OnUpdateState( NPCManager NPC )
         {
-            if ( m_Citizen.Agent.remainingDistance <= m_Citizen.Agent.stoppingDistance )
+            if ( m_Citizen.Agent.HasReachedDestination() )
             {
-                IdleState idleState = new();
-                NPC.ChangeState( idleState );
+                m_Citizen.currentWaypoint = m_Citizen.currentWaypoint.nextWayPoint;
+                m_Citizen.Agent.SetDestination( m_Citizen.currentWaypoint.GetPosition() );
             }
         }
     }

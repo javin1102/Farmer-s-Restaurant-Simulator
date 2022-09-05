@@ -10,6 +10,7 @@ namespace NPC.Citizen
     {
         public NavMeshAgent Agent { get => m_Agent; }
         public ServedFood ServedFood { get => m_ServedFood; set => m_ServedFood = value; }
+        public Waypoint currentWaypoint;
         //Debug
         public Vector3 initPos;
         private ServedFood m_ServedFood;

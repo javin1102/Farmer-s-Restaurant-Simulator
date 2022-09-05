@@ -25,7 +25,8 @@ namespace NPC.Citizen
         {
             yield return new WaitForSeconds( delay );
             VisitRestaurantState visitRestaurantState = new();
-            m_Citizen.ChangeState( visitRestaurantState );
+            TravelState travelState = new();
+            m_Citizen.ChangeState( travelState );
         }
     }
 

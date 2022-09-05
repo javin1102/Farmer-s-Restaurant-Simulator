@@ -5,7 +5,7 @@ using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 
 [CustomEditor( typeof( FoodData ) )]
-public class RecipeDataEditor : Editor
+public class FoodDataEditor : Editor
 {
     public int ingredientQuantity;
     private SerializedObject so;
@@ -17,6 +17,7 @@ public class RecipeDataEditor : Editor
         so = serializedObject;
         m_IngredientsAssetData = LoadIngredientsData();
         m_Ingredients = so.FindProperty( "ingredients" );
+
     }
     public override void OnInspectorGUI()
     {
@@ -56,6 +57,7 @@ public class RecipeDataEditor : Editor
             using ( new EditorGUILayout.HorizontalScope() )
             {
                 m_SelectedIngredient = EditorGUILayout.ObjectField( "Ingredient", m_SelectedIngredient, typeof( ItemData ), true ) as ItemData;
+                //EditorGUILayout.PropertyField( so2.FindProperty( "m_SelectedIngredient" ) );
             }
 
             using ( new EditorGUILayout.HorizontalScope() )
