@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEditor;
 
 /// <summary>
 /// 
@@ -24,12 +25,23 @@ using UnityEngine;
 public class Sickle : Item,IRaycastAction
 {
     public GameObject selectedCrop;
+    private ActionSlotsController m_ActionSlotsController;
+    private InventoryController m_InventoryController;
+
+    private ItemData harvestCropData;
+
+    private void Awake()
+    {
+        m_ActionSlotsController = GetComponentInParent<ActionSlotsController>();
+        m_InventoryController = GetComponentInParent<InventoryController>();
+    }
 
     public override void MainAction()
     {
         if (selectedCrop!=null)
         {
-            AddCropToInventory();
+   
+            AddCropToInventory(harvestCropData);
             Destroy(selectedCrop);
         }
     }
@@ -38,7 +50,7 @@ public class Sickle : Item,IRaycastAction
     {
        // Debug.Log("SICKLE SCRIPT : RAYCAST HIT GAMEOBJECT " + hitInfo.transform.gameObject.name);
 
-        if (hitInfo.collider.CompareTag(Utils.CROP_TAG))
+        if (hitInfo.collider != null && hitInfo.collider.TryGetComponent(out Seed seed))
         {
             var selectObject = hitInfo.transform;
             if (selectObject != null)
@@ -50,9 +62,11 @@ public class Sickle : Item,IRaycastAction
         }
     }
 
-    public void AddCropToInventory()
+    public void AddCropToInventory(ItemData item)
     {
         Debug.Log("CROP HARVESTED!!!");
-        
+        if (m_ActionSlotsController.Store(item)) return;
+        if (m_InventoryController.Store(item)) return;
+
     }
 }

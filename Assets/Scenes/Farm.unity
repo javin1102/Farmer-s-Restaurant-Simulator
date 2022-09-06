@@ -10369,6 +10369,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: d5bf6ee8fdb369a47b79960b2e7e3977, type: 2}
   - {fileID: 11400000, guid: 26458a084aae21a439108d3db177e9bb, type: 2}
   - {fileID: 11400000, guid: b5b7a065aa545474f9c25a9f945f7b2d, type: 2}
+  - {fileID: 11400000, guid: 76338b48d29686b4a93ab86fbef35ead, type: 2}
   m_CurrEquippedItem: {fileID: 0}
   m_ActionSlots: []
   references:
@@ -14129,7 +14130,7 @@ MonoBehaviour:
     ModeOverride: 0
     LensShift: {x: 0, y: 0}
     GateFit: 2
-    m_SensorSize: {x: 2.2714138, y: 1}
+    m_SensorSize: {x: 2.2761118, y: 1}
   m_Transitions:
     m_BlendHint: 0
     m_InheritPosition: 0
