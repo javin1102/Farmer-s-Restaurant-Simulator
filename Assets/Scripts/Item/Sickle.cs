@@ -28,7 +28,7 @@ public class Sickle : Item,IRaycastAction
     private ActionSlotsController m_ActionSlotsController;
     private InventoryController m_InventoryController;
 
-    private ItemData harvestCropData;
+    public ItemData harvestCropData;
 
     private void Awake()
     {
@@ -40,7 +40,9 @@ public class Sickle : Item,IRaycastAction
     {
         if (selectedCrop!=null)
         {
-   
+            harvestCropData = selectedCrop.GetComponentInParent<PlantGrowHandler>().cropData;
+            Debug.Log(harvestCropData);
+
             AddCropToInventory(harvestCropData);
             Destroy(selectedCrop);
         }
@@ -48,13 +50,15 @@ public class Sickle : Item,IRaycastAction
 
     public void PerformRaycastAction(RaycastHit hitInfo)
     {
-       // Debug.Log("SICKLE SCRIPT : RAYCAST HIT GAMEOBJECT " + hitInfo.transform.gameObject.name);
+       Debug.Log("SICKLE SCRIPT : RAYCAST HIT GAMEOBJECT " + hitInfo.transform.gameObject.name);
 
-        if (hitInfo.collider != null && hitInfo.collider.TryGetComponent(out Seed seed))
+       // if (hitInfo.collider != null && hitInfo.collider.TryGetComponent(out PlantGrowHandler plantGrowHandler))
+        if(hitInfo.collider.CompareTag(Utils.CROP_TAG))
         {
             var selectObject = hitInfo.transform;
             if (selectObject != null)
             {
+                Debug.Log("performraycast sickle");
                 selectedCrop = hitInfo.transform.gameObject;
 
                 //   Debug.Log("Sickle script : destroy : " + selectedCrop.name);

@@ -98,4 +98,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Data: {fileID: 11400000, guid: b5b7a065aa545474f9c25a9f945f7b2d, type: 2}
   selectedCrop: {fileID: 0}
-  previewMaterial: {fileID: 2100000, guid: b000d333731ec2e4db2ecad574183a5e, type: 2}
+  harvestCropData: {fileID: 11400000, guid: 76338b48d29686b4a93ab86fbef35ead, type: 2}

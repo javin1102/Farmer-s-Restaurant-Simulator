@@ -6,14 +6,17 @@ using UnityEngine;
 public class Seed : Item,IRaycastAction
 {
     [SerializeField] private Tile m_tile;
-    [SerializeField] private SeedData m_seedData;   
+    [SerializeField] private GameObject m_PrefabPlant;
+    [SerializeField] private Material plantedMaterial;
 
 
     public override void MainAction()
     {
         if (m_tile != null && !m_tile.IsUsed)
         {
-            m_tile.crop = m_Data.prefab;
+            if(!m_tile.CompareTag(Utils.TILE_WET_TAG)) m_tile.gameObject.GetComponent<Renderer>().material = plantedMaterial;
+
+            m_tile.crop = m_PrefabPlant;
             m_tile.SpawnCrop();
         }
     }

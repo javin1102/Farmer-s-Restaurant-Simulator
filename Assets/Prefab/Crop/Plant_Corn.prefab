@@ -11,7 +11,6 @@ GameObject:
   - component: {fileID: 3358945435167939136}
   - component: {fileID: 3358945435167939151}
   - component: {fileID: 4022771280473758962}
-  - component: {fileID: 1253463251826108426}
   m_Layer: 0
   m_Name: Plant_Corn
   m_TagString: Untagged
@@ -51,6 +50,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   statePlant: 0
   growTime: 2
+  cropData: {fileID: 11400000, guid: 4ead86c5eb6270141aa949101a615640, type: 2}
   tileDefaultMaterial: {fileID: 2100000, guid: 2b3754df8dc0d2f4cb8c368e880b460c, type: 2}
 --- !u!64 &4022771280473758962
 MeshCollider:
@@ -66,20 +66,6 @@ MeshCollider:
   m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: 0}
---- !u!114 &1253463251826108426
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3358945435167939137}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 93c6ff4959e786d428cdc5e807349edf, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Data: {fileID: 11400000, guid: 6b151b14f3d8b6c4491cb6fbb5bef47e, type: 2}
-  m_tile: {fileID: 0}
 --- !u!1001 &3358945434585529476
 PrefabInstance:
   m_ObjectHideFlags: 0
