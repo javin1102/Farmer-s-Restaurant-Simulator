@@ -44,7 +44,8 @@ public class Sickle : Item,IRaycastAction
             Debug.Log(harvestCropData);
 
             AddCropToInventory(harvestCropData);
-            Destroy(selectedCrop);
+            selectedCrop.GetComponentInParent<Tile>().IsUsed = false;
+            Destroy(selectedCrop.transform.parent.gameObject);
         }
     }
 
@@ -69,8 +70,8 @@ public class Sickle : Item,IRaycastAction
     public void AddCropToInventory(ItemData item)
     {
         Debug.Log("CROP HARVESTED!!!");
-        if (m_ActionSlotsController.Store(item)) return;
-        if (m_InventoryController.Store(item)) return;
+        if (m_ActionSlotsController.StoreHarvestedCrop(item)) return;
+       // if (m_InventoryController.Store(item)) return;
 
     }
 }

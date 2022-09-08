@@ -14,6 +14,7 @@ public class Tile : MonoBehaviour
 
     public void SpawnCrop()
     {
+        IsUsed = true;
         crop = Instantiate(this.crop, transform.position, Quaternion.identity);
         crop.transform.SetParent(this.transform);
     }

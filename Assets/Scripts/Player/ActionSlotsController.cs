@@ -84,6 +84,28 @@ public class ActionSlotsController : ItemSlotsController
 
     }
 
+    public bool StoreHarvestedCrop(ItemData itemData)
+    {
+        if (m_ItemSlotsDictionary.Count >= 6) return false;
+        if (m_ItemSlotsDictionary.TryGetValue(itemData.id, out ItemSlot slot))
+        {
+            slot.quantity += 1;
+            InvokeStoreExistingItemEvent();
+            return true;
+        }
+        else
+        {
+            ItemSlot itemSlotData = new(itemData);
+            m_ItemSlotsDictionary.Add(itemData.id, itemSlotData);
+
+            //Todo::Drop curr item
+            m_SelectedSlotIndex = m_ItemSlotsDictionary.Count - 1;
+            m_ActionSlots[m_SelectedSlotIndex] = itemSlotData;
+            InvokeStoreNewItemEvent(itemSlotData);
+            return true;
+        }
+    }
+
     public void StoreAllDefault()
     {
         for (int i = 0; i < DefaultItem.Length; i++)
