@@ -15,7 +15,7 @@ MonoBehaviour:
   active: 1
   redOutRedIn:
     m_OverrideState: 1
-    m_Value: 95
+    m_Value: 100
   redOutGreenIn:
     m_OverrideState: 1
     m_Value: 0
@@ -24,22 +24,22 @@ MonoBehaviour:
     m_Value: 0
   greenOutRedIn:
     m_OverrideState: 1
-    m_Value: 15
+    m_Value: 30
   greenOutGreenIn:
     m_OverrideState: 1
-    m_Value: 79
+    m_Value: 63
   greenOutBlueIn:
     m_OverrideState: 1
-    m_Value: -2
+    m_Value: 15
   blueOutRedIn:
     m_OverrideState: 1
-    m_Value: -4
+    m_Value: 0
   blueOutGreenIn:
     m_OverrideState: 1
-    m_Value: -7
+    m_Value: 0
   blueOutBlueIn:
     m_OverrideState: 1
-    m_Value: 85
+    m_Value: 115
 --- !u!114 &-7893295128165547882
 MonoBehaviour:
   m_ObjectHideFlags: 3
@@ -123,7 +123,7 @@ MonoBehaviour:
   active: 1
   postExposure:
     m_OverrideState: 1
-    m_Value: 0.5
+    m_Value: 0
   contrast:
     m_OverrideState: 1
     m_Value: 23.5
@@ -132,7 +132,7 @@ MonoBehaviour:
     m_Value: {r: 1, g: 1, b: 1, a: 1}
   hueShift:
     m_OverrideState: 1
-    m_Value: -5
+    m_Value: 0
   saturation:
     m_OverrideState: 1
     m_Value: 5
