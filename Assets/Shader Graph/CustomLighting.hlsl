@@ -15,6 +15,22 @@
 #pragma multi_compile _ LIGHTMAP_SHADOW_MIXING
 #endif
 
+#ifndef SHADERGRAPH_PREVIEW
+	#include "Packages/com.unity.render-pipelines.universal/Editor/ShaderGraph/Includes/ShaderPass.hlsl"
+	#if (SHADERPASS != SHADERPASS_FORWARD)
+		#undef REQUIRES_VERTEX_SHADOW_COORD_INTERPOLATOR
+	#endif
+#endif
+
+void Shadowmask_half (float2 lightmapUV, out half4 Shadowmask){
+	#ifdef SHADERGRAPH_PREVIEW
+		Shadowmask = half4(1,1,1,1);
+	#else
+		OUTPUT_LIGHTMAP_UV(lightmapUV, unity_LightmapST, lightmapUV);
+		Shadowmask = SAMPLE_SHADOWMASK(lightmapUV);
+	#endif
+}
+
 
 void MainLight_float(float3 WorldPos, out float3 Direction, out float3 Color, out float DistanceAtten, out float ShadowAtten)
 {
@@ -42,6 +58,8 @@ void MainLight_float(float3 WorldPos, out float3 Direction, out float3 Color, ou
 #if SHADOWS_SCREEN
     ShadowAtten = SampleScreenSpaceShadowmap(shadowCoord);
 #else
+		//float4 shadowCoord = TransformWorldToShadowCoord(WorldPos);
+		//ShadowAtten = MainLightShadow(shadowCoord, WorldPos, half4(1,1,1,1), _MainLightOcclusionProbes);
     ShadowSamplingData shadowSamplingData = GetMainLightShadowSamplingData();
     float shadowStrength = GetMainLightShadowStrength();
     ShadowAtten = SampleShadowmap(shadowCoord, TEXTURE2D_ARGS(_MainLightShadowmapTexture, sampler_MainLightShadowmapTexture), shadowSamplingData, shadowStrength, false);
