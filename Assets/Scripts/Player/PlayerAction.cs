@@ -24,6 +24,7 @@ public class PlayerAction : MonoBehaviour
     private void Start()
     {
         m_ActionSlotsController.SelectActionSlot( 0 );
+        LockCursor();
     }
 
     private void OnEnable()
