@@ -19,7 +19,7 @@ public class FirstPersonMovement : MonoBehaviour
     private float m_JumpVelocity;
     private float m_Gravity;
     private int m_GroundMask;
-
+    private Camera m_Cam;
 
     void Start()
     {
@@ -32,6 +32,7 @@ public class FirstPersonMovement : MonoBehaviour
 
         m_CharacterController = GetComponent<CharacterController>();
         m_Gravity = Physics.gravity.y;
+        m_Cam = Camera.main;
     }
 
     void Update()
@@ -45,8 +46,9 @@ public class FirstPersonMovement : MonoBehaviour
 
         //Rotate around Y Axis
         //Mouse sensitivity only apply for rot around Y
-        Vector2 rotationValue = m_RotateAction.ReadValue<Vector2>() * ( m_MouseHorizontalSensitivity * Time.deltaTime );
-        transform.Rotate( Vector3.up * rotationValue.x );
+        //Vector2 rotationValue = m_RotateAction.ReadValue<Vector2>() * ( m_MouseHorizontalSensitivity * Time.deltaTime );
+        //transform.Rotate( Vector3.up * rotationValue.x );
+        
 
         //Jump
         m_IsGrounded = Physics.Raycast( transform.position, Vector3.down, 1.1f, m_GroundMask );
@@ -63,5 +65,10 @@ public class FirstPersonMovement : MonoBehaviour
         m_JumpVelocity += m_Gravity * Time.deltaTime;
         m_CharacterController.Move( Vector3.up * ( m_JumpVelocity * Time.deltaTime ) );
 
+    }
+
+    private void LateUpdate()
+    {
+        transform.eulerAngles = Vector3.up * m_Cam.transform.eulerAngles.y;
     }
 }

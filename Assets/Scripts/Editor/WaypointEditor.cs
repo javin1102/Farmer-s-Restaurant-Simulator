@@ -35,4 +35,5 @@ public class WaypointEditor
             Gizmos.DrawLine( waypoint.transform.position + offset, waypoint.nextWayPoint.transform.position + offsetTo );
         }
     }
+
 }

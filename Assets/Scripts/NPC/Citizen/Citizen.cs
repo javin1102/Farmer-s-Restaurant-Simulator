@@ -10,17 +10,16 @@ namespace NPC.Citizen
     {
         public NavMeshAgent Agent { get => m_Agent; }
         public ServedFood ServedFood { get => m_ServedFood; set => m_ServedFood = value; }
-        public Waypoint currentWaypoint;
+        public bool TravelBackwards { get => m_TravelBackwards; set => m_TravelBackwards = value; }
+
         //Debug
-        public Vector3 initPos;
         private ServedFood m_ServedFood;
         private NavMeshAgent m_Agent;
         private readonly IdleState m_IdleState = new();
-        private new void Start()
+        [SerializeField] private bool m_TravelBackwards;
+        private void OnEnable()
         {
-            base.Start();
             m_Agent = GetComponent<NavMeshAgent>();
-            initPos = transform.position;
             ChangeState( m_IdleState );
         }
 
@@ -28,6 +27,10 @@ namespace NPC.Citizen
         {
             m_CurrentState.OnUpdateState( this );
         }
+
+        public Waypoint DetermineNextWaypoint()
+            => m_TravelBackwards == true ? currentWaypoint.previousWaypoint : currentWaypoint.nextWayPoint;
+        
 
     }
 }

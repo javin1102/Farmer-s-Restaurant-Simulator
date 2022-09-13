@@ -10,7 +10,8 @@ namespace NPC.Citizen
         public override void OnEnterState( NPCManager NPC )
         {
             m_Citizen = NPC as Citizen;
-            NPC.StartCoroutine( DetermineState( Random.Range( 1,2 ) ) );
+
+            NPC.StartCoroutine( DetermineState( .5f ) );
         }
 
         public override void OnExitState( NPCManager NPC )

@@ -7,7 +7,7 @@ namespace NPC
     public abstract class NPCManager : MonoBehaviour
     {
         protected NPCBaseState m_CurrentState;
-
+        public Waypoint currentWaypoint;
         // Start is called before the first frame update
         protected void Start()
         {

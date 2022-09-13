@@ -7,7 +7,7 @@ using static UnityEditor.Progress;
 
 public class MaterialChangerWindow : EditorWindow
 {
-    [MenuItem( "Tools/Material Changer" )]
+    [MenuItem( "Tools/Custom/Material Changer" )]
     public static void Open() => GetWindow<MaterialChangerWindow>();
 
     private void OnGUI()
