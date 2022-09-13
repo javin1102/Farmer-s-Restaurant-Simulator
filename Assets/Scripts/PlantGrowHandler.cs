@@ -17,7 +17,7 @@ public class PlantGrowHandler : MonoBehaviour
     public int statePlant = 0; // 0 : seed , 1: half , 2: ready to harvest
 
     [SerializeField] private float growTime = 2f;
-    public ItemData cropData;
+    public SeedData m_SeedData;
 
     private bool _isWet;
 

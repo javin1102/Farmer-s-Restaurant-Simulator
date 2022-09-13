@@ -30,6 +30,10 @@ public class Sickle : Item,IRaycastAction
 
     public ItemData harvestCropData;
 
+    private SeedData m_SeedData; 
+
+    private float dropChance;
+    private bool IsDrop = false;
     private void Awake()
     {
         m_ActionSlotsController = GetComponentInParent<ActionSlotsController>();
@@ -40,10 +44,14 @@ public class Sickle : Item,IRaycastAction
     {
         if (selectedCrop!=null)
         {
-            harvestCropData = selectedCrop.GetComponentInParent<PlantGrowHandler>().cropData;
-            Debug.Log(harvestCropData);
+            m_SeedData = selectedCrop.GetComponentInParent<PlantGrowHandler>().m_SeedData;
 
-            AddCropToInventory(harvestCropData);
+            float rand = Random.Range(1f, 10f);
+            if (rand <= m_SeedData.dropChance) AddSeedToInventory(m_SeedData);
+
+            Debug.Log("random : " + rand + " " + m_SeedData.dropChance + " " + m_SeedData.id);
+
+            AddCropToInventory(m_SeedData.harverstedCropData);
             selectedCrop.GetComponentInParent<Tile>().IsUsed = false;
             Destroy(selectedCrop.transform.parent.gameObject);
         }
@@ -67,11 +75,16 @@ public class Sickle : Item,IRaycastAction
         }
     }
 
+    public void AddSeedToInventory(SeedData seed)
+    {
+        Debug.Log("seedinventory");
+        if (m_ActionSlotsController.Store(seed)) return;
+        if (m_InventoryController.Store(seed)) return;
+    }
+
     public void AddCropToInventory(ItemData item)
     {
-        Debug.Log("CROP HARVESTED!!!");
         if (m_ActionSlotsController.StoreHarvestedCrop(item)) return;
-       // if (m_InventoryController.Store(item)) return;
-
+        if (m_InventoryController.Store(item)) return;
     }
 }

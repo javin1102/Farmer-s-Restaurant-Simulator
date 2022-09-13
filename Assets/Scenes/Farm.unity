@@ -10369,7 +10369,9 @@ MonoBehaviour:
   - {fileID: 11400000, guid: d5bf6ee8fdb369a47b79960b2e7e3977, type: 2}
   - {fileID: 11400000, guid: 26458a084aae21a439108d3db177e9bb, type: 2}
   - {fileID: 11400000, guid: b5b7a065aa545474f9c25a9f945f7b2d, type: 2}
-  - {fileID: 11400000, guid: 76338b48d29686b4a93ab86fbef35ead, type: 2}
+  - {fileID: 11400000, guid: 4c4f4680ebe761943841ee2acae9bec0, type: 2}
+  - {fileID: 11400000, guid: 90f546eb0efa6204abe922619607375e, type: 2}
+  - {fileID: 11400000, guid: 7a32970affd7dd24b87542b8937d1490, type: 2}
   m_CurrEquippedItem: {fileID: 0}
   m_ActionSlots: []
   references:

@@ -31,13 +31,13 @@ public class InventoryController : ItemSlotsController
 
     public override bool Store( ItemData itemData )
     {
-        if ( m_ItemSlotsDictionary.Count >= 42 ) return false;
         if ( m_ItemSlotsDictionary.TryGetValue( itemData.id, out ItemSlot slot ) )
         {
             slot.quantity += 1;
             InvokeStoreExistingItemEvent();
             return true;
         }
+        if ( m_ItemSlotsDictionary.Count >= 42 ) return false;
         else
         {
             ItemSlot itemSlotData = new( itemData );

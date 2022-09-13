@@ -1,10 +1,12 @@
 using UnityEngine;
 
 [CreateAssetMenu(fileName ="Seed", menuName ="New Seed")]
-public class SeedData : ScriptableObject
+public class SeedData : ItemData
 {
-    public ItemData itemData;
-    public new string cropId;
+    [Header("--- CROP ---")]
     public GameObject cropPrefab;
+    public float dropChance;
 
+    [Header("--- HARVERSTED")]
+    public ItemData harverstedCropData;
 }

@@ -64,13 +64,13 @@ public class ActionSlotsController : ItemSlotsController
     
     public override bool Store( ItemData itemData )
     {
-        if ( m_ItemSlotsDictionary.Count >= 6 ) return false;
         if ( m_ItemSlotsDictionary.TryGetValue( itemData.id, out ItemSlot slot ) )
         {
             slot.quantity += 1;
             InvokeStoreExistingItemEvent();
             return true;
         }
+        if ( m_ItemSlotsDictionary.Count >= 6 ) return false;
         else
         {
             ItemSlot itemSlotData = new( itemData );
@@ -86,13 +86,13 @@ public class ActionSlotsController : ItemSlotsController
 
     public bool StoreHarvestedCrop(ItemData itemData)
     {
-        if (m_ItemSlotsDictionary.Count >= 6) return false;
         if (m_ItemSlotsDictionary.TryGetValue(itemData.id, out ItemSlot slot))
         {
             slot.quantity += 1;
             InvokeStoreExistingItemEvent();
             return true;
         }
+        if (m_ItemSlotsDictionary.Count >= 6) return false;
         else
         {
             ItemSlot itemSlotData = new(itemData);
