@@ -10,13 +10,16 @@ public class FoodDataEditor : Editor
     public int ingredientQuantity;
     private SerializedObject so;
     private SerializedProperty m_Ingredients;
+    public SerializedProperty m_propSelected;
     private List<ItemData> m_IngredientsAssetData;
-    private ItemData m_SelectedIngredient;
+    public ItemData m_SelectedIngredient;
     private void OnEnable()
     {
         so = serializedObject;
+        
         m_IngredientsAssetData = LoadIngredientsData();
         m_Ingredients = so.FindProperty( "ingredients" );
+        
 
     }
     public override void OnInspectorGUI()
@@ -48,18 +51,18 @@ public class FoodDataEditor : Editor
 
         EditorGUILayout.Space( 20 );
 
-
+        
         using ( new EditorGUILayout.VerticalScope( helpbox ) )
         {
-            EditorGUILayout.LabelField( "Search Ingredients", EditorStyles.boldLabel );
+            EditorGUILayout.LabelField( "Add Ingredient", EditorStyles.boldLabel );
             EditorGUI.indentLevel++;
 
             using ( new EditorGUILayout.HorizontalScope() )
             {
                 m_SelectedIngredient = EditorGUILayout.ObjectField( "Ingredient", m_SelectedIngredient, typeof( ItemData ), true ) as ItemData;
-                //EditorGUILayout.PropertyField( so2.FindProperty( "m_SelectedIngredient" ) );
-            }
 
+            }
+            
             using ( new EditorGUILayout.HorizontalScope() )
             {
                 EditorGUILayout.LabelField( "Quantity " );
@@ -113,7 +116,6 @@ public class FoodDataEditor : Editor
         var guids = AssetDatabase.FindAssets( "t:ItemData", new[] { "Assets/Data/Ingredients" } );
         var paths = guids.Select( AssetDatabase.GUIDToAssetPath );
         var ingredientsData = paths.Select( AssetDatabase.LoadAssetAtPath<ItemData> ).ToList();
-
         return ingredientsData;
     }
 }

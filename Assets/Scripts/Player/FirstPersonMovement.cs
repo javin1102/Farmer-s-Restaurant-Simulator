@@ -20,6 +20,7 @@ public class FirstPersonMovement : MonoBehaviour
     private float m_Gravity;
     private int m_GroundMask;
     private Camera m_Cam;
+    private Vector3 move;
 
     void Start()
     {
@@ -43,26 +44,14 @@ public class FirstPersonMovement : MonoBehaviour
         Vector3 moveX = transform.right * ( moveValue.x * Time.deltaTime * m_MoveSpeed );
         m_CharacterController.Move( moveZ + moveX );
 
-
-        //Rotate around Y Axis
-        //Mouse sensitivity only apply for rot around Y
-        //Vector2 rotationValue = m_RotateAction.ReadValue<Vector2>() * ( m_MouseHorizontalSensitivity * Time.deltaTime );
-        //transform.Rotate( Vector3.up * rotationValue.x );
-        
-
         //Jump
         m_IsGrounded = Physics.Raycast( transform.position, Vector3.down, 1.1f, m_GroundMask );
-        if ( m_IsGrounded && m_JumpVelocity <= 0 )
-        {
-            m_JumpVelocity = 0;
-        }
 
-        if ( m_JumpAction.triggered && m_IsGrounded )
-        {
-            m_JumpVelocity += Mathf.Sqrt( m_JumpForce * -3.0f * m_Gravity * Time.deltaTime );
-        }
+        if ( m_JumpAction.triggered && m_IsGrounded ) m_JumpVelocity += Mathf.Sqrt( m_JumpForce * -3.0f * m_Gravity );
 
         m_JumpVelocity += m_Gravity * Time.deltaTime;
+
+        if ( m_IsGrounded && m_JumpVelocity < 0 ) m_JumpVelocity = 0;
         m_CharacterController.Move( Vector3.up * ( m_JumpVelocity * Time.deltaTime ) );
 
     }

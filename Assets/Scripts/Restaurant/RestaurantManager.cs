@@ -70,11 +70,9 @@ public class RestaurantManager : MonoBehaviour
         seat = m_Seats[RandomSeatIndex];
         return true;
     }
-    public void OrderFood( Seat seat )
+    public void OrderFood( Seat seat,FoodData food )
     {
-        if ( !TryGetRecipeToCook( out FoodData food ) ) return;
         int index = ChefIndex;
-        Debug.Log( index );
         m_Chefs[index].OrderQueue.Enqueue( KeyValuePair.Create( seat, food ) );
 
     }
@@ -111,8 +109,7 @@ public class RestaurantManager : MonoBehaviour
         m_UnlockedFoods.Add( recipe.Key );
     }
 
-    [ContextMenu( "Get Recipe" )]
-    private bool TryGetRecipeToCook( out FoodData recipe )
+    public bool TryGetRecipeToCook( out FoodData recipe )
     {
         var availableRecipes = m_UnlockedFoods.Where( RecipeIsAvailable ).ToList();
         if ( availableRecipes.Count == 0 )

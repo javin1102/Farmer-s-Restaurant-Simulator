@@ -10,7 +10,6 @@ namespace NPC.Citizen
         public override void OnEnterState( NPCManager NPC )
         {
             m_Citizen = NPC as Citizen;
-
             NPC.StartCoroutine( DetermineState( .5f ) );
         }
 
@@ -27,7 +26,10 @@ namespace NPC.Citizen
             yield return new WaitForSeconds( delay );
             VisitRestaurantState visitRestaurantState = new();
             TravelState travelState = new();
-            m_Citizen.ChangeState( travelState );
+            int randomize = Random.value < .8f ? 1 : 0;
+            if ( randomize == 0 ) m_Citizen.ChangeState( travelState );
+            else m_Citizen.ChangeState( visitRestaurantState );
+
         }
     }
 

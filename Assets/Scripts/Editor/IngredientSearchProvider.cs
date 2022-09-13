@@ -9,9 +9,9 @@ public class IngredientSearchProvider : ScriptableObject, ISearchWindowProvider
 {
     private readonly List<ItemData> ingredients;
     private readonly Action<ItemData> callBack;
-    public IngredientSearchProvider( List<ItemData> recipes, Action<ItemData> callBack )
+    public IngredientSearchProvider( List<ItemData> ingredients, Action<ItemData> callBack )
     {
-        this.ingredients = recipes;
+        this.ingredients = ingredients;
         this.callBack = callBack;
     }
     public List<SearchTreeEntry> CreateSearchTree( SearchWindowContext context )

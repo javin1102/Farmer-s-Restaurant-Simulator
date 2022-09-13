@@ -11,9 +11,9 @@ namespace NPC.Citizen
         {
             Citizen citizen = npc as Citizen;
             citizen.gameObject.SetActive( true );
-            int waypointIndex = waypointCount++ % m_Waypoints.Count;
+            int waypointIndex = waypointCount++ % transform.childCount;
             int randomize = Random.value < 0.5f ? 0 : 1;
-            Transform selectedWaypoint = m_Waypoints[waypointIndex];
+            Transform selectedWaypoint = transform.GetChild(waypointIndex);
             Transform initTf;
             if ( randomize == 0 )
             {
@@ -25,7 +25,7 @@ namespace NPC.Citizen
                 initTf = selectedWaypoint.GetChild( selectedWaypoint.childCount - 1 );
                 citizen.TravelBackwards = true;
             }
-            citizen.currentWaypoint = initTf.GetComponent<Waypoint>();
+            citizen.CurrentWaypoint = initTf.GetComponent<Waypoint>();
             citizen.Agent.Warp( initTf.position );
         }
 

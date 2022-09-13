@@ -10,6 +10,7 @@ namespace NPC.Waiter
         public override void OnEnterState( NPCManager NPC )
         {
             m_Waiter = NPC as Waiter;
+            m_Waiter.Agent.SetDestination( m_Waiter.InitPos );
         }
 
         public override void OnExitState( NPCManager NPC )

@@ -25,7 +25,7 @@ namespace NPC.Waiter
 
         public override void OnUpdateState( NPCManager NPC )
         {
-            if ( m_Waiter.Agent.remainingDistance <= m_Waiter.Agent.stoppingDistance )
+            if ( !m_Waiter.Agent.pathPending && m_Waiter.Agent.HasReachedDestination() )
             {
                 //Serve Food -> place on the table
                 FoodGO.transform.SetParent( Seat.transform );

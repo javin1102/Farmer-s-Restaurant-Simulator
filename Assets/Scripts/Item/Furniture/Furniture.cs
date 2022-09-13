@@ -87,7 +87,6 @@ public abstract class Furniture : Item, IRaycastAction
     private void RotateObj( InputAction.CallbackContext context )
     {
         m_ObjRot += context.ReadValue<float>() * 90;
-        print( m_ObjRot );
     }
     private void ResetProps()
     {

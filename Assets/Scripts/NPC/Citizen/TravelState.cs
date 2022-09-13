@@ -12,8 +12,8 @@ namespace NPC.Citizen
         public override void OnEnterState( NPCManager NPC )
         {
             m_Citizen = NPC as Citizen;
-            m_Citizen.currentWaypoint = m_Citizen.DetermineNextWaypoint();
-            m_Citizen.Agent.SetDestination( m_Citizen.currentWaypoint.GetPosition() );
+            m_Citizen.CurrentWaypoint = m_Citizen.DetermineNextWaypoint();
+            m_Citizen.Agent.SetDestination( m_Citizen.CurrentWaypoint.GetPosition() );
             m_Spawner = BaseSpawner.Instance as CitizenSpawner;
         }
 
@@ -27,15 +27,15 @@ namespace NPC.Citizen
             if ( !hasDetermine && m_Citizen.Agent.HasReachedDestination() )
             {
 
-                if ( ( m_Citizen.TravelBackwards == false && m_Citizen.currentWaypoint.nextWayPoint == null )
-                    || ( m_Citizen.TravelBackwards == true && m_Citizen.currentWaypoint.previousWaypoint == null ) )
+                if ( ( m_Citizen.TravelBackwards == false && m_Citizen.CurrentWaypoint.nextWayPoint == null )
+                    || ( m_Citizen.TravelBackwards == true && m_Citizen.CurrentWaypoint.previousWaypoint == null ) )
                 {
                     NPC.ChangeState( null );
                     return;
                 }
 
-                m_Citizen.currentWaypoint = m_Citizen.DetermineNextWaypoint();
-                m_Citizen.Agent.SetDestination( m_Citizen.currentWaypoint.GetPosition() );
+                m_Citizen.CurrentWaypoint = m_Citizen.DetermineNextWaypoint();
+                m_Citizen.Agent.SetDestination( m_Citizen.CurrentWaypoint.GetPosition() );
                 hasDetermine = true;
                 m_Citizen.StartCoroutine( ResetAfter( 1 ) );
             }

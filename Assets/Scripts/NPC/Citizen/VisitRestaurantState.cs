@@ -1,8 +1,5 @@
 using System.Collections;
-using System.Collections.Generic;
-using System.Drawing.Printing;
 using UnityEngine;
-using UnityEngine.AI;
 
 namespace NPC.Citizen
 {
@@ -12,13 +9,15 @@ namespace NPC.Citizen
         private Citizen m_Citizen;
         private Seat m_Seat;
         private bool m_HasOrder, m_IsEating;
+        private FoodData m_Food;
         public override void OnEnterState( NPCManager NPC )
         {
             m_Restaurant = RestaurantManager.Instance;
             m_Citizen = NPC as Citizen;
-            if ( !m_Restaurant.FindUnoccupiedSeat( out m_Seat ) || !FindSeatDest( m_Citizen, m_Seat ) )
+            if (!m_Restaurant.TryGetRecipeToCook( out m_Food ) || !m_Restaurant.FindUnoccupiedSeat( out m_Seat ) || !FindSeatDest( m_Citizen, m_Seat ) )
             {
-                //TODO::Can't find unoccupied seat, or all seats has no path -> Exit State/ Go to other state
+                TravelState travelState = new();
+                m_Citizen.ChangeState( travelState );
                 return;
             }
 
@@ -45,9 +44,9 @@ namespace NPC.Citizen
         public override void OnUpdateState( NPCManager NPC )
         {
             if ( m_Seat == null ) return;
-            if ( !m_HasOrder && m_Citizen.Agent.remainingDistance <= m_Citizen.Agent.stoppingDistance )
+            if ( !m_HasOrder && !m_Citizen.Agent.pathPending && m_Citizen.Agent.HasReachedDestination() )
             {
-                m_Restaurant.OrderFood( m_Seat );
+                m_Restaurant.OrderFood( m_Seat, m_Food );
                 m_HasOrder = true;
                 //Switch to sit animation
             }
@@ -61,6 +60,7 @@ namespace NPC.Citizen
             }
 
             //TODO::Finish Eating -> leave
+            
 
         }
 
