@@ -43,7 +43,11 @@ namespace NPC.Citizen
 
         public override void OnUpdateState( NPCManager NPC )
         {
-            if ( m_Seat == null ) return;
+            if ( m_Seat == null )
+            {
+                m_Citizen.ChangeState( new TravelState() );
+                return;
+            }
             if ( !m_HasOrder && !m_Citizen.Agent.pathPending && m_Citizen.Agent.HasReachedDestination() )
             {
                 m_Restaurant.OrderFood( m_Seat, m_Food );
@@ -66,6 +70,7 @@ namespace NPC.Citizen
 
         private bool FindSeatDest( Citizen citizen, Seat seat )
         {
+            if ( seat == null ) return false;
             if ( citizen.Agent.SetDestination( seat.transform.position ) )
             {
                 seat.IsOccupied = true;

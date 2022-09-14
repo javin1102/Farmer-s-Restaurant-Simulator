@@ -74,7 +74,6 @@ public class RestaurantManager : MonoBehaviour
     {
         int index = ChefIndex;
         m_Chefs[index].OrderQueue.Enqueue( KeyValuePair.Create( seat, food ) );
-
     }
     public void StoreIngredient( ItemData itemData )
     {
@@ -90,6 +89,23 @@ public class RestaurantManager : MonoBehaviour
         }
     }
     public void DecreaseStock( FoodData food ) => food.ingredients.ForEach( i => m_StockIngredients[i.ingredient.id].quantity -= i.quantity );
+
+    public bool TryGetRecipeToCook( out FoodData recipe )
+    {
+        var availableRecipes = m_UnlockedFoods.Where( StockIsSufficient ).ToList();
+        if ( availableRecipes.Count == 0 )
+        {
+            recipe = null;
+            return false;
+        }
+        recipe = availableRecipes[Random.Range( 0, availableRecipes.Count )];
+        return true;
+    }
+
+
+    //Check stock is sufficient to make food/recipe
+    public bool StockIsSufficient( FoodData recipe )
+    => recipe.ingredients.All( i => m_StockIngredients.TryGetValue( i.ingredient.id, out StockIngredient stockIngredient ) && stockIngredient.quantity >= i.quantity );
     private void LoadRecipeData()
     {
         //ItemData[] x = Resources.LoadAll<ItemData>( "Data" );
@@ -108,22 +124,5 @@ public class RestaurantManager : MonoBehaviour
         if ( recipe.Value == false ) return;
         m_UnlockedFoods.Add( recipe.Key );
     }
-
-    public bool TryGetRecipeToCook( out FoodData recipe )
-    {
-        var availableRecipes = m_UnlockedFoods.Where( RecipeIsAvailable ).ToList();
-        if ( availableRecipes.Count == 0 )
-        {
-            recipe = null;
-            return false;
-        }
-        recipe = availableRecipes[Random.Range( 0, availableRecipes.Count )];
-        return true;
-    }
-
-
-    //Check stock is sufficient to make food/recipe
-    private bool RecipeIsAvailable( FoodData recipe )
-    => recipe.ingredients.All( i => m_StockIngredients.TryGetValue( i.ingredient.id, out StockIngredient stockIngredient ) && stockIngredient.quantity >= i.quantity );
 
 }
