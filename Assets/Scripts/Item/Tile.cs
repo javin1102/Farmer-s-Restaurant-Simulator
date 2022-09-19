@@ -1,18 +1,21 @@
 using UnityEngine;
 
+/// <summary>
+/// 
+/// SCRIPT BUAT SPAWN SEED [WIP]
+/// 
+/// HARUSNYA BUAT TILE DOANG JANGAN LGSUNG INSTATIATE SEEDNYA
+/// 
+/// </summary>
 public class Tile : MonoBehaviour
 {
-    [HideInInspector] public Plant Plant;
+    public bool IsUsed = false;
+    public GameObject crop;
 
-    // Start is called before the first frame update
-    void Start()
+    public void SpawnCrop()
     {
-                
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
+        IsUsed = true;
+        crop = Instantiate(this.crop, transform.position, Quaternion.identity);
+        crop.transform.SetParent(this.transform);
     }
 }

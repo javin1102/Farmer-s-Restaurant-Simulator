@@ -13,6 +13,8 @@ TagManager:
   - Restaurant
   - Seat
   - Table
+  - Wet Tile
+  - Crop
   layers:
   - Default
   - TransparentFX

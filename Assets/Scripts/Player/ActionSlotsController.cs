@@ -12,6 +12,7 @@ public class ActionSlotsController : ItemSlotsController
     [SerializeField] private ItemMainActionChannel m_DeacreasableItemChannel;
     [SerializeField] private ItemData s;
     [SerializeField] private ItemData x;
+    [SerializeField] private ItemData[] DefaultItem;
     [SerializeField] private Item m_CurrEquippedItem;
     [SerializeReference] private ItemSlot[] m_ActionSlots;
 
@@ -21,17 +22,17 @@ public class ActionSlotsController : ItemSlotsController
     private void Awake()
     {
         m_ActionSlots = new ItemSlot[6];
-        StoreS();
-        StoreS();
-        StoreS();
-        StoreS();
-        SelectActionSlot( 1 );
-        StoreX();
-        StoreX();
-        StoreX();
-        StoreX();
-        StoreX();
-        StoreX();
+        StoreAllDefault();
+        //StoreS();
+        //StoreS();
+        //StoreS();
+        //SelectActionSlot( 1 );
+        //StoreX();
+        //StoreX();
+        //StoreX();
+        //StoreX();
+        //StoreX();
+        //StoreX();
 
     }
     private void OnEnable()
@@ -59,15 +60,17 @@ public class ActionSlotsController : ItemSlotsController
     public void StoreS() => Store( s );
     [ContextMenu( "Store X" )]
     public void StoreX() => Store( x );
+
+    
     public override bool Store( ItemData itemData )
     {
-        if ( m_ItemSlotsDictionary.Count >= 6 ) return false;
         if ( m_ItemSlotsDictionary.TryGetValue( itemData.id, out ItemSlot slot ) )
         {
             slot.quantity += 1;
             InvokeStoreExistingItemEvent();
             return true;
         }
+        if ( m_ItemSlotsDictionary.Count >= 6 ) return false;
         else
         {
             ItemSlot itemSlotData = new( itemData );
@@ -79,6 +82,37 @@ public class ActionSlotsController : ItemSlotsController
             return true;
         }
 
+    }
+
+    public bool StoreHarvestedCrop(ItemData itemData)
+    {
+        if (m_ItemSlotsDictionary.TryGetValue(itemData.id, out ItemSlot slot))
+        {
+            slot.quantity += 1;
+            InvokeStoreExistingItemEvent();
+            return true;
+        }
+        if (m_ItemSlotsDictionary.Count >= 6) return false;
+        else
+        {
+            ItemSlot itemSlotData = new(itemData);
+            m_ItemSlotsDictionary.Add(itemData.id, itemSlotData);
+
+            //Todo::Drop curr item
+            m_SelectedSlotIndex = m_ItemSlotsDictionary.Count - 1;
+            m_ActionSlots[m_SelectedSlotIndex] = itemSlotData;
+            InvokeStoreNewItemEvent(itemSlotData);
+            return true;
+        }
+    }
+
+    public void StoreAllDefault()
+    {
+        for (int i = 0; i < DefaultItem.Length; i++)
+        {
+            Store(DefaultItem[i]);
+            m_SelectedSlotIndex++;
+        }
     }
 
     public void CheckEquippedItem()
