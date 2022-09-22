@@ -14,8 +14,8 @@ public class TimeManager : MonoBehaviour
 
     public Transform m_sun;
 
-    [Header("UI FOR CLOCK")]
-    [SerializeField] private TMP_Text m_clockText;
+
+    public List<ITimeTracker> m_listenner = new List<ITimeTracker>();
 
     private void Awake()
     {
@@ -53,6 +53,11 @@ public class TimeManager : MonoBehaviour
         // update clock
         m_timeStamp.UpdateClock();
 
+        foreach(ITimeTracker listener in m_listenner)
+        {
+            listener.ClockUpdate(m_timeStamp);
+        }
+
         // calculate sun angle
         int timeInMinutes = GameTimeStamp.HourToMinutes(m_timeStamp.hour) + m_timeStamp.minute;
         float sunAngle = .25f * timeInMinutes - 90;
@@ -60,11 +65,16 @@ public class TimeManager : MonoBehaviour
         // change the directional light angle
         m_sun.eulerAngles = new Vector3(sunAngle, 0, 0);
 
+    }
 
-        // update the clock UI
-        m_clockText.text = m_timeStamp.hour.ToString("00") + " : " + m_timeStamp.minute.ToString("00");
+    public void RegisterListener(ITimeTracker listener)
+    {
+        m_listenner.Add(listener);
+    }
 
-
+    public void UnRegisterListener(ITimeTracker listner)
+    {
+        m_listenner.Remove(listner);
     }
 
 }
