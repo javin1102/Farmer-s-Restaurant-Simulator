@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.Events;
+using System;
 
 public class PlayerAction : MonoBehaviour
 {
@@ -8,6 +9,7 @@ public class PlayerAction : MonoBehaviour
     private PlayerInput m_PlayerInput;
     private InputAction m_MainInputAction;
     private InputAction m_StoreInputAction;
+    private InputAction m_DropInputAction;
     private readonly InputAction[] m_SelectSlotInputAction = new InputAction[6];
     private Camera m_Cam;
     private readonly float m_RaycastDistance = 5f;
@@ -30,16 +32,24 @@ public class PlayerAction : MonoBehaviour
     private void OnEnable()
     {
         InitializeInputAction();
+        m_MainInputAction.performed += PerformMainAction;
+        m_DropInputAction.performed += DropItem;
         m_InventoryController.OnEnableInventoryUI += UnlockCursor;
         m_InventoryController.OnEnableInventoryUI += DisablePlayerInput;
         m_InventoryController.OnDisableInventoryUI += LockCursor;
         m_InventoryController.OnDisableInventoryUI += EnablePlayerInput;
     }
 
+    private void DropItem( InputAction.CallbackContext obj )
+    {
+        m_ActionSlotsController.Drop();
+    }
+
     private void OnDisable()
     {
         UnitializeSelectSlotAction();
         m_MainInputAction.performed -= PerformMainAction;
+        m_DropInputAction.performed -= DropItem;
         m_InventoryController.OnEnableInventoryUI -= UnlockCursor;
         m_InventoryController.OnDisableInventoryUI -= LockCursor;
         m_InventoryController.OnEnableInventoryUI -= DisablePlayerInput;
@@ -55,8 +65,7 @@ public class PlayerAction : MonoBehaviour
 
             if ( m_StoreInputAction.triggered && hitInfo.collider.TryGetComponent( out Item raycastedItem ) )
             {
-                if ( m_ActionSlotsController.Store( raycastedItem ) ) return;
-                if ( m_InventoryController.Store( raycastedItem ) ) return;
+                if ( Store( raycastedItem ) ) return;
 
                 //TODO::Handle Inventory is full
                 Debug.Log( "Inventory is full" );
@@ -67,11 +76,19 @@ public class PlayerAction : MonoBehaviour
 
     }
 
+    public bool Store( Item item )
+    {
+        if ( m_ActionSlotsController.Store( item ) ) return true;
+        if ( m_InventoryController.Store( item ) ) return true;
+        return false;
+    }
+
     private void InitializeInputAction()
     {
         m_MainInputAction = m_PlayerInput.actions[Utils.MAIN_ACTION];
         m_StoreInputAction = m_PlayerInput.actions[Utils.STORE_ACTION];
-        m_MainInputAction.performed += PerformMainAction;
+        m_DropInputAction = m_PlayerInput.actions[Utils.DROP_ACTION];
+
         for ( int i = 0; i < 6; i++ )
             m_SelectSlotInputAction[i] = m_PlayerInput.actions[Utils.SELECT_SLOT_ACTION[i]];
         InitializeSelectSlotAction();

@@ -42,7 +42,7 @@ public class InventoryController : ItemSlotsController
         {
             ItemSlot itemSlotData = new( itemData );
             m_ItemSlotsDictionary.Add( itemData.id, itemSlotData );
-            InvokeStoreNewItemEvent( itemSlotData );
+            InvokeStoreNewItemEvent( -1, itemSlotData );
             return true;
         }
 

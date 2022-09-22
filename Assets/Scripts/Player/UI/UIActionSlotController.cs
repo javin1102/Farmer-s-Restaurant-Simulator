@@ -9,10 +9,10 @@ public class UIActionSlotController : UIItemSlotsController
     }
 
 
-    protected override void SetUISlotReference( ItemSlot itemSlot )
+    protected void SetUISlotReference( int slotIndex, ItemSlot itemSlot )
     {
-        m_UIItemSlots[m_ActionSlotsController.SelectedSlotIndex].ItemSlot = itemSlot;
-        m_UIItemSlots[m_ActionSlotsController.SelectedSlotIndex].UpdateUI();
+        m_UIItemSlots[slotIndex].ItemSlot = itemSlot;
+        m_UIItemSlots[slotIndex].UpdateUI();
     }
 
     private void OnEnable()
@@ -24,13 +24,13 @@ public class UIActionSlotController : UIItemSlotsController
         }
 
         m_ActionSlotsController.OnStoreNewItem += SetUISlotReference;
-        m_ActionSlotsController.OnDropItem += UpdateActionSlots;
+        m_ActionSlotsController.OnUIDropItem += UpdateActionSlots;
     }
 
     private void OnDisable()
     {
         m_ActionSlotsController.OnStoreNewItem -= SetUISlotReference;
-        m_ActionSlotsController.OnDropItem -= UpdateActionSlots;
+        m_ActionSlotsController.OnUIDropItem -= UpdateActionSlots;
     }
 
     private void UpdateActionSlots()

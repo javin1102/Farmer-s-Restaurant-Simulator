@@ -112,6 +112,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "Drop",
+                    "type": "Button",
+                    "id": "648336ab-ae16-41cc-958c-6d5f76c8c1d1",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -239,7 +248,7 @@
                 {
                     "name": "",
                     "id": "35489281-de6c-4e93-b7d7-f9b08be3aa66",
-                    "path": "<Keyboard>/g",
+                    "path": "<Keyboard>/f",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
@@ -310,6 +319,17 @@
                     "processors": "",
                     "groups": "",
                     "action": "SelectActionSlot6",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "0f881a78-8193-4d0c-9677-39aa011993f3",
+                    "path": "<Keyboard>/g",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Drop",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

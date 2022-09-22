@@ -10,6 +10,4 @@ public abstract class UIItemSlotsController : MonoBehaviour
     {
         m_UIItemSlots = m_SlotsParentGO.GetComponentsInChildren<UIItemSlot>( true );
     }
-
-    protected abstract void SetUISlotReference( ItemSlot itemSlot );
 }

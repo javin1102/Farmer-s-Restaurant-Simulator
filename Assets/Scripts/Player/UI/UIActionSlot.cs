@@ -13,6 +13,7 @@ public class UIActionSlot : UIItemSlot
         base.Awake();
         m_PlayerAction.OnPerformItemMainAction += UpdateUI;
         m_ActionSlotsController.OnStoreExistingItem += UpdateUI;
+        m_ActionSlotsController.OnDropItem += UpdateUI;
     }
 
 
@@ -20,6 +21,7 @@ public class UIActionSlot : UIItemSlot
     {
         m_ActionSlotsController.OnStoreExistingItem -= UpdateUI;
         m_PlayerAction.OnPerformItemMainAction -= UpdateUI;
+        m_ActionSlotsController.OnDropItem -= UpdateUI;
     }
 
     protected override void OnDropAction( UIItemSlot originItemSlot )

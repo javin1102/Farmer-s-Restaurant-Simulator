@@ -6,10 +6,20 @@ public class UIInventoryController : UIItemSlotsController
     {
         base.Awake();
         m_InventoryController = transform.root.GetComponent<InventoryController>();
-        m_InventoryController.OnStoreNewItem += SetUISlotReference;
     }
 
-    protected override void SetUISlotReference( ItemSlot itemSlot )
+    private void OnEnable()
+    {
+
+        m_InventoryController.OnStoreNewItem += ( _, slot ) => SetUISlotReference( slot );
+    }
+
+    private void OnDisable()
+    {
+        m_InventoryController.OnStoreNewItem += ( _, slot ) => SetUISlotReference( slot );
+    }
+
+    protected void SetUISlotReference( ItemSlot itemSlot )
     {
         for ( int i = 0; i < m_UIItemSlots.Length; i++ )
         {

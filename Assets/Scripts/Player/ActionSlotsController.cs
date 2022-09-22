@@ -1,9 +1,10 @@
+using DG.Tweening;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 public class ActionSlotsController : ItemSlotsController
 {
-    public event UnityAction OnDropItem;
+    public event UnityAction OnUIDropItem, OnDropItem;
     public Item CurrEquippedItem { get => m_CurrEquippedItem; }
     public ItemSlot[] ActionSlots { get => m_ActionSlots; }
     public int SelectedSlotIndex { get => m_SelectedSlotIndex; }
@@ -17,34 +18,34 @@ public class ActionSlotsController : ItemSlotsController
     [SerializeReference] private ItemSlot[] m_ActionSlots;
 
     private int m_SelectedSlotIndex;
-    public void InvokeUIDropItemEvent() => OnDropItem?.Invoke();
+    public void InvokeUIDropItemEvent() => OnUIDropItem?.Invoke();
 
     private void Awake()
     {
         m_ActionSlots = new ItemSlot[6];
-        StoreAllDefault();
-        //StoreS();
-        //StoreS();
-        //StoreS();
-        //SelectActionSlot( 1 );
-        //StoreX();
-        //StoreX();
-        //StoreX();
-        //StoreX();
-        //StoreX();
-        //StoreX();
+        //StoreAllDefault();
+        StoreS();
+        StoreS();
+        StoreS();
+        SelectActionSlot( 1 );
+        StoreX();
+        StoreX();
+        StoreX();
+        StoreX();
+        StoreX();
+        StoreX();
 
     }
     private void OnEnable()
     {
-        OnStoreNewItem += _ => CheckEquippedItem();
+        OnStoreNewItem += ( _, _ ) => CheckEquippedItem();
         m_DeacreasableItemChannel.OnMainAction += CheckQuantity;
     }
 
     private void OnDisable()
     {
         m_DeacreasableItemChannel.OnMainAction -= CheckQuantity;
-        OnStoreNewItem -= _ => CheckEquippedItem();
+        OnStoreNewItem -= ( _, _ ) => CheckEquippedItem();
     }
 
     public void SelectActionSlot( int index )
@@ -61,7 +62,17 @@ public class ActionSlotsController : ItemSlotsController
     [ContextMenu( "Store X" )]
     public void StoreX() => Store( x );
 
-    
+    public void Drop()
+    {
+        if ( m_ActionSlots[m_SelectedSlotIndex] == null ) return;
+
+        Item droppedItem = Instantiate( m_ActionSlots[m_SelectedSlotIndex].data.prefab, transform.position, transform.rotation ).GetComponent<Item>();
+
+        droppedItem.DropState();
+        CheckQuantity();
+        OnDropItem?.Invoke();
+
+    }
     public override bool Store( ItemData itemData )
     {
         if ( m_ItemSlotsDictionary.TryGetValue( itemData.id, out ItemSlot slot ) )
@@ -76,41 +87,76 @@ public class ActionSlotsController : ItemSlotsController
             ItemSlot itemSlotData = new( itemData );
             m_ItemSlotsDictionary.Add( itemData.id, itemSlotData );
 
-            //Todo::Drop curr item
-            m_ActionSlots[m_SelectedSlotIndex] = itemSlotData;
-            InvokeStoreNewItemEvent( itemSlotData );
+            if ( m_ActionSlots[m_SelectedSlotIndex] == null )
+            {
+                m_ActionSlots[m_SelectedSlotIndex] = itemSlotData;
+                InvokeStoreNewItemEvent( m_SelectedSlotIndex, itemSlotData );
+            }
+                
+            else
+            {
+                for ( int i = 0; i < m_ActionSlots.Length; i++ )
+                {
+                    if ( m_ActionSlots[i] == null )
+                    {
+                        m_ActionSlots[i] = itemSlotData;
+                        InvokeStoreNewItemEvent( i, itemSlotData );
+                        break;
+                    }
+
+                }
+            }
+
+            
             return true;
         }
 
     }
 
-    public bool StoreHarvestedCrop(ItemData itemData)
+    public bool StoreHarvestedCrop( ItemData itemData )
     {
-        if (m_ItemSlotsDictionary.TryGetValue(itemData.id, out ItemSlot slot))
+        if ( m_ItemSlotsDictionary.TryGetValue( itemData.id, out ItemSlot slot ) )
         {
             slot.quantity += 1;
             InvokeStoreExistingItemEvent();
             return true;
         }
-        if (m_ItemSlotsDictionary.Count >= 6) return false;
+        if ( m_ItemSlotsDictionary.Count >= 6 ) return false;
         else
         {
-            ItemSlot itemSlotData = new(itemData);
-            m_ItemSlotsDictionary.Add(itemData.id, itemSlotData);
+            ItemSlot itemSlotData = new( itemData );
+            m_ItemSlotsDictionary.Add( itemData.id, itemSlotData );
 
-            //Todo::Drop curr item
-            m_SelectedSlotIndex = m_ItemSlotsDictionary.Count - 1;
-            m_ActionSlots[m_SelectedSlotIndex] = itemSlotData;
-            InvokeStoreNewItemEvent(itemSlotData);
+            if ( m_ActionSlots[m_SelectedSlotIndex] == null )
+            {
+                m_ActionSlots[m_SelectedSlotIndex] = itemSlotData;
+                InvokeStoreNewItemEvent( m_SelectedSlotIndex, itemSlotData );
+            }
+
+            else
+            {
+                for ( int i = 0; i < m_ActionSlots.Length; i++ )
+                {
+                    if ( m_ActionSlots[i] == null )
+                    {
+                        m_ActionSlots[i] = itemSlotData;
+                        InvokeStoreNewItemEvent( i, itemSlotData );
+                        break;
+                    }
+
+                }
+            }
+
+
             return true;
         }
     }
 
     public void StoreAllDefault()
     {
-        for (int i = 0; i < DefaultItem.Length; i++)
+        for ( int i = 0; i < DefaultItem.Length; i++ )
         {
-            Store(DefaultItem[i]);
+            Store( DefaultItem[i] );
             m_SelectedSlotIndex++;
         }
     }
