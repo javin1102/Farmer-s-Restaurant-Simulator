@@ -17,6 +17,13 @@ public class GameTimeStamp
         this.minute = minute;
     }
 
+    public GameTimeStamp(GameTimeStamp timeStamp)
+    {
+        this.day = timeStamp.day;
+        this.hour = timeStamp.hour;
+        this.minute = timeStamp.minute;
+    }
+
     public void UpdateClock()
     {
         minute++;
@@ -44,6 +51,19 @@ public class GameTimeStamp
     public static int HourToMinutes(int hour)
     {
         return hour * 60;
+    }
+
+    public static int DayToHour(int days)
+    {
+        return days * 24;
+    }
+
+    public static int CompareTImeStamps(GameTimeStamp timeStamp1 , GameTimeStamp timeStamp2)
+    {
+        int timeStamp1Hour = DayToHour(timeStamp1.day) + timeStamp1.hour;
+        int timeStamp2Hour = DayToHour(timeStamp2.day) + timeStamp2.hour;
+
+        return Mathf.Abs(timeStamp2Hour - timeStamp1Hour);
     }
 
 

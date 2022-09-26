@@ -12,6 +12,8 @@ public class Shovel : Item, IRaycastAction
     private Mesh m_PreviewTileMesh;
     private Matrix4x4 m_TileMatrix;
 
+    
+
     private void Start()
     {
         tileParent = GameObject.FindGameObjectWithTag( Utils.TILE_PARENT_TAG ).transform;
@@ -46,6 +48,7 @@ public class Shovel : Item, IRaycastAction
         boxCollider.isTrigger = true;
 
         tileCopyGO.layer = 8;
+        tileCopyGO.GetComponent<Tile>().SwitchStatus(Tile.TileStatus.HOED);
 
     }
 

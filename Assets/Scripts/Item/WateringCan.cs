@@ -12,20 +12,16 @@ using UnityEngine;
 
 public class WateringCan : Item,IRaycastAction
 {
+
     public GameObject selectedTile;
-
-    public Material selectedMaterial;
-
-    private Renderer selectObjectRenderer;
-
 
     public override void MainAction()
     {
         if (selectedTile != null && !selectedTile.CompareTag(Utils.TILE_WET_TAG))
         {
-            selectedTile.tag = Utils.TILE_WET_TAG;
             Debug.Log("WATER SCRIPT : WATERED");
-            selectObjectRenderer.material = selectedMaterial;
+            selectedTile.GetComponent<Tile>().SwitchStatus(Tile.TileStatus.WATERED);
+            
         }
     }
 
@@ -37,10 +33,7 @@ public class WateringCan : Item,IRaycastAction
             if (selectedObject!=null)
             { 
                 selectedTile = hitInfo.transform.gameObject;
-                selectObjectRenderer = selectedTile.GetComponent<Renderer>();
             }
         }
     }
- 
-
 }

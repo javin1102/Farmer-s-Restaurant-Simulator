@@ -43,8 +43,8 @@ public class TimeManager : MonoBehaviour
         while (true)
         {
             // m_timeScale to define how fast the in game time
-            yield return new WaitForSeconds(1 / m_timeScale);
             Tick();
+            yield return new WaitForSeconds(1 / m_timeScale);
         }
     }
 
@@ -53,9 +53,9 @@ public class TimeManager : MonoBehaviour
         // update clock
         m_timeStamp.UpdateClock();
 
-        foreach(ITimeTracker listener in m_listenner)
+        for (int i = 0; i < m_listenner.Count; i++)
         {
-            listener.ClockUpdate(m_timeStamp);
+            m_listenner[i].ClockUpdate(m_timeStamp);
         }
 
         // calculate sun angle
@@ -66,6 +66,12 @@ public class TimeManager : MonoBehaviour
         m_sun.eulerAngles = new Vector3(sunAngle, 0, 0);
 
     }
+
+    public GameTimeStamp GetGameTimeStamp()
+    {
+        return new GameTimeStamp(m_timeStamp);
+    }
+
 
     public void RegisterListener(ITimeTracker listener)
     {

@@ -98,8 +98,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6b5bf0d99a255fe4f8b9a66259e4b8ad, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Plant: {fileID: 0}
-  cornGO: {fileID: 0}
+  IsUsed: 0
+  crop: {fileID: 0}
+  m_defaultMaterial: {fileID: 2100000, guid: 35335ab3e103573478ae54dfb31378b1, type: 2}
+  m_hoedMaterial: {fileID: 2100000, guid: 2b3754df8dc0d2f4cb8c368e880b460c, type: 2}
+  m_wateredMaterial: {fileID: 2100000, guid: 886754fea5aa2b94ab5770f4651fd665, type: 2}
+  m_plantedMaterial: {fileID: 2100000, guid: c2dfba99839747c44ad99dffdac09447, type: 2}
+  m_tileStatus: 0
 --- !u!114 &5523690768382460362
 MonoBehaviour:
   m_ObjectHideFlags: 0

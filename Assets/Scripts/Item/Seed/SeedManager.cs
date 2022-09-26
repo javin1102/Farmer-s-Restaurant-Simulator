@@ -12,11 +12,13 @@ public class SeedManager : Seed,IRaycastAction
     {
         if (m_tile != null && !m_tile.IsUsed)
         {
-            if (!m_tile.CompareTag(Utils.TILE_WET_TAG)) m_tile.gameObject.GetComponent<Renderer>().material = plantedMaterial;
 
             m_tile.crop = m_seedData.cropPrefab;
             m_tile.SpawnCrop();
             m_DecreseableEvent.RaiseEvent();
+
+            Tile.Instance.m_tileStatus = Tile.TileStatus.PLANTED;
+
         }
     }
 
