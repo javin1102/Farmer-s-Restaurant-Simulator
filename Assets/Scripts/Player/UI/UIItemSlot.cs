@@ -1,64 +1,52 @@
-using UnityEngine;
-using UnityEngine.UI;
+using System.Collections;
+using System.Collections.Generic;
 using TMPro;
+using UnityEngine;
 using UnityEngine.EventSystems;
-
+using UnityEngine.UI;
 public abstract class UIItemSlot : MonoBehaviour, IDropHandler
 {
-    public ItemSlot ItemSlot { get => m_ItemSlot; set => m_ItemSlot = value; }
-    public int SlotIndex { get => m_SlotIndex; }
-    [SerializeReference] protected ItemSlot m_ItemSlot;
+    protected ItemSlot Slot { get => m_SlotsController.Slots[m_SlotIndex]; }
+
     [SerializeField] protected Image m_IconImage;
     [SerializeField] protected TMP_Text m_QuantityText;
     [SerializeField] protected int m_SlotIndex;
-    protected ItemSlotsController m_ItemsController;
-   
-    protected virtual void Awake()
+    protected ItemSlotsController m_SlotsController;
+    void Start()
     {
         m_SlotIndex = transform.GetSiblingIndex();
     }
-
-    protected virtual void OnEnable()
+    private void Update()
     {
         UpdateUI();
     }
-
     public void UpdateUI()
     {
-        if ( m_ItemSlot == null || m_ItemSlot.quantity == 0 )
+        if ( Slot == null || Slot.quantity == 0 )
         {
-            m_ItemSlot = null;
             transform.GetChild( 0 ).gameObject.SetActive( false );
             return;
         }
         transform.GetChild( 0 ).gameObject.SetActive( true );
-        m_IconImage.sprite = m_ItemSlot.data.icon;
-        m_QuantityText.text = m_ItemSlot.quantity.ToString();
-
-    }
-
-
-    public void SetReference( Image iconImage, TMP_Text quantityText )
-    {
-        m_IconImage = iconImage;
-        m_QuantityText = quantityText;
+        m_IconImage.sprite = Slot.data.icon;
+        m_QuantityText.text = Slot.quantity.ToString();
     }
 
     public void OnDrop( PointerEventData eventData )
     {
         Transform targetContentTf = eventData.pointerDrag.transform;
         UIItemSlot OriginUISlot = targetContentTf.parent.GetComponent<UIItemSlot>();
-        OnDropAction( OriginUISlot );
-        
-        UpdateUI();
-        OriginUISlot.UpdateUI();
+        SwapItemSlot( OriginUISlot );
+
         targetContentTf.GetComponent<UIDraggable>().OnEndDrag( eventData );
     }
 
-    protected void SwapUIItemSlot( UIItemSlot UIItemSlot )
+    protected void SwapItemSlot( UIItemSlot ui )
     {
-        (m_ItemSlot, UIItemSlot.ItemSlot) = (UIItemSlot.ItemSlot, m_ItemSlot);
+        (m_SlotsController.Slots[m_SlotIndex], ui.m_SlotsController.Slots[ui.m_SlotIndex]) = (ui.m_SlotsController.Slots[ui.m_SlotIndex], m_SlotsController.Slots[m_SlotIndex]);
     }
 
-    protected abstract void OnDropAction( UIItemSlot originItemSlot );
+
 }
+
+

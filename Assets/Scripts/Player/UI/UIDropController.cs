@@ -8,12 +8,13 @@ public class UIDropController : MonoBehaviour
     [SerializeField] private Button m_IncreaseButton, m_DecreaseButton, m_DropButton;
     [SerializeField] private TMP_InputField m_InputField;
     private UIInventoryController m_UIInventoryController;
-    private InventoryController m_InventoryController;
+    private ItemDatabase m_ItemDatabase;    
+    //private InventoryController m_InventoryController;
     private int m_Quantity;
 
     private void Start()
     {
-        m_InventoryController = transform.root.GetComponent<InventoryController>();
+        m_ItemDatabase = transform.root.GetComponent<ItemDatabase>();
         m_UIInventoryController = transform.parent.GetComponent<UIInventoryController>();
         m_IncreaseButton.onClick.AddListener( IncreaseQuantity );
         m_DecreaseButton.onClick.AddListener( DecreaseQuantity );
@@ -28,8 +29,8 @@ public class UIDropController : MonoBehaviour
     }
     private void Drop()
     {
-        m_InventoryController.Drop( m_UIInventoryController.SelectedItem.data, m_Quantity );
-        m_InventoryController.OnDropItem?.Invoke();
+        m_ItemDatabase.Drop( m_UIInventoryController.SelectedItem.data, m_Quantity );
+        gameObject.SetActive( false );
     }
 
     private void ConvertText( string arg0 )

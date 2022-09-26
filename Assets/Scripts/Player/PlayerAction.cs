@@ -1,21 +1,19 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.Events;
-using System;
-using Cinemachine;
-
 public class PlayerAction : MonoBehaviour
 {
     public event UnityAction OnPerformItemMainAction;
     public UnityAction OnEnableUI { get => m_OnEnableUI; set => m_OnEnableUI = value; }
     public UnityAction OnDisableUI { get => m_OnDisableUI; set => m_OnDisableUI = value; }
+    public UnityAction ToggleInventoryUI { get => m_ToggleInventoryUI; set => m_ToggleInventoryUI = value; }
 
     //Event Listener
     private event UnityAction m_OnEnableUI;
     private event UnityAction m_OnDisableUI;
+    private UnityAction m_ToggleInventoryUI;
 
     //Player Input Action
-    public InputAction InventoryAction { get => m_InventoryAction; }
     private PlayerInput m_PlayerInput;
     private InputAction m_MainInputAction;
     private InputAction m_StoreInputAction;
@@ -30,7 +28,7 @@ public class PlayerAction : MonoBehaviour
     private Camera m_Cam;
     private readonly float m_RaycastDistance = 5f;
     private ActionSlotsController m_ActionSlotsController;
-    private InventoryController m_InventoryController;
+    private ItemDatabase m_ItemDatabase;
 
     private void Awake()
     {
@@ -38,7 +36,7 @@ public class PlayerAction : MonoBehaviour
         m_Cam = Camera.main;
         m_PlayerInput = GetComponent<PlayerInput>();
         m_ActionSlotsController = GetComponent<ActionSlotsController>();
-        m_InventoryController = GetComponent<InventoryController>();
+        m_ItemDatabase = GetComponent<ItemDatabase>();
     }
     private void Start()
     {
@@ -55,7 +53,7 @@ public class PlayerAction : MonoBehaviour
         OnDisableUI += EnablePlayerInput;
         m_MainInputAction.performed += PerformMainAction;
         m_DropInputAction.performed += DropItem;
-        m_InventoryAction.performed += _ => m_InventoryController.ToggleUI();
+        m_InventoryAction.performed += _ => m_ToggleInventoryUI?.Invoke();
 
     }
 
@@ -67,15 +65,11 @@ public class PlayerAction : MonoBehaviour
         OnDisableUI -= LockCursor;
         OnEnableUI -= DisablePlayerInput;
         OnDisableUI -= EnablePlayerInput;
-        m_InventoryAction.performed -= _ => m_InventoryController.ToggleUI();
+        m_InventoryAction.performed -= _ => m_ToggleInventoryUI?.Invoke();
         m_MainInputAction.performed -= PerformMainAction;
         m_DropInputAction.performed -= DropItem;
     }
 
-    private void DropItem( InputAction.CallbackContext obj )
-    {
-        m_ActionSlotsController.Drop();
-    }
     private void Update()
     {
         Ray ray = m_Cam.ViewportPointToRay( new Vector3( 0.5f, 0.5f, 0f ) );
@@ -99,11 +93,15 @@ public class PlayerAction : MonoBehaviour
 
     public bool Store( Item item )
     {
-        if ( m_InventoryController.Store( item ) ) return true;
-        if ( m_ActionSlotsController.Store( item ) ) return true;
+        if ( m_ItemDatabase.Store( item.Data ) )
+        {
+            Destroy( item.gameObject );
+            return true;
+        }
         return false;
     }
 
+    private void DropItem( InputAction.CallbackContext obj ) => m_ItemDatabase.Drop( m_ActionSlotsController.CurrEquippedItem.Data, 1 );
     private void InitializeInputAction()
     {
         m_MainInputAction = m_PlayerInput.actions[Utils.MAIN_ACTION];

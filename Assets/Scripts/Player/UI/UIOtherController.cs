@@ -5,21 +5,19 @@ using UnityEngine;
 public class UIOtherController : MonoBehaviour
 {
     [SerializeField] private GameObject m_InventoryUI;
-    private InventoryController m_InventoryController;
     private PlayerAction m_PlayerAction;
 
     private void Awake()
     {
-        m_InventoryController = transform.root.GetComponent<InventoryController>();
         m_PlayerAction = transform.root.GetComponent<PlayerAction>();
     }
     private void OnEnable()
     {
-        m_InventoryController.ToggleUIAction += ToggleUI;
+        m_PlayerAction.ToggleInventoryUI += ToggleUI;
     }
     private void OnDisable()
     {
-        m_InventoryController.ToggleUIAction -= ToggleUI;
+        m_PlayerAction.ToggleInventoryUI -= ToggleUI;
     }
     private void ToggleUI()
     {

@@ -25,8 +25,9 @@ using UnityEditor;
 public class Sickle : Item,IRaycastAction
 {
     public GameObject selectedCrop;
-    private ActionSlotsController m_ActionSlotsController;
-    private InventoryController m_InventoryController;
+    private ItemDatabase m_ItemDatabase;
+    //private ActionSlotsController m_ActionSlotsController;
+    //private InventoryController m_InventoryController;
 
     public ItemData harvestCropData;
 
@@ -36,8 +37,9 @@ public class Sickle : Item,IRaycastAction
     private bool IsDrop = false;
     private void Awake()
     {
-        m_ActionSlotsController = GetComponentInParent<ActionSlotsController>();
-        m_InventoryController = GetComponentInParent<InventoryController>();
+        m_ItemDatabase = transform.root.GetComponent<ItemDatabase>();
+        //m_ActionSlotsController = GetComponentInParent<ActionSlotsController>();
+        //m_InventoryController = GetComponentInParent<InventoryController>();
     }
 
     public override void MainAction()
@@ -78,13 +80,15 @@ public class Sickle : Item,IRaycastAction
     public void AddSeedToInventory(SeedData seed)
     {
         Debug.Log("seedinventory");
-        if (m_ActionSlotsController.Store(seed)) return;
-        if (m_InventoryController.Store(seed)) return;
+        m_ItemDatabase.Store( seed );
+        //if (m_ActionSlotsController.Store(seed)) return;
+        //if (m_InventoryController.Store(seed)) return;
     }
 
     public void AddCropToInventory(ItemData item)
     {
-        if (m_ActionSlotsController.StoreHarvestedCrop(item)) return;
-        if (m_InventoryController.Store(item)) return;
+        m_ItemDatabase.Store( item );
+        //if (m_ActionSlotsController.StoreHarvestedCrop(item)) return;
+        //if (m_InventoryController.Store(item)) return;
     }
 }
