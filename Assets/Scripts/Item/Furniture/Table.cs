@@ -30,7 +30,7 @@ public class Table : Furniture
             new Ray(m_InstantiatedGO.transform.position, -m_InstantiatedGO.transform.right),
         };
 
-        
+
         foreach ( Ray ray in rays )
         {
             Debug.DrawRay( ray.origin, ray.direction );

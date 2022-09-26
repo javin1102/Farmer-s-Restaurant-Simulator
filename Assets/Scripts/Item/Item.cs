@@ -16,12 +16,14 @@ public abstract class Item : MonoBehaviour
     private Tweener m_RotateTweener;
     private Rigidbody m_Rigidbody;
     private Collider m_Collider;
+    private MeshRenderer m_MeshRenderer;
     private bool m_IsGrounded;
     protected void OnEnable()
     {
         TryGetComponent( out m_ItemRaycastAction );
         m_Rigidbody = GetComponent<Rigidbody>();
         m_Collider = GetComponent<BoxCollider>();
+        m_MeshRenderer = GetComponent<MeshRenderer>();
         m_Rigidbody.isKinematic = true;
     }
     public abstract void MainAction();
@@ -35,7 +37,13 @@ public abstract class Item : MonoBehaviour
             m_Rigidbody.useGravity = false;
             m_Collider.enabled = true;
             m_Collider.isTrigger = true;
-            if ( !m_RotateTweener.IsPlaying() ) m_RotateTweener.Play();
+            float posY = transform.localPosition.y + .15f;
+            m_MeshRenderer.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off;
+            if ( !m_RotateTweener.IsPlaying() )
+            {
+                m_RotateTweener.Play();
+                transform.DOLocalMoveY( posY, 1f ).SetLoops( -1, LoopType.Yoyo ).SetEase( Ease.InOutSine );
+            }
             return;
         }
 
@@ -53,6 +61,7 @@ public abstract class Item : MonoBehaviour
     {
         m_Rigidbody.isKinematic = false;
         m_RotateTweener = transform.DOLocalRotate( new Vector3( 0, 360, 0 ), 1, RotateMode.FastBeyond360 ).SetLoops( -1 ).SetRelative( true ).SetEase( Ease.Linear );
+
         m_RotateTweener.Pause();
         m_IsDropState = true;
         transform.SetParent( null );

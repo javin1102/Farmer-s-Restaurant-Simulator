@@ -1,20 +1,40 @@
+using System;
+using UnityEngine.UI;
+
 public class UIInventorySlot : UIItemSlot
 {
     protected ActionSlotsController m_ActionSlotsController;
     private InventoryController m_InventoryController;
+    private Button m_Button;
+    private UIInventoryController m_UIInventoryController;
     protected override void Awake()
     {
+        m_UIInventoryController = transform.parent.parent.GetComponent<UIInventoryController>(); 
         m_ItemsController = transform.root.GetComponent<InventoryController>();
         m_ActionSlotsController = transform.root.GetComponent<ActionSlotsController>();
         m_InventoryController = m_ItemsController as InventoryController;
-
+        m_Button = GetComponent<Button>();
+        m_Button.onClick.AddListener( Select );
         base.Awake();
         m_InventoryController.OnStoreExistingItem += UpdateUI;
+        m_InventoryController.OnDropItem += UpdateUI;
+    }
+
+    private void Select()
+    {
+        m_UIInventoryController.SelectedItem = m_ItemSlot;
+        if ( m_ItemSlot == null )
+        {
+            m_UIInventoryController.DisableDropUI();
+            return;
+        }
+        m_UIInventoryController.EnableDropUI();
     }
 
     private void OnDestroy()
     {
         m_InventoryController.OnStoreExistingItem -= UpdateUI;
+        m_InventoryController.OnDropItem -= UpdateUI;
     }
 
     protected override void OnDropAction( UIItemSlot originItemSlot )

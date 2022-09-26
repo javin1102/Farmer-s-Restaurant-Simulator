@@ -11,7 +11,6 @@ public class FirstPersonMovement : MonoBehaviour
 
     private PlayerInput m_PlayerInput;
     private InputAction m_MoveAction;
-    private InputAction m_RotateAction;
     private InputAction m_JumpAction;
 
     private CharacterController m_CharacterController;
@@ -27,7 +26,6 @@ public class FirstPersonMovement : MonoBehaviour
         m_GroundMask = Utils.FarmGroundMask | Utils.RestaurantGroundMask | Utils.GroundMask;
 
         m_PlayerInput = GetComponent<PlayerInput>();
-        m_RotateAction = m_PlayerInput.actions[Utils.PLAYER_ROTATION_ACTION];
         m_MoveAction = m_PlayerInput.actions[Utils.MOVE_ACTION];
         m_JumpAction = m_PlayerInput.actions[Utils.JUMP_ACTION];
 
