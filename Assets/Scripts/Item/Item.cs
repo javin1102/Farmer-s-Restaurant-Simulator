@@ -1,4 +1,6 @@
 using UnityEngine;
+using DG.Tweening;
+[RequireComponent( typeof( Rigidbody ) )]
 public abstract class Item : MonoBehaviour
 {
     public IRaycastAction ItemRaycastAction { get => m_ItemRaycastAction; }
@@ -8,11 +10,67 @@ public abstract class Item : MonoBehaviour
 
     protected IRaycastAction m_ItemRaycastAction;
     protected TileManager m_TileManager;
+    protected bool m_IsDropState;
+
+    //Drop Vars
+    private Tweener m_RotateTweener;
+    private Rigidbody m_Rigidbody;
+    private Collider m_Collider;
+    private MeshRenderer m_MeshRenderer;
+    private bool m_IsGrounded;
     protected void OnEnable()
     {
         TryGetComponent( out m_ItemRaycastAction );
+        m_Rigidbody = GetComponent<Rigidbody>();
+        m_Collider = GetComponent<BoxCollider>();
+        m_MeshRenderer = GetComponent<MeshRenderer>();
+        m_Rigidbody.isKinematic = true;
     }
     public abstract void MainAction();
+    protected void Update()
+    {
+        if ( !m_IsDropState ) return;
+        if ( !m_IsGrounded && CheckGround() )
+        {
+            m_IsGrounded = true;
+            m_Rigidbody.isKinematic = true;
+            m_Rigidbody.useGravity = false;
+            m_Collider.enabled = true;
+            m_Collider.isTrigger = true;
+            float posY = transform.localPosition.y + .15f;
+            m_MeshRenderer.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off;
+            if ( !m_RotateTweener.IsPlaying() )
+            {
+                m_RotateTweener.Play();
+                transform.DOLocalMoveY( posY, 1f ).SetLoops( -1, LoopType.Yoyo ).SetEase( Ease.InOutSine );
+            }
+            return;
+        }
+
+    }
+
+    private void OnTriggerEnter( Collider other )
+    {
+        if ( other.TryGetComponent( out PlayerAction playerAction ) )
+        {
+            playerAction.Store( this );
+        }
+    }
+
+    public void DropState()
+    {
+        m_Rigidbody.isKinematic = false;
+        m_RotateTweener = transform.DOLocalRotate( new Vector3( 0, 360, 0 ), 1, RotateMode.FastBeyond360 ).SetLoops( -1 ).SetRelative( true ).SetEase( Ease.Linear );
+
+        m_RotateTweener.Pause();
+        m_IsDropState = true;
+        transform.SetParent( null );
+        transform.localScale = Vector3.one * .25f;
+        m_Rigidbody.AddForce( 10f * Camera.main.transform.forward, ForceMode.VelocityChange );
+
+    }
+
+    private bool CheckGround() => Physics.Raycast( transform.position, Vector3.down, .5f );
 }
 
 public enum ItemType

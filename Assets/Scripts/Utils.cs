@@ -25,6 +25,8 @@ public class Utils
     public const string JUMP_ACTION = "Jump";
     public const string MOVE_ACTION = "Move";
     public const string STORE_ACTION = "Store";
+    public const string DROP_ACTION = "Drop";
+    public const string INVENTORY_ACTION = "Inventory";
 
     //TAGS
     public const string FARM_GROUND_TAG = "Farm Ground";
@@ -37,4 +39,5 @@ public class Utils
     public const string SEAT_TAG = "SEAT";
     public const string TILE_WET_TAG = "Wet Tile";
     public const string CROP_TAG = "Crop";
+
 }

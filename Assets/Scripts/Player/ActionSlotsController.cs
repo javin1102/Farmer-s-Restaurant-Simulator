@@ -1,135 +1,85 @@
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
+
+
 public class ActionSlotsController : ItemSlotsController
 {
-    public event UnityAction OnDropItem;
     public Item CurrEquippedItem { get => m_CurrEquippedItem; }
-    public ItemSlot[] ActionSlots { get => m_ActionSlots; }
-    public int SelectedSlotIndex { get => m_SelectedSlotIndex; }
+    public UnityAction<string> DBRemoveAction { get => m_DBRemoveAction; set => m_DBRemoveAction = value; }
 
     [SerializeField] private Transform m_Hand;
     [SerializeField] private ItemMainActionChannel m_DeacreasableItemChannel;
-    [SerializeField] private ItemData s;
-    [SerializeField] private ItemData x;
-    [SerializeField] private ItemData[] DefaultItem;
-    [SerializeField] private Item m_CurrEquippedItem;
-    [SerializeReference] private ItemSlot[] m_ActionSlots;
-
+    private Item m_CurrEquippedItem;
     private int m_SelectedSlotIndex;
-    public void InvokeUIDropItemEvent() => OnDropItem?.Invoke();
+    private UnityAction<string> m_DBRemoveAction;
 
-    private void Awake()
+    private void Start()
     {
-        m_ActionSlots = new ItemSlot[6];
-        StoreAllDefault();
-        //StoreS();
-        //StoreS();
-        //StoreS();
-        //SelectActionSlot( 1 );
-        //StoreX();
-        //StoreX();
-        //StoreX();
-        //StoreX();
-        //StoreX();
-        //StoreX();
-
-    }
-    private void OnEnable()
-    {
-        OnStoreNewItem += _ => CheckEquippedItem();
-        m_DeacreasableItemChannel.OnMainAction += CheckQuantity;
+        m_Slots = new ItemSlot[6];
+        m_DeacreasableItemChannel.OnMainAction += DecreaseQuantity;
     }
 
-    private void OnDisable()
+    private void OnDestroy()
     {
-        m_DeacreasableItemChannel.OnMainAction -= CheckQuantity;
-        OnStoreNewItem -= _ => CheckEquippedItem();
+        m_DeacreasableItemChannel.OnMainAction -= DecreaseQuantity;
     }
 
-    public void SelectActionSlot( int index )
+    public override bool TrySetSlot( ItemSlot slot )
     {
-        m_SelectedSlotIndex = index;
-        DestroyAllItemsInHand();
-        m_CurrEquippedItem = null;
-        if ( m_ActionSlots[index] == null ) return;
-        m_CurrEquippedItem = InstantiateItemToHand( m_ActionSlots[index] );
-    }
-
-    [ContextMenu( "Store S" )]
-    public void StoreS() => Store( s );
-    [ContextMenu( "Store X" )]
-    public void StoreX() => Store( x );
-
-    
-    public override bool Store( ItemData itemData )
-    {
-        if ( m_ItemSlotsDictionary.TryGetValue( itemData.id, out ItemSlot slot ) )
+        if ( m_Slots[m_SelectedSlotIndex] == null )
         {
-            slot.quantity += 1;
-            InvokeStoreExistingItemEvent();
+            m_Slots[m_SelectedSlotIndex] = slot;
             return true;
         }
-        if ( m_ItemSlotsDictionary.Count >= 6 ) return false;
         else
         {
-            ItemSlot itemSlotData = new( itemData );
-            m_ItemSlotsDictionary.Add( itemData.id, itemSlotData );
+            for ( int i = 0; i < m_Slots.Length; i++ )
+            {
+                if ( m_Slots[i] == null )
+                {
+                    m_Slots[i] = slot;
+                    return true;
+                }
+            }
 
-            //Todo::Drop curr item
-            m_ActionSlots[m_SelectedSlotIndex] = itemSlotData;
-            InvokeStoreNewItemEvent( itemSlotData );
-            return true;
+            return false;
         }
 
     }
-
-    public bool StoreHarvestedCrop(ItemData itemData)
+    private void Update()
     {
-        if (m_ItemSlotsDictionary.TryGetValue(itemData.id, out ItemSlot slot))
-        {
-            slot.quantity += 1;
-            InvokeStoreExistingItemEvent();
-            return true;
-        }
-        if (m_ItemSlotsDictionary.Count >= 6) return false;
-        else
-        {
-            ItemSlot itemSlotData = new(itemData);
-            m_ItemSlotsDictionary.Add(itemData.id, itemSlotData);
-
-            //Todo::Drop curr item
-            m_SelectedSlotIndex = m_ItemSlotsDictionary.Count - 1;
-            m_ActionSlots[m_SelectedSlotIndex] = itemSlotData;
-            InvokeStoreNewItemEvent(itemSlotData);
-            return true;
-        }
+        CheckEquippedItem();
     }
-
-    public void StoreAllDefault()
-    {
-        for (int i = 0; i < DefaultItem.Length; i++)
-        {
-            Store(DefaultItem[i]);
-            m_SelectedSlotIndex++;
-        }
-    }
-
-    public void CheckEquippedItem()
-    {
-        DestroyAllItemsInHand();
-        if ( m_ActionSlots[m_SelectedSlotIndex] == null ) return;
-
-        //if ( m_CurrEquippedItem != null && m_CurrEquippedItem.Data == m_ItemSlots[m_SelectedSlotIndex].data ) return;
-        m_CurrEquippedItem = InstantiateItemToHand( m_ActionSlots[m_SelectedSlotIndex] );
-    }
-
     private Item InstantiateItemToHand( ItemSlot item )
     {
         GameObject go = Instantiate( item.data.prefab, m_Hand );
         ResetItemTf( go.transform );
         go.SetActive( true );
         return go.GetComponent<Item>();
+    }
+
+    private void DestroyAllItemsInHand()
+    {
+        foreach ( Transform child in m_Hand )
+        {
+            Destroy( child.gameObject );
+        }
+    }
+
+
+    private void DecreaseQuantity()
+    {
+        m_Slots[m_SelectedSlotIndex].quantity -= 1;
+        if ( m_Slots[m_SelectedSlotIndex].quantity <= 0 )
+        {
+
+            m_DBRemoveAction?.Invoke( m_Slots[m_SelectedSlotIndex].data.id );
+            m_Slots[m_SelectedSlotIndex] = null;
+            m_CurrEquippedItem = null;
+            DestroyAllItemsInHand();
+        }
     }
 
 
@@ -142,27 +92,35 @@ public class ActionSlotsController : ItemSlotsController
         item.gameObject.layer = Utils.HandLayer;
     }
 
-
-    private void DestroyAllItemsInHand()
+    public void SelectActionSlot( int index )
     {
-        foreach ( Transform child in m_Hand )
-        {
-            Destroy( child.gameObject );
-        }
+        m_SelectedSlotIndex = index;
     }
 
-    private void CheckQuantity()
+    public void CheckEquippedItem()
     {
-        m_ActionSlots[m_SelectedSlotIndex].quantity -= 1;
-        if ( m_ActionSlots[m_SelectedSlotIndex].quantity <= 0 )
+        if ( m_Slots[m_SelectedSlotIndex] == null )
         {
-
-            m_ItemSlotsDictionary.Remove( m_ActionSlots[m_SelectedSlotIndex].data.id );
-            m_ActionSlots[m_SelectedSlotIndex] = null;
             m_CurrEquippedItem = null;
             DestroyAllItemsInHand();
         }
+        else
+        {
+            if ( m_CurrEquippedItem == null )
+            {
+                m_CurrEquippedItem = InstantiateItemToHand( m_Slots[m_SelectedSlotIndex] );
+            }
+            else
+            {
+                if ( m_CurrEquippedItem.Data != m_Slots[m_SelectedSlotIndex].data )
+                {
+                    DestroyAllItemsInHand();
+                    m_CurrEquippedItem = InstantiateItemToHand( m_Slots[m_SelectedSlotIndex] );
+                }
+            }
+        }
+
     }
-
-
 }
+
+

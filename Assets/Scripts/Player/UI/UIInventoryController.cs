@@ -1,25 +1,24 @@
 //Must attach to active obj
-public class UIInventoryController : UIItemSlotsController
+using UnityEngine;
+using UnityEngine.EventSystems;
+
+public class UIInventoryController : MonoBehaviour,  IPointerClickHandler
 {
-    private InventoryController m_InventoryController;
-    protected override void Awake()
+    public ItemSlot SelectedItem { get => m_SelectedSlot; set => m_SelectedSlot =  value ; }
+
+    [SerializeReference] private ItemSlot m_SelectedSlot;
+    [SerializeField] private GameObject m_DropUI;
+
+    private void OnDisable()
     {
-        base.Awake();
-        m_InventoryController = transform.root.GetComponent<InventoryController>();
-        m_InventoryController.OnStoreNewItem += SetUISlotReference;
+        DisableDropUI();
     }
 
-    protected override void SetUISlotReference( ItemSlot itemSlot )
-    {
-        for ( int i = 0; i < m_UIItemSlots.Length; i++ )
-        {
-            if ( m_UIItemSlots[i].ItemSlot == null )
-            {
-                m_UIItemSlots[i].ItemSlot = itemSlot;
-                m_UIItemSlots[i].UpdateUI();
-                break;
-            }
-        }
-    }
+    public void EnableDropUI() => m_DropUI.SetActive( true );
+    public void DisableDropUI() => m_DropUI.SetActive( false );
 
+    public void OnPointerClick( PointerEventData eventData )
+    {
+        DisableDropUI();
+    }
 }

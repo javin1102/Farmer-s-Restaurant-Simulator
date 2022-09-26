@@ -1,43 +1,33 @@
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.UI;
+
 public class UIInventorySlot : UIItemSlot
 {
-    protected ActionSlotsController m_ActionSlotsController;
-    private InventoryController m_InventoryController;
-    protected override void Awake()
+    private Button m_Button;
+    private UIInventoryController m_UIInventoryController;
+    private void Awake()
     {
-        m_ItemsController = transform.root.GetComponent<InventoryController>();
-        m_ActionSlotsController = transform.root.GetComponent<ActionSlotsController>();
-        m_InventoryController = m_ItemsController as InventoryController;
-
-        base.Awake();
-        m_InventoryController.OnStoreExistingItem += UpdateUI;
+        m_SlotsController = transform.root.GetComponent<InventorySlotsController>();
+        m_UIInventoryController  = transform.parent.parent.GetComponent<UIInventoryController>();
+        m_Button = GetComponent<Button>();
+        m_Button.onClick.AddListener( Select );
     }
 
-    private void OnDestroy()
+    private void Select()
     {
-        m_InventoryController.OnStoreExistingItem -= UpdateUI;
-    }
-
-    protected override void OnDropAction( UIItemSlot originItemSlot )
-    {
-        if ( ( originItemSlot.GetType() == typeof( UIActionSlot ) ) )
+        m_UIInventoryController.SelectedItem = m_SlotsController.Slots[m_SlotIndex];
+        if ( m_SlotsController.Slots[m_SlotIndex] == null )
         {
-            if ( m_ItemSlot == null )
-            {
-                //From Action Slot to Inventory Slot, Add back to inventory, set action slot null
-                m_InventoryController.ItemSlotsDictionary.Add( originItemSlot.ItemSlot.data.id, originItemSlot.ItemSlot );
-                m_ActionSlotsController.ItemSlotsDictionary.Remove( originItemSlot.ItemSlot.data.id );
-            }
-            else
-            {
-                string key1 = m_ItemSlot.data.id;
-                string key2 = originItemSlot.ItemSlot.data.id;
-
-                (m_InventoryController.ItemSlotsDictionary[key1], m_ActionSlotsController.ItemSlotsDictionary[key2]) = (m_InventoryController.ItemSlotsDictionary[key2], m_ActionSlotsController.ItemSlotsDictionary[key1]);
-            }
+            m_UIInventoryController.DisableDropUI();
+            return;
         }
-        SwapUIItemSlot( originItemSlot );
-        m_ActionSlotsController.InvokeUIDropItemEvent();
-        m_ActionSlotsController.CheckEquippedItem();
+        m_UIInventoryController.EnableDropUI();
     }
-
 }
+
+
+
+
