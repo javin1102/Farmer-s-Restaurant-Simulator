@@ -20,6 +20,7 @@ public class ItemDatabase : MonoBehaviour
         ItemData[] x = Resources.LoadAll<ItemData>( "Data" );
         foreach ( var item in x )
         {
+            Debug.Log( item.name );
             Store( item );
             Store( item );
             Store( item );

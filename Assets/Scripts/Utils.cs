@@ -27,6 +27,8 @@ public class Utils
     public const string STORE_ACTION = "Store";
     public const string DROP_ACTION = "Drop";
     public const string INVENTORY_ACTION = "Inventory";
+    public const string OPENUI_ACTION = "OpenUI";
+    public const string ALT_ACTION = "Alt";
 
     //TAGS
     public const string FARM_GROUND_TAG = "Farm Ground";

@@ -15,9 +15,12 @@ public class ActionSlotsController : ItemSlotsController
     private int m_SelectedSlotIndex;
     private UnityAction<string> m_DBRemoveAction;
 
-    private void Start()
+    private void Awake()
     {
         m_Slots = new ItemSlot[6];
+    }
+    private void Start()
+    {
         m_DeacreasableItemChannel.OnMainAction += DecreaseQuantity;
     }
 
@@ -96,6 +99,14 @@ public class ActionSlotsController : ItemSlotsController
     {
         m_SelectedSlotIndex = index;
     }
+
+
+    public void SelectActionSlot_1() => m_SelectedSlotIndex = 1;
+    public void SelectActionSlot_2() => m_SelectedSlotIndex = 2;
+    public void SelectActionSlot_3() => m_SelectedSlotIndex = 3;
+    public void SelectActionSlot_4() => m_SelectedSlotIndex = 4;
+    public void SelectActionSlot_5() => m_SelectedSlotIndex = 5;
+    public void SelectActionSlot_6() => m_SelectedSlotIndex = 6;
 
     public void CheckEquippedItem()
     {

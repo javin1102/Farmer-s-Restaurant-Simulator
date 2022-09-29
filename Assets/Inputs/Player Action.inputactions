@@ -130,6 +130,24 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "OpenUI",
+                    "type": "Button",
+                    "id": "7282c806-3509-4810-904d-80cc1e32fd87",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Alt",
+                    "type": "Value",
+                    "id": "d0aeb536-6b95-4911-9502-7816b17e7ff3",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "Hold",
+                    "initialStateCheck": true
                 }
             ],
             "bindings": [
@@ -350,6 +368,28 @@
                     "processors": "",
                     "groups": "",
                     "action": "Inventory",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "1ec22f85-07b7-4539-bec8-97926c63c0a9",
+                    "path": "<Keyboard>/p",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "OpenUI",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "b614b1c7-ba26-4823-87dd-d6d0c407ec7d",
+                    "path": "<Keyboard>/alt",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Alt",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
