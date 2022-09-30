@@ -13,8 +13,8 @@ public class UIGameController : MonoBehaviour
     private void Awake()
     {
         m_PlayerAction = transform.root.GetComponent<PlayerAction>();
-        m_InventoryButton.onClick.AddListener( m_PlayerAction.ToggleInventoryUI.Invoke );
-        m_UIButton.onClick.AddListener( m_PlayerAction.ToggleUI.Invoke );
+        m_InventoryButton.onClick.AddListener( m_PlayerAction.InvokeToggleInventoryUI);
+        m_UIButton.onClick.AddListener( m_PlayerAction.InvokeToggleUI );
     }
 
     private void OnEnable()

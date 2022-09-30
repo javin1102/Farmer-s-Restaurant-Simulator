@@ -17,7 +17,7 @@ public class UIDraggable : MonoBehaviour, IBeginDragHandler, IEndDragHandler, ID
     public void OnDrag( PointerEventData eventData )
     {
         //Divide with canvas scale factor
-        m_RectTransform.anchoredPosition += eventData.delta / 1.2f;
+        m_RectTransform.anchoredPosition += eventData.delta / m_Canvas.scaleFactor;
     }
 
     public void OnEndDrag( PointerEventData eventData )

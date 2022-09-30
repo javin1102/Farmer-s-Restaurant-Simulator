@@ -101,18 +101,19 @@ public class ActionSlotsController : ItemSlotsController
     }
 
 
-    public void SelectActionSlot_1() => m_SelectedSlotIndex = 1;
-    public void SelectActionSlot_2() => m_SelectedSlotIndex = 2;
-    public void SelectActionSlot_3() => m_SelectedSlotIndex = 3;
-    public void SelectActionSlot_4() => m_SelectedSlotIndex = 4;
-    public void SelectActionSlot_5() => m_SelectedSlotIndex = 5;
-    public void SelectActionSlot_6() => m_SelectedSlotIndex = 6;
+    public void SelectActionSlot_1() => m_SelectedSlotIndex = 0;
+    public void SelectActionSlot_2() => m_SelectedSlotIndex = 1;
+    public void SelectActionSlot_3() => m_SelectedSlotIndex = 2;
+    public void SelectActionSlot_4() => m_SelectedSlotIndex = 3;
+    public void SelectActionSlot_5() => m_SelectedSlotIndex = 4;
+    public void SelectActionSlot_6() => m_SelectedSlotIndex = 5;
 
     public void CheckEquippedItem()
     {
-        if ( m_Slots[m_SelectedSlotIndex] == null )
+        if ( m_Slots[m_SelectedSlotIndex] == null  )
         {
-            m_CurrEquippedItem = null;
+            if ( m_CurrEquippedItem == null ) return;
+            m_CurrEquippedItem = null; 
             DestroyAllItemsInHand();
         }
         else
@@ -123,12 +124,13 @@ public class ActionSlotsController : ItemSlotsController
             }
             else
             {
-                if ( m_CurrEquippedItem.Data != m_Slots[m_SelectedSlotIndex].data )
+                if ( m_CurrEquippedItem.Data.id != m_Slots[m_SelectedSlotIndex].data.id )
                 {
                     DestroyAllItemsInHand();
                     m_CurrEquippedItem = InstantiateItemToHand( m_Slots[m_SelectedSlotIndex] );
                 }
             }
+           
         }
 
     }

@@ -109,6 +109,8 @@ public class PlayerAction : MonoBehaviour
         }
         return false;
     }
+    public void InvokeToggleInventoryUI() => m_ToggleInventoryUI?.Invoke();
+    public void InvokeToggleUI() => m_ToggleUI?.Invoke();
     private void DropItem( InputAction.CallbackContext obj ) => m_ItemDatabase.Drop( m_ActionSlotsController.CurrEquippedItem.Data, 1 );
     private void InitializeInputAction()
     {
@@ -217,6 +219,7 @@ public class PlayerAction : MonoBehaviour
     }
     private void InvokeToggleInventoryUI( InputAction.CallbackContext obj ) => m_ToggleInventoryUI?.Invoke();
     private void InvokeToggleUI( InputAction.CallbackContext obj ) => m_ToggleUI?.Invoke();
+
     private void ExitCursorMode( InputAction.CallbackContext obj ) => ExitCursorMode();
     private void EnterCursorMode( InputAction.CallbackContext obj ) => EnterCursorMode();
     private void SelectActionSlot_1( InputAction.CallbackContext obj ) => m_ActionSlotsController.SelectActionSlot_1();
