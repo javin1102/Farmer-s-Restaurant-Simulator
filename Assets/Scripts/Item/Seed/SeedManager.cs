@@ -17,8 +17,7 @@ public class SeedManager : Seed,IRaycastAction
             m_tile.SpawnCrop();
             m_DecreseableEvent.RaiseEvent();
 
-            Tile.Instance.m_tileStatus = Tile.TileStatus.PLANTED;
-
+            this.m_tile.SwitchStatus(Tile.TileStatus.PLANTED);
         }
     }
 

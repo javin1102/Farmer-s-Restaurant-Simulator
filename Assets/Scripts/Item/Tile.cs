@@ -1,4 +1,4 @@
-using UnityEngine;
+ using UnityEngine;
 
 /// <summary>
 /// 
@@ -24,11 +24,11 @@ public class Tile : MonoBehaviour,ITimeTracker
     public static Tile Instance { get; set; }
 
     private int timeElapsed;
-    // private GameTimeStamp timeHoed;
     private GameTimeStamp m_time;
-    //  private GameTimeStamp timePlanted;
-
+    private PlantGrowHandler m_plantGrowHandler;
     private TimeManager m_timeManager;
+
+
     private void Awake()
     {
         Instance = this;
@@ -60,11 +60,18 @@ public class Tile : MonoBehaviour,ITimeTracker
             case  TileStatus.WATERED:
                 materialSwitch = m_wateredMaterial;
                 this.tag = Utils.TILE_WET_TAG;
+                this.m_time = TimeManager.Instance.GetGameTimeStamp();
                 break;
             case TileStatus.HOED:
                 materialSwitch = m_hoedMaterial;
                 this.tag = Utils.TILE_TAG;
-                m_time = TimeManager.Instance.GetGameTimeStamp();
+                this.m_time = TimeManager.Instance.GetGameTimeStamp();
+                break;
+            case TileStatus.PLANTED:
+                if (this.CompareTag(Utils.TILE_WET_TAG)) materialSwitch = m_wateredMaterial;
+                else if (this.CompareTag(Utils.TILE_TAG)) materialSwitch = m_hoedMaterial;
+                this.m_plantGrowHandler = GetComponentInChildren<PlantGrowHandler>();
+                this.m_time = TimeManager.Instance.GetGameTimeStamp();
                 break;
         }
 
@@ -78,19 +85,47 @@ public class Tile : MonoBehaviour,ITimeTracker
         if (this.m_tileStatus == TileStatus.HOED)
         {
             Debug.Log("timehoed : " + timeElapsed);
-            if (this.timeElapsed > 36)
+            if (this.transform.childCount > 0)
             {
-                this.m_timeManager.UnRegisterListener(this);
-                Destroy(this.gameObject);
+                // do nothing
+            }
+            else
+            {
+                if (this.timeElapsed > 36)
+                {
+                    this.m_timeManager.UnRegisterListener(this);
+                    Destroy(this.gameObject);
+                }
             }
         }
         if (this.m_tileStatus == TileStatus.WATERED)
         {
             Debug.Log(timeElapsed);
-            if (this.timeElapsed > 18)
+            if (this.transform.childCount > 0)
             {
-                this.SwitchStatus(TileStatus.HOED);
+                this.SwitchStatus(TileStatus.PLANTED);
+            }
+            else
+            {
+                if (this.timeElapsed > 18)
+                {
+                    this.SwitchStatus(TileStatus.HOED);
+                }
             }
         }
+        if (this.m_tileStatus == TileStatus.PLANTED)
+        {
+            if (this.timeElapsed > 19 && this.CompareTag(Utils.TILE_WET_TAG))
+            {
+                this.m_plantGrowHandler.GrowProgression();
+                this.SwitchStatus(TileStatus.HOED);
+            }
+            else if(this.timeElapsed > 35 && this.CompareTag(Utils.TILE_TAG))
+            {
+                this.m_timeManager.UnRegisterListener(this);
+                Destroy(this.transform.GetChild(0).gameObject);
+            }
+        }
+
     }
 }

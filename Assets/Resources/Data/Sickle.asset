@@ -10,9 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8c9c36c8f20505d47bfff2820a3a6d92, type: 3}
-  m_Name: Seat
+  m_Name: Sickle
   m_EditorClassIdentifier: 
-  id: Seat
-  prefab: {fileID: 4404244772447968043, guid: c212d8313afaee74aac8b04d6612f330, type: 3}
-  icon: {fileID: 10915, guid: 0000000000000000f000000000000000, type: 0}
-  type: 2
+  id: Sickle
+  prefab: {fileID: 620202778583190377, guid: 22157a346337c76489b1a299b3f09adb, type: 3}
+  icon: {fileID: 0}
+  type: 0
