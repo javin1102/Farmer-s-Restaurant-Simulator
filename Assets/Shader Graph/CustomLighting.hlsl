@@ -143,7 +143,7 @@ void AdditionalLights_float(float3 SpecColor, float Smoothness, float3 WorldPosi
     int pixelLightCount = GetAdditionalLightsCount();
     for (int i = 0; i < pixelLightCount; ++i)
     {
-        Light light = GetAdditionalLight(i, WorldPosition);
+        Light light = GetAdditionalLight(i, WorldPosition, half4(1,1,1,1));
         half3 attenuatedLightColor = light.color * (light.distanceAttenuation * light.shadowAttenuation);
         diffuseColor += LightingLambert(attenuatedLightColor, light.direction, WorldNormal);
         specularColor += LightingSpecular(attenuatedLightColor, light.direction, WorldNormal, WorldView, float4(SpecColor, 0), Smoothness);
@@ -178,3 +178,125 @@ void AdditionalLights_half(half3 SpecColor, half Smoothness, half3 WorldPosition
 }
 
 #endif
+
+void AddAdditionalLights_float(float Smoothness, float3 WorldPosition, float3 WorldNormal, float3 WorldView, float3 MainDiffuse, float3 MainSpecular, out float3 MainColor ){
+    MainColor = MainDiffuse + MainSpecular;
+    half thisDiff = 0;
+    half thisSpec = 0;
+    #ifndef SHADERGRAPH_PREVIEW
+    int pixelLightCount = GetAdditionalLightsCount();
+    for (int i = 0; i < pixelLightCount; ++i)
+    {
+        Light light = GetAdditionalLight(i, WorldPosition);
+        half NdotL = saturate(dot(WorldNormal, light.direction));
+        half atten = light.distanceAttenuation * light.shadowAttenuation;
+        half diff = atten * NdotL;
+        half spec = LightingSpecular(diff, light.direction, WorldNormal, WorldView, 1 ,Smoothness);
+        thisDiff += diff;
+        thisSpec += spec;
+        MainColor += (diff+spec) * light.color;
+    }
+    #endif
+    half total = thisDiff + thisSpec;
+    MainColor = total <= 0 ? (MainDiffuse + MainSpecular) : (MainColor/total);
+
+}
+void AddAdditionalLights_half(float Smoothness, float3 WorldPosition, float3 WorldNormal, float3 WorldView, float3 MainDiffuse, float3 MainSpecular, out float3 MainColor ){
+    MainColor = MainDiffuse + MainSpecular;
+    half thisDiff = 0;
+    half thisSpec = 0;
+    #ifndef SHADERGRAPH_PREVIEW
+    int pixelLightCount = GetAdditionalLightsCount();
+    for (int i = 0; i < pixelLightCount; ++i)
+    {
+        Light light = GetAdditionalLight(i, WorldPosition);
+        half NdotL = saturate(dot(WorldNormal, light.direction));
+        half atten = light.distanceAttenuation * light.shadowAttenuation;
+        half diff = atten * NdotL;
+        half spec = LightingSpecular(diff, light.direction, WorldNormal, WorldView, 1 ,Smoothness);
+        thisDiff += diff;
+        thisSpec += spec;
+        MainColor += (diff+spec) * light.color;
+    }
+    #endif
+    half total = thisDiff + thisSpec;
+    MainColor = total <= 0 ? (MainDiffuse + MainSpecular) : (MainColor/total);
+
+}
+
+
+#ifndef SHADERGRAPH_PREVIEW
+float ToonAttenuation(int i, float3 positionWS, float pointBands, float spotBands){
+	int perObjectLightIndex = GetPerObjectLightIndex(i); // (i = index used in loop)
+	#if USE_STRUCTURED_BUFFER_FOR_LIGHT_DATA
+		float4 lightPositionWS = _AdditionalLightsBuffer[perObjectLightIndex].position;
+		half4 spotDirection = _AdditionalLightsBuffer[perObjectLightIndex].spotDirection;
+		half4 distanceAndSpotAttenuation = _AdditionalLightsBuffer[perObjectLightIndex].attenuation;
+	#else
+		float4 lightPositionWS = _AdditionalLightsPosition[perObjectLightIndex];
+		half4 spotDirection = _AdditionalLightsSpotDir[perObjectLightIndex];
+		half4 distanceAndSpotAttenuation = _AdditionalLightsAttenuation[perObjectLightIndex];
+	#endif
+
+	// Point
+	float3 lightVector = lightPositionWS.xyz - positionWS * lightPositionWS.w;
+	float distanceSqr = max(dot(lightVector, lightVector), HALF_MIN);
+	float range = rsqrt(distanceAndSpotAttenuation.x);
+
+	// Spot
+	half3 lightDirection = half3(lightVector * rsqrt(distanceSqr));
+	half SdotL = dot(spotDirection.xyz, lightDirection);
+	half spotAtten = saturate(SdotL * distanceAndSpotAttenuation.z + distanceAndSpotAttenuation.w);
+	spotAtten *= spotAtten;
+
+	// Atten
+	bool isSpot = (distanceAndSpotAttenuation.z > 0);
+	return isSpot ? 
+		//step(0.01, spotAtten) :		// cheaper if you just want "1" band for spot lights
+		floor(spotAtten * spotBands) / spotBands :
+		saturate(1.0 - floor(sqrt(distanceSqr) / range * pointBands) / pointBands);
+}
+#endif
+
+void AdditionalLightsToon_float(float3 SpecColor, float Smoothness, float3 WorldPosition, float3 WorldNormal, float3 WorldView, half4 Shadowmask,
+						float PointLightBands, float SpotLightBands,
+						out float3 Diffuse, out float3 Specular) {
+	float3 diffuseColor = 0;
+	float3 specularColor = 0;
+	
+#ifndef SHADERGRAPH_PREVIEW
+	Smoothness = exp2(10 * Smoothness + 1);
+	WorldNormal = normalize(WorldNormal);
+	WorldView = SafeNormalize(WorldView);
+	int pixelLightCount = GetAdditionalLightsCount();
+	for (int i = 0; i < pixelLightCount; ++i) {
+		Light light = GetAdditionalLight(i, WorldPosition, Shadowmask);
+
+		// DIFFUSE
+		/* (LightingLambert)
+		half NdotL = saturate(dot(normal, lightDir));
+		diffuseColor += lightColor * NdotL;
+		*/
+
+		if (PointLightBands <= 1 && SpotLightBands <= 1){
+			// Solid colour lights
+			diffuseColor += light.color * step(0.0001, light.distanceAttenuation * light.shadowAttenuation);
+		}else{
+			// Multiple bands :
+			diffuseColor += light.color * light.shadowAttenuation * ToonAttenuation(i, WorldPosition, PointLightBands, SpotLightBands);
+		}
+
+		// SPECULAR
+		// Didn't really like the look of specular lighting in the toon shader here, so just keeping it at 0 (black, no light).
+		/* (LightingSpecular)
+		float3 halfVec = SafeNormalize(float3(lightDir) + float3(viewDir));
+		half NdotH = saturate(dot(normal, halfVec));
+		half modifier = pow(NdotH, smoothness);
+		half3 specularReflection = specular.rgb * modifier;
+		specularColor += lightColor * specularReflection;
+		*/
+	}
+#endif
+	Diffuse = diffuseColor;
+	Specular = specularColor;
+}
