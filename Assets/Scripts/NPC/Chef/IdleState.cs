@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 namespace NPC.Chef
@@ -18,10 +17,11 @@ namespace NPC.Chef
 
         public override void OnUpdateState( NPCManager NPC )
         {
-            if ( !m_Chef.OrderQueue.TryPeek( out _ ) ) return;
+            if ( !m_Chef.Restaurant.OrderQueue.TryPeek( out KeyValuePair<Seat,FoodData> food ) ) return;
+            m_Chef.OrderedFood = food;
+            m_Chef.Restaurant.OrderQueue.Dequeue();
             CookState cookState = new();
             NPC.ChangeState( cookState );
-            Debug.Log( "Cook State" );
         }
     }
 }

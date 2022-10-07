@@ -8,13 +8,14 @@ namespace NPC.Waiter
     public class Waiter : NPCManager
     {
         public NavMeshAgent Agent => m_Agent;
-        public Queue<KeyValuePair<Seat, ServedFood>> FoodsToServe => m_FoodsToServe;
         public Vector3 InitPos { get => m_InitPos; }
+        public RestaurantManager Restaurant { get => m_Restaurant; }
+        public KeyValuePair<Seat, ServedFood> FoodToServe { get => m_FoodToServe; set => m_FoodToServe =  value ; }
 
         private NavMeshAgent m_Agent;
-        private readonly Queue<KeyValuePair<Seat, ServedFood>> m_FoodsToServe = new();
         private RestaurantManager m_Restaurant;
         private Vector3 m_InitPos;
+        private KeyValuePair<Seat, ServedFood> m_FoodToServe;
         //States
         private readonly IdleState m_IdleState = new();
 

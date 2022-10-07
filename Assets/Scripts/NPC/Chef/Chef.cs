@@ -1,18 +1,16 @@
-using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
-using UnityEngine;
 namespace NPC.Chef
 {
     public class Chef : NPCManager
     {
-        public Queue<KeyValuePair<Seat, FoodData>> OrderQueue => m_OrderQueue;
 
+        public RestaurantManager Restaurant { get => m_Restaurant; }
+        public KeyValuePair<Seat, FoodData> OrderedFood { get => m_OrderedFood; set => m_OrderedFood =  value ; }
 
-        private readonly Queue<KeyValuePair<Seat,FoodData>> m_OrderQueue = new();
         private RestaurantManager m_Restaurant;
         private readonly CookState m_CookState = new();
         private readonly IdleState m_IdleState = new();
+        private KeyValuePair<Seat, FoodData> m_OrderedFood;
         private new void Start()
         {
             base.Start();

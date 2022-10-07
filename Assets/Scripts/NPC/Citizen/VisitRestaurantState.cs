@@ -43,7 +43,7 @@ namespace NPC.Citizen
 
         public override void OnUpdateState( NPCManager NPC )
         {
-            if ( m_Seat == null )
+            if ( m_Seat == null || m_Seat.Table == null )
             {
                 m_Citizen.ChangeState( new TravelState() );
                 return;

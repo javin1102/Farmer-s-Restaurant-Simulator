@@ -14,6 +14,9 @@ public class RestaurantManager : MonoBehaviour
     public List<Chef> Chefs => m_Chefs;
     public List<Waiter> Waiters => m_Waiters;
     public int WaiterIndex => m_WaiterIndexOffset > m_Waiters.Count - 1 ? m_WaiterIndexOffset = 0 : m_WaiterIndexOffset++;
+    public Queue<KeyValuePair<Seat, FoodData>> OrderQueue => m_OrderQueue;
+    public Queue<KeyValuePair<Seat, ServedFood>> FoodsToServe => m_FoodsToServe;
+    public Transform RestaurantGround { get => m_RestaurantGround; }
 
     //Furniture
     [SerializeField] private List<Table> m_Tables = new();
@@ -23,6 +26,8 @@ public class RestaurantManager : MonoBehaviour
     //Food
     private readonly Dictionary<FoodData, bool> m_AllFoods = new();
     private readonly List<FoodData> m_UnlockedFoods = new();
+    private readonly Queue<KeyValuePair<Seat, FoodData>> m_OrderQueue = new();
+    private readonly Queue<KeyValuePair<Seat, ServedFood>> m_FoodsToServe = new();
     private readonly Dictionary<string, StockIngredient> m_StockIngredients = new();
 
     //Chefs
@@ -30,12 +35,16 @@ public class RestaurantManager : MonoBehaviour
     [SerializeField] private int m_ChefIndexOffset = 0;
     private int ChefIndex => m_ChefIndexOffset > m_Chefs.Count - 1 ? m_ChefIndexOffset = 0 : m_ChefIndexOffset++;
 
+
+
+
     //Waiters
     [SerializeField] private List<Waiter> m_Waiters = new();
     private int m_WaiterIndexOffset;
 
     //Others
     private static RestaurantManager m_Instance;
+    [SerializeField] private Transform m_RestaurantGround;
     [SerializeField] private Transform m_FoodPlace;
     private bool m_FirstLoad = true;
 
@@ -52,9 +61,9 @@ public class RestaurantManager : MonoBehaviour
         //Check if player has save file
         if ( m_FirstLoad ) LoadRecipeData();
         m_AllFoods.ToList().ForEach( AddUnlockRecipeToList );
-        StockIngredient garlicStock = new( garlic, 10 );
-        StockIngredient onionStock = new( onion, 10 );
-        StockIngredient carrotStock = new( carrot, 10 );
+        StockIngredient garlicStock = new( garlic, 100 );
+        StockIngredient onionStock = new( onion, 100 );
+        StockIngredient carrotStock = new( carrot, 100 );
         m_StockIngredients.Add( garlic.id, garlicStock );
         m_StockIngredients.Add( onion.id, onionStock );
         m_StockIngredients.Add( carrot.id, carrotStock );
@@ -73,7 +82,8 @@ public class RestaurantManager : MonoBehaviour
     public void OrderFood( Seat seat,FoodData food )
     {
         int index = ChefIndex;
-        m_Chefs[index].OrderQueue.Enqueue( KeyValuePair.Create( seat, food ) );
+        m_OrderQueue.Enqueue( KeyValuePair.Create( seat, food ) );
+        //m_Chefs[index].OrderQueue.Enqueue( KeyValuePair.Create( seat, food ) );
     }
     public void StoreIngredient( ItemData itemData )
     {

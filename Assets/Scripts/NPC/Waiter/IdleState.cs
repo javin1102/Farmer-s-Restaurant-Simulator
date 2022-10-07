@@ -19,11 +19,11 @@ namespace NPC.Waiter
 
         public override void OnUpdateState( NPCManager NPC )
         {
-            if ( m_Waiter.FoodsToServe.TryPeek( out _ ) ) 
-            {
-                GrabFoodState grabFoodState = new();
-                NPC.ChangeState( grabFoodState );
-            } 
+            if ( !m_Waiter.Restaurant.FoodsToServe.TryPeek( out KeyValuePair<Seat,ServedFood> food ) ) return;
+            m_Waiter.FoodToServe = food;
+            m_Waiter.Restaurant.FoodsToServe.Dequeue();
+            GrabFoodState grabFoodState = new();
+            NPC.ChangeState( grabFoodState );
         }
     }
 

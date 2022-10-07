@@ -10,7 +10,7 @@ public abstract class Furniture : Item, IRaycastAction
     [SerializeField] protected Mesh m_PreviewMesh;
     protected GameObject m_InstantiatedGO;
     protected RestaurantManager m_Restaurant;
-
+    private Vector3 m_InstantiatedSize;
 
     private float m_ObjRot;
     private MaterialChanger m_MaterialChanger;
@@ -24,6 +24,7 @@ public abstract class Furniture : Item, IRaycastAction
         m_TileManager = TileManager.instance;
         base.OnEnable();
         m_ObjRotationInputRef.action.performed += RotateObj;
+        m_InstantiatedSize = transform.localScale;
     }
 
     private void OnDisable()
@@ -45,7 +46,7 @@ public abstract class Furniture : Item, IRaycastAction
         Vector3 pos = m_PreviewMatrix.MultiplyPoint3x4( Vector3.zero );
         pos.Set( pos.x, pos.y, pos.z );
         m_InstantiatedGO.transform.SetPositionAndRotation( pos, m_PreviewMatrix.rotation );
-        m_InstantiatedGO.transform.localScale = m_PreviewMatrix.lossyScale;
+        m_InstantiatedGO.transform.localScale = m_InstantiatedSize;
         m_InstantiatedGO.GetComponent<Collider>().enabled = true;
         Furniture furniture = m_InstantiatedGO.GetComponent<Furniture>();
         furniture.m_ObjRotationInputRef.action.performed -= furniture.RotateObj;
@@ -61,11 +62,13 @@ public abstract class Furniture : Item, IRaycastAction
             //m_ObjRot += rotPressedValue * 40 * Time.deltaTime;
             Quaternion objRotation = Quaternion.Euler( 0, m_ObjRot, 0 );
 
-            m_PreviewMatrix = Matrix4x4.TRS( objPos, objRotation, transform.localScale );
-
-            bool m_Collided = Physics.CheckBox( objPos,
-                m_PreviewMesh.bounds.size / 2 - Vector3.one * .01f, objRotation, Utils.RaycastableMask | Utils.RestaurantMask );
-
+            m_PreviewMatrix = Matrix4x4.TRS( objPos, objRotation, m_InstantiatedSize );
+            Collider[] colliders = Physics.OverlapBox( objPos, Vector3.Scale( m_PreviewMesh.bounds.size / 2 - Vector3.one * .01f, m_InstantiatedSize ), objRotation, Utils.RestaurantMask );
+            bool m_Collided = false;
+            foreach ( var collider in colliders )
+            {
+                m_Collided = collider.CompareTag( Utils.PROP_TAG );
+            }
             if ( m_Collided )
             {
                 m_MaterialChanger.ChangePreviewMaterialColor( false );

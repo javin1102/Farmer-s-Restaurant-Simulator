@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: Seat
   m_EditorClassIdentifier: 
   id: Seat
-  prefab: {fileID: 4404244772447968043, guid: c212d8313afaee74aac8b04d6612f330, type: 3}
+  prefab: {fileID: 8722763691875523070, guid: 74ba23b13c2d6ec4ab7239fdbcabb3b5, type: 3}
   icon: {fileID: 10915, guid: 0000000000000000f000000000000000, type: 0}
   type: 2
