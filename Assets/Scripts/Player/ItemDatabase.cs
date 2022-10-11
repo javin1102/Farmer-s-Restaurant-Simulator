@@ -17,10 +17,9 @@ public class ItemDatabase : MonoBehaviour
         m_ActionSlots = GetComponent<ActionSlotsController>();
         m_InventorySlots = GetComponent<InventorySlotsController>();
         m_ActionSlots.DBRemoveAction += RemoveFromDB;
-        ItemData[] x = Resources.LoadAll<ItemData>( "Data" );
+        ItemData[] x = Resources.LoadAll<ItemData>( "Data/Items" );
         foreach ( var item in x )
         {
-            Debug.Log( item.name );
             Store( item );
             Store( item );
             Store( item );

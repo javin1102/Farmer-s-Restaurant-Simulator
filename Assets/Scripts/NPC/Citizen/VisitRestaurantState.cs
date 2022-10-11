@@ -25,6 +25,7 @@ namespace NPC.Citizen
 
         public override void OnExitState( NPCManager NPC )
         {
+            m_Citizen.Agent.enabled = true;
             if ( m_Seat != null )
             {
                 m_Restaurant.UnoccupiedSeats.Add( m_Seat );
@@ -45,6 +46,7 @@ namespace NPC.Citizen
         {
             if ( m_Seat == null || m_Seat.Table == null )
             {
+                NPC.StopAllCoroutines();
                 m_Citizen.ChangeState( new TravelState() );
                 return;
             }
@@ -52,7 +54,10 @@ namespace NPC.Citizen
             {
                 m_Restaurant.OrderFood( m_Seat, m_Food );
                 m_HasOrder = true;
-                //Switch to sit animation
+                m_Citizen.Agent.enabled = false;
+                m_Citizen.transform.position = m_Seat.SitTf.position;
+                m_Citizen.transform.forward = m_Seat.transform.forward;
+                m_Citizen.Animator.SetTrigger( Utils.NPC_SIT_ANIM_PARAM );
             }
 
 
@@ -60,11 +65,8 @@ namespace NPC.Citizen
             {
                 NPC.StartCoroutine( EatFinish( 10 ) );
                 m_IsEating = true;
-                //Switch to eat animation
+                m_Citizen.Animator.SetTrigger( Utils.NPC_EAT_ANIM_PARAM );
             }
-
-            //TODO::Finish Eating -> leave
-            
 
         }
 

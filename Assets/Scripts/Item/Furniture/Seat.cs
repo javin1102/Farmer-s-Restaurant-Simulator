@@ -1,13 +1,16 @@
 using NPC.Citizen;
 using UnityEngine;
 
+[RequireComponent(typeof(Hoverable))]
 public class Seat : Furniture
 {
     public bool IsOccupied { get => m_IsOccupied; set => m_IsOccupied = value; }
     public Table Table { get => m_Table; }
-    public Citizen Citizen { get => m_Citizen; set => m_Citizen =  value ; }
+    public Citizen Citizen { get => m_Citizen; set => m_Citizen = value; }
+    public Transform SitTf { get => m_SitTf; }
 
-    [SerializeField] private Table m_Table;
+    [SerializeField] private Transform m_SitTf;
+    private Table m_Table;
     private Seat m_InstantiatedSeat;
     private bool m_IsOccupied;
     private Citizen m_Citizen;

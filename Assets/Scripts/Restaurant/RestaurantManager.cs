@@ -17,6 +17,7 @@ public class RestaurantManager : MonoBehaviour
     public Queue<KeyValuePair<Seat, FoodData>> OrderQueue => m_OrderQueue;
     public Queue<KeyValuePair<Seat, ServedFood>> FoodsToServe => m_FoodsToServe;
     public Transform RestaurantGround { get => m_RestaurantGround; }
+    public BoxCollider GroundCollider { get => m_GroundCollider; }
 
     //Furniture
     [SerializeField] private List<Table> m_Tables = new();
@@ -36,8 +37,6 @@ public class RestaurantManager : MonoBehaviour
     private int ChefIndex => m_ChefIndexOffset > m_Chefs.Count - 1 ? m_ChefIndexOffset = 0 : m_ChefIndexOffset++;
 
 
-
-
     //Waiters
     [SerializeField] private List<Waiter> m_Waiters = new();
     private int m_WaiterIndexOffset;
@@ -47,6 +46,7 @@ public class RestaurantManager : MonoBehaviour
     [SerializeField] private Transform m_RestaurantGround;
     [SerializeField] private Transform m_FoodPlace;
     private bool m_FirstLoad = true;
+    private BoxCollider m_GroundCollider;
 
     //Debug
     [SerializeField] private ItemData garlic;
@@ -61,6 +61,7 @@ public class RestaurantManager : MonoBehaviour
         //Check if player has save file
         if ( m_FirstLoad ) LoadRecipeData();
         m_AllFoods.ToList().ForEach( AddUnlockRecipeToList );
+        m_GroundCollider = m_RestaurantGround.GetComponent<BoxCollider>();
         StockIngredient garlicStock = new( garlic, 100 );
         StockIngredient onionStock = new( onion, 100 );
         StockIngredient carrotStock = new( carrot, 100 );
@@ -79,7 +80,7 @@ public class RestaurantManager : MonoBehaviour
         seat = m_Seats[RandomSeatIndex];
         return true;
     }
-    public void OrderFood( Seat seat,FoodData food )
+    public void OrderFood( Seat seat, FoodData food )
     {
         int index = ChefIndex;
         m_OrderQueue.Enqueue( KeyValuePair.Create( seat, food ) );
@@ -99,7 +100,6 @@ public class RestaurantManager : MonoBehaviour
         }
     }
     public void DecreaseStock( FoodData food ) => food.ingredients.ForEach( i => m_StockIngredients[i.ingredient.id].quantity -= i.quantity );
-
     public bool TryGetRecipeToCook( out FoodData recipe )
     {
         var availableRecipes = m_UnlockedFoods.Where( StockIsSufficient ).ToList();
@@ -112,27 +112,25 @@ public class RestaurantManager : MonoBehaviour
         return true;
     }
 
-
     //Check stock is sufficient to make food/recipe
     public bool StockIsSufficient( FoodData recipe )
     => recipe.ingredients.All( i => m_StockIngredients.TryGetValue( i.ingredient.id, out StockIngredient stockIngredient ) && stockIngredient.quantity >= i.quantity );
     private void LoadRecipeData()
     {
-        //ItemData[] x = Resources.LoadAll<ItemData>( "Data" );
-        //foreach ( var item in x )
-        //{
-        //    Debug.Log( item.id );
-        //}
-
-        var guids = AssetDatabase.FindAssets( "t:FoodData", new[] { "Assets/Data/Recipes" } );
-        var paths = guids.Select( AssetDatabase.GUIDToAssetPath );
-        var recipeData = paths.Select( AssetDatabase.LoadAssetAtPath<FoodData> ).ToList();
-        recipeData.ForEach( recipe => m_AllFoods.Add( recipe, true ) );
+        var foodData = Resources.LoadAll<FoodData>( "Data/Recipes" ).ToList();
+        foodData.ForEach( recipe => m_AllFoods.Add( recipe, true ) );
     }
     private void AddUnlockRecipeToList( KeyValuePair<FoodData, bool> recipe )
     {
         if ( recipe.Value == false ) return;
         m_UnlockedFoods.Add( recipe.Key );
     }
+    public bool FindNoStoveChef( out Chef chef )
+    {
+        chef = m_Chefs.SingleOrDefault( c => c.Stove == null );
+        if ( chef == null ) return false;
+        return true;
+    }
+
 
 }

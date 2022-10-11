@@ -9,7 +9,7 @@ namespace NPC
     {
         public static BaseSpawner Instance { get => m_Instance; }
         //Debug
-        [SerializeField] protected GameObject m_Prefab;
+        [SerializeField] protected GameObject[] m_Prefabs;
         [SerializeField] protected int m_SpawnSize = 20;
         protected ObjectPool<NPCManager> m_Pool;
         protected bool m_HasSpawn;
@@ -20,7 +20,8 @@ namespace NPC
         private void Awake()
         {
             if ( m_Instance == null ) m_Instance = this;
-            m_Pool = new( () => Instantiate( m_Prefab ).GetComponent<NPCManager>(), npc => Get( npc ), npc => npc.gameObject.SetActive( false ), npc => Destroy( npc.gameObject ), false, m_SpawnSize, 60 );
+            int i = 0;
+            m_Pool = new( () => Instantiate( m_Prefabs[i++ % m_Prefabs.Length] ).GetComponent<NPCManager>(), npc => Get( npc ), npc => npc.gameObject.SetActive( false ), npc => Destroy( npc.gameObject ), false, m_SpawnSize, 60 );
         }
 
         private void Update()

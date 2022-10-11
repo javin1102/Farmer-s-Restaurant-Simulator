@@ -37,7 +37,7 @@ public class PlayerAction : MonoBehaviour
     private ActionSlotsController m_ActionSlotsController;
     private ItemDatabase m_ItemDatabase;
     private bool m_IsUIOpen;
-
+    private Hoverable m_Hovered;
     private void Awake()
     {
         //LockCursor();
@@ -57,7 +57,7 @@ public class PlayerAction : MonoBehaviour
         InitializeInputAction();
         OnEnableUI += EnterCursorMode;
         OnDisableUI += ExitCursorMode;
-        m_MainInputAction.performed += PerformMainAction;
+        m_MainInputAction.performed += PerformEquippedItemMainAction;
         m_DropInputAction.performed += DropItem;
         m_InventoryAction.performed += InvokeToggleInventoryUI;
         m_OpenUIAction.performed += InvokeToggleUI;
@@ -72,7 +72,7 @@ public class PlayerAction : MonoBehaviour
         OnDisableUI -= ExitCursorMode;
         m_InventoryAction.performed -= InvokeToggleInventoryUI;
         m_OpenUIAction.performed -= InvokeToggleUI;
-        m_MainInputAction.performed -= PerformMainAction;
+        m_MainInputAction.performed -= PerformEquippedItemMainAction;
         m_DropInputAction.performed -= DropItem;
         m_AltAction.started -= EnterCursorMode;
         m_AltAction.canceled -= ExitCursorMode;
@@ -82,13 +82,29 @@ public class PlayerAction : MonoBehaviour
     private void Update()
     {
         Ray ray = m_Cam.ViewportPointToRay( new Vector3( 0.5f, 0.5f, 0f ) );
-        Physics.Raycast( ray, out RaycastHit hitInfo, m_RaycastDistance, Utils.FarmGroundMask | Utils.RaycastableMask | Utils.RestaurantMask );
+        Physics.Raycast( ray, out RaycastHit hitInfo, m_RaycastDistance, ~Utils.PlayerMask );
         if ( hitInfo.collider != null )
         {
             if ( m_ActionSlotsController.CurrEquippedItem != null ) TryPerformSelectedItemRaycastAction( hitInfo );
-
+            if ( hitInfo.collider.TryGetComponent( out Hoverable hover ) )
+            {
+                //if ( m_Hovered == hover ) return;
+                if ( m_Hovered != null && m_Hovered != hover ) m_Hovered.HoverExit();
+                m_Hovered = hover;
+                m_Hovered.HoverEnter();
+            }
+            else
+            {
+                if ( m_Hovered != null )
+                {
+                    m_Hovered.HoverExit();
+                    m_Hovered = null;
+                }
+            }
+            if ( m_MainInputAction.triggered && hitInfo.collider.TryGetComponent( out IInteractable hit ) ) hit.Interact();
             if ( m_StoreInputAction.triggered && hitInfo.collider.TryGetComponent( out Item raycastedItem ) )
             {
+                Debug.Log( "Store" );
                 if ( Store( raycastedItem ) ) return;
 
                 //TODO::Handle Inventory is full
@@ -96,7 +112,12 @@ public class PlayerAction : MonoBehaviour
 
             }
         }
-
+        else
+        {
+            if ( m_Hovered == null ) return;
+            m_Hovered.HoverExit();
+            m_Hovered = null;
+        }
 
     }
 
@@ -111,7 +132,10 @@ public class PlayerAction : MonoBehaviour
     }
     public void InvokeToggleInventoryUI() => m_ToggleInventoryUI?.Invoke();
     public void InvokeToggleUI() => m_ToggleUI?.Invoke();
-    private void DropItem( InputAction.CallbackContext obj ) => m_ItemDatabase.Drop( m_ActionSlotsController.CurrEquippedItem.Data, 1 );
+    private void DropItem( InputAction.CallbackContext obj ) {
+        if ( m_ActionSlotsController.CurrEquippedItem == null ) return;
+        m_ItemDatabase.Drop( m_ActionSlotsController.CurrEquippedItem.Data, 1 );
+    } 
     private void InitializeInputAction()
     {
         m_MainInputAction = m_PlayerInput.actions[Utils.MAIN_ACTION];
@@ -128,7 +152,7 @@ public class PlayerAction : MonoBehaviour
             m_SelectSlotInputAction[i] = m_PlayerInput.actions[Utils.SELECT_SLOT_ACTION[i]];
         InitializeSelectSlotAction();
     }
-    private void PerformMainAction( InputAction.CallbackContext context )
+    private void PerformEquippedItemMainAction( InputAction.CallbackContext context )
     {
         if ( m_ActionSlotsController.CurrEquippedItem != null )
         {

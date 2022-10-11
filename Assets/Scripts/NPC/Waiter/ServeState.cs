@@ -16,6 +16,12 @@ namespace NPC.Waiter
         {
             m_Waiter = NPC as Waiter;
             m_Food = m_Waiter.FoodToServe;
+            if ( Seat == null )
+            {
+                GameObject.Destroy( FoodGO );
+                NPC.ChangeState( new IdleState() );
+                return;
+            }
             m_Waiter.Agent.SetDestination( Seat.transform.position );
         }
 
@@ -25,6 +31,12 @@ namespace NPC.Waiter
 
         public override void OnUpdateState( NPCManager NPC )
         {
+            if ( Seat == null )
+            {
+                GameObject.Destroy( FoodGO );
+                NPC.ChangeState( new IdleState() );
+                return;
+            }
             if ( !m_Waiter.Agent.pathPending && m_Waiter.Agent.HasReachedDestination() )
             {
                 //Serve Food -> place on the table

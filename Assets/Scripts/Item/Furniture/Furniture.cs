@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 
+[RequireComponent( typeof( MaterialChanger ) )]
 public abstract class Furniture : Item, IRaycastAction
 {
     [SerializeField] private ItemMainActionChannel m_DecreaseableEvent;
@@ -11,13 +12,12 @@ public abstract class Furniture : Item, IRaycastAction
     protected GameObject m_InstantiatedGO;
     protected RestaurantManager m_Restaurant;
     private Vector3 m_InstantiatedSize;
-
     private float m_ObjRot;
     private MaterialChanger m_MaterialChanger;
     private Matrix4x4 m_PreviewMatrix;
 
 
-    private new void OnEnable()
+    protected new void OnEnable()
     {
         m_Restaurant = RestaurantManager.Instance;
         m_PreviewMesh = GetComponent<MeshFilter>().sharedMesh;
@@ -27,7 +27,7 @@ public abstract class Furniture : Item, IRaycastAction
         m_InstantiatedSize = transform.localScale;
     }
 
-    private void OnDisable()
+    protected void OnDisable()
     {
         m_ObjRotationInputRef.action.performed -= RotateObj;
     }
@@ -54,16 +54,15 @@ public abstract class Furniture : Item, IRaycastAction
     }
     public void PerformRaycastAction( RaycastHit hitInfo )
     {
+ 
         if ( m_MaterialChanger == null ) m_MaterialChanger = GetComponent<MaterialChanger>();
         if ( hitInfo.collider.CompareTag( Utils.RESTAURANT_GROUND_TAG ) )
         {
             Vector3 objPos = m_TileManager.WorldToTilePos( hitInfo.point ) + Vector3.up * m_PreviewMesh.bounds.size.y / 2;
-            //float rotPressedValue = m_ObjRotationInputRef.action.ReadValue<float>();
-            //m_ObjRot += rotPressedValue * 40 * Time.deltaTime;
             Quaternion objRotation = Quaternion.Euler( 0, m_ObjRot, 0 );
 
             m_PreviewMatrix = Matrix4x4.TRS( objPos, objRotation, m_InstantiatedSize );
-            Collider[] colliders = Physics.OverlapBox( objPos, Vector3.Scale( m_PreviewMesh.bounds.size / 2 - Vector3.one * .01f, m_InstantiatedSize ), objRotation, Utils.RestaurantMask );
+            Collider[] colliders = Physics.OverlapBox( objPos, Vector3.Scale( m_PreviewMesh.bounds.size / 2 - Vector3.one * .01f, m_InstantiatedSize ), objRotation, Utils.RaycastableMask );
             bool m_Collided = false;
             foreach ( var collider in colliders )
             {
@@ -71,15 +70,13 @@ public abstract class Furniture : Item, IRaycastAction
             }
             if ( m_Collided )
             {
-                m_MaterialChanger.ChangePreviewMaterialColor( false );
                 m_IsInstantiable = false;
             }
             else
             {
-                m_MaterialChanger.ChangePreviewMaterialColor( true );
+                Graphics.DrawMesh( m_PreviewMesh, m_PreviewMatrix, m_MaterialChanger.PreviewMaterial, 0 );
                 m_IsInstantiable = true;
             }
-            Graphics.DrawMesh( m_PreviewMesh, m_PreviewMatrix, m_MaterialChanger.PreviewMaterial, 0 );
             return;
         }
 

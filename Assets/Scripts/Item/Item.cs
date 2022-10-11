@@ -22,7 +22,7 @@ public abstract class Item : MonoBehaviour
     {
         TryGetComponent( out m_ItemRaycastAction );
         m_Rigidbody = GetComponent<Rigidbody>();
-        m_Collider = GetComponent<BoxCollider>();
+        m_Collider = GetComponent<Collider>();
         m_MeshRenderer = GetComponent<MeshRenderer>();
         m_Rigidbody.isKinematic = true;
     }
@@ -32,11 +32,11 @@ public abstract class Item : MonoBehaviour
         if ( !m_IsDropState ) return;
         if ( !m_IsGrounded && CheckGround() )
         {
+            m_Collider.enabled = true;
             m_IsGrounded = true;
             m_Rigidbody.isKinematic = true;
             m_Rigidbody.useGravity = false;
             m_Collider.enabled = true;
-            m_Collider.isTrigger = true;
             float posY = transform.localPosition.y + .15f;
             m_MeshRenderer.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off;
             if ( !m_RotateTweener.IsPlaying() )
@@ -59,6 +59,14 @@ public abstract class Item : MonoBehaviour
 
     public void DropState()
     {
+        if ( m_Collider.GetType() == typeof( MeshCollider ) )
+        {
+            MeshCollider meshCollider = ( MeshCollider ) m_Collider;
+            meshCollider.convex = true;
+
+        }
+        m_Collider.enabled = false;
+        m_Collider.isTrigger = true;
         m_Rigidbody.isKinematic = false;
         m_RotateTweener = transform.DOLocalRotate( new Vector3( 0, 360, 0 ), 1, RotateMode.FastBeyond360 ).SetLoops( -1 ).SetRelative( true ).SetEase( Ease.Linear );
 

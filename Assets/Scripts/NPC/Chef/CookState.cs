@@ -9,13 +9,14 @@ namespace NPC.Chef
         private float m_CookTime;
         private Vector3 m_FoodPos = new();
         private Vector3 m_FoodPlace;
-        private bool m_HasFood;
         public override void OnEnterState( NPCManager NPC )
         {
             m_Chef = NPC as Chef;
             m_FoodPlace = m_Chef.Restaurant.FoodPlace.position;
             m_Food = m_Chef.OrderedFood;
             m_CookTime = m_Food.Value.cookDuration;
+            m_Chef.Animator.SetBool(Utils.NPC_COOKING_ANIM_PARAM, true);
+            m_Chef.Hoverable.IsHoverable = false;
         }
 
         public override void OnExitState( NPCManager NPC )
@@ -24,6 +25,14 @@ namespace NPC.Chef
 
         public override void OnUpdateState( NPCManager NPC )
         {
+            if ( m_Chef.Stove == null )
+            {
+                IdleState idleState = new();
+                NPC.ChangeState( idleState );
+                m_Chef.Restaurant.OrderQueue.Enqueue( m_Food );
+                return;
+            }
+
             //TODO::Switch to cook anim
             if ( m_CookTime <= 0 )
             {
