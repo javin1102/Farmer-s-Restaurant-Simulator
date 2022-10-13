@@ -2,13 +2,14 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 
 [RequireComponent( typeof( MaterialChanger ) )]
+[RequireComponent( typeof( Hoverable ) )]
 public abstract class Furniture : Item, IRaycastAction
 {
     [SerializeField] private ItemMainActionChannel m_DecreaseableEvent;
     [SerializeField] private InputActionReference m_ObjRotationInputRef;
 
-    [SerializeField] protected bool m_IsInstantiable;
-    [SerializeField] protected Mesh m_PreviewMesh;
+    protected bool m_IsInstantiable;
+    protected Mesh m_PreviewMesh;
     protected GameObject m_InstantiatedGO;
     protected RestaurantManager m_Restaurant;
     private Vector3 m_InstantiatedSize;
@@ -54,7 +55,7 @@ public abstract class Furniture : Item, IRaycastAction
     }
     public void PerformRaycastAction( RaycastHit hitInfo )
     {
- 
+
         if ( m_MaterialChanger == null ) m_MaterialChanger = GetComponent<MaterialChanger>();
         if ( hitInfo.collider.CompareTag( Utils.RESTAURANT_GROUND_TAG ) )
         {

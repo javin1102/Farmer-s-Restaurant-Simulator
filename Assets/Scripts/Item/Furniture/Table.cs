@@ -1,13 +1,14 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+
 public class Table : Furniture
 {
     public bool HasMaxSeats { get => m_Seats.Count >= 4; }
     public bool HasSeat { get => m_Seats.Count > 0; }
     public List<Seat> Seats => m_Seats;
 
-    [SerializeField] private List<Seat> m_Seats = new();
+    private List<Seat> m_Seats = new();
     private Table m_InstantiatedTable;
 
     public override void MainAction()

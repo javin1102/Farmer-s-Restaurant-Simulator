@@ -7,9 +7,9 @@ public class Hoverable : MonoBehaviour
     private int m_Layer;
     private bool m_IsHoverable;
     public bool IsHoverable { get => m_IsHoverable; set => m_IsHoverable = value; }
-    private void Start()
+    private void Awake()
     {
-        m_Layer = gameObject.layer;
+        m_Layer = Utils.RaycastableLayer;
         m_IsHoverable = true;
     }
     public void HoverEnter()

@@ -46,7 +46,6 @@ public class ActionSlotsController : ItemSlotsController
                     return true;
                 }
             }
-
             return false;
         }
 
@@ -57,10 +56,10 @@ public class ActionSlotsController : ItemSlotsController
     }
     private Item InstantiateItemToHand( ItemSlot item )
     {
-        GameObject go = Instantiate( item.data.prefab, m_Hand );
-        ResetItemTf( go.transform );
-        go.SetActive( true );
-        return go.GetComponent<Item>();
+        Item instantiatedItem = Instantiate( item.data.prefab, m_Hand ).GetComponent<Item>();
+        ResetItemTf( instantiatedItem );
+        instantiatedItem.gameObject.SetActive( true );
+        return instantiatedItem;
     }
 
     private void DestroyAllItemsInHand()
@@ -86,13 +85,10 @@ public class ActionSlotsController : ItemSlotsController
     }
 
 
-    private void ResetItemTf( Transform item )
+    private void ResetItemTf( Item item )
     {
-        item.parent = m_Hand;
-        item.localPosition = Vector3.zero;
-        item.localScale = Vector3.one;
-        item.localRotation = Quaternion.identity;
-        item.gameObject.layer = Utils.HandLayer;
+        item.transform.parent = m_Hand;
+        item.SetHandTf();
     }
 
     public void SelectActionSlot( int index )
@@ -110,10 +106,11 @@ public class ActionSlotsController : ItemSlotsController
 
     public void CheckEquippedItem()
     {
-        if ( m_Slots[m_SelectedSlotIndex] == null  )
+        if ( m_Slots[m_SelectedSlotIndex] == null || m_Slots[m_SelectedSlotIndex].quantity <= 0 )
         {
             if ( m_CurrEquippedItem == null ) return;
-            m_CurrEquippedItem = null; 
+            m_CurrEquippedItem = null;
+            m_Slots[m_SelectedSlotIndex] = null;
             DestroyAllItemsInHand();
         }
         else
@@ -130,7 +127,7 @@ public class ActionSlotsController : ItemSlotsController
                     m_CurrEquippedItem = InstantiateItemToHand( m_Slots[m_SelectedSlotIndex] );
                 }
             }
-           
+
         }
 
     }

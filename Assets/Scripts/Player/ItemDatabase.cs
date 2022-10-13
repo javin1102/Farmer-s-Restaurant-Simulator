@@ -61,7 +61,11 @@ public class ItemDatabase : MonoBehaviour
                 droppedItem.DropState();
             }
 
-            if ( slot.quantity <= 0 ) m_InventoryDB.Remove( itemData.id );
+            if ( slot.quantity <= 0 ) {
+
+                m_InventoryDB.Remove( itemData.id );
+            }
+            
         }
     }
 }

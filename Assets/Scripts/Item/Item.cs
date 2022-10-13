@@ -1,5 +1,7 @@
 using UnityEngine;
 using DG.Tweening;
+using static UnityEditor.Progress;
+
 [RequireComponent( typeof( Rigidbody ) )]
 public abstract class Item : MonoBehaviour
 {
@@ -13,11 +15,16 @@ public abstract class Item : MonoBehaviour
     protected bool m_IsDropState;
 
     //Drop Vars
-    private Tweener m_RotateTweener;
     private Rigidbody m_Rigidbody;
     private Collider m_Collider;
     private MeshRenderer m_MeshRenderer;
     private bool m_IsGrounded;
+    private static int m_ShaderFloatProperty = Shader.PropertyToID( "_Float" );
+    private MaterialPropertyBlock m_Mpb;
+    protected void Awake()
+    {
+        m_Mpb = new();
+    }
     protected void OnEnable()
     {
         TryGetComponent( out m_ItemRaycastAction );
@@ -25,6 +32,8 @@ public abstract class Item : MonoBehaviour
         m_Collider = GetComponent<Collider>();
         m_MeshRenderer = GetComponent<MeshRenderer>();
         m_Rigidbody.isKinematic = true;
+        m_Mpb.SetFloat( m_ShaderFloatProperty, 0 );
+        m_MeshRenderer.SetPropertyBlock( m_Mpb );
     }
     public abstract void MainAction();
     protected void Update()
@@ -39,11 +48,11 @@ public abstract class Item : MonoBehaviour
             m_Collider.enabled = true;
             float posY = transform.localPosition.y + .15f;
             m_MeshRenderer.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off;
-            if ( !m_RotateTweener.IsPlaying() )
-            {
-                m_RotateTweener.Play();
-                transform.DOLocalMoveY( posY, 1f ).SetLoops( -1, LoopType.Yoyo ).SetEase( Ease.InOutSine );
-            }
+            //if ( !m_RotateTweener.IsPlaying() )
+            //{
+            //    m_RotateTweener.Play();
+            //    transform.DOLocalMoveY( posY, 1f ).SetLoops( -1, LoopType.Yoyo ).SetEase( Ease.InOutSine );
+            //}
             return;
         }
 
@@ -51,7 +60,7 @@ public abstract class Item : MonoBehaviour
 
     private void OnTriggerEnter( Collider other )
     {
-        if ( other.TryGetComponent( out PlayerAction playerAction ) )
+        if ( m_IsGrounded && other.TryGetComponent( out PlayerAction playerAction ) )
         {
             playerAction.Store( this );
         }
@@ -63,21 +72,34 @@ public abstract class Item : MonoBehaviour
         {
             MeshCollider meshCollider = ( MeshCollider ) m_Collider;
             meshCollider.convex = true;
-
         }
+        
+        if ( transform.TryGetComponent( out Hoverable hoverable ) )
+        {
+            hoverable.IsHoverable = false;
+        }
+
+        m_Mpb.SetFloat( m_ShaderFloatProperty, 1 );
         m_Collider.enabled = false;
         m_Collider.isTrigger = true;
         m_Rigidbody.isKinematic = false;
-        m_RotateTweener = transform.DOLocalRotate( new Vector3( 0, 360, 0 ), 1, RotateMode.FastBeyond360 ).SetLoops( -1 ).SetRelative( true ).SetEase( Ease.Linear );
-
-        m_RotateTweener.Pause();
+        m_MeshRenderer.SetPropertyBlock( m_Mpb );
         m_IsDropState = true;
         transform.SetParent( null );
+
+            
         transform.localScale = Vector3.one * .25f;
         m_Rigidbody.AddForce( 10f * Camera.main.transform.forward, ForceMode.VelocityChange );
 
     }
-
+    public virtual void SetHandTf()
+    {
+        transform.localPosition = Vector3.zero;
+        transform.localScale = Vector3.one / 2;
+        transform.localRotation = Quaternion.identity;
+        transform.gameObject.layer = Utils.HandLayer;
+        transform.forward = -transform.forward;
+    }
     private bool CheckGround() => Physics.Raycast( transform.position, Vector3.down, .5f );
 }
 

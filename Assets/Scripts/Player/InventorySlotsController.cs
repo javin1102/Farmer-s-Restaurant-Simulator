@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class InventorySlotsController : ItemSlotsController
 {
-    private void Start()
+    private void Awake()
     {
         m_Slots = new ItemSlot[42];
     }

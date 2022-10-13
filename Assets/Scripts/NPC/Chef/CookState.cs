@@ -33,6 +33,7 @@ namespace NPC.Chef
                 return;
             }
 
+            m_Chef.transform.forward = m_Chef.Stove.transform.forward;
             //TODO::Switch to cook anim
             if ( m_CookTime <= 0 )
             {

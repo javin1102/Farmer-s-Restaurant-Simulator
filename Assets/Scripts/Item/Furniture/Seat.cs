@@ -1,7 +1,6 @@
 using NPC.Citizen;
 using UnityEngine;
 
-[RequireComponent(typeof(Hoverable))]
 public class Seat : Furniture
 {
     public bool IsOccupied { get => m_IsOccupied; set => m_IsOccupied = value; }
