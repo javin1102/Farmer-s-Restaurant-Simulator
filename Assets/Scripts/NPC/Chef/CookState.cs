@@ -39,7 +39,7 @@ namespace NPC.Chef
             {
                 m_CookTime = 0;
                 GameObject foodGO = GameObject.Instantiate( m_Food.Value.foodPrefab, RandomPos(), Quaternion.identity );
-                ServedFood servedFood = new( foodGO, m_Food.Value.price );
+                ServedFood servedFood = new( foodGO, m_Food.Value.dishPrice );
                 m_Chef.Restaurant.FoodsToServe.Enqueue( KeyValuePair.Create( m_Food.Key, servedFood ) );
                 m_Chef.Restaurant.DecreaseStock( m_Food.Value );
                 IdleState idleState = new();

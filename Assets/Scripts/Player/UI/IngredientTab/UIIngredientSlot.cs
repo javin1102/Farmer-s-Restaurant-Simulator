@@ -16,7 +16,6 @@ public class UIIngredientSlot : MonoBehaviour
     {
         if ( m_IngredientData == null ) return;
         UpdateUI();
-
     }
 
     public void UpdateUI()

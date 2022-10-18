@@ -12,6 +12,7 @@ public class RestaurantManager : MonoBehaviour
     public List<Chef> Chefs => m_Chefs;
     public List<Waiter> Waiters => m_Waiters;
     public int WaiterIndex => m_WaiterIndexOffset > m_Waiters.Count - 1 ? m_WaiterIndexOffset = 0 : m_WaiterIndexOffset++;
+    public Dictionary<FoodData, bool> AllFoods => m_AllFoods;
     public Queue<KeyValuePair<Seat, FoodData>> OrderQueue => m_OrderQueue;
     public Queue<KeyValuePair<Seat, ServedFood>> FoodsToServe => m_FoodsToServe;
     public Dictionary<string, StockIngredient> StockIngredients => m_StockIngredients;
@@ -34,6 +35,7 @@ public class RestaurantManager : MonoBehaviour
     [SerializeField] private List<Chef> m_Chefs = new();
     [SerializeField] private int m_ChefIndexOffset = 0;
     private int ChefIndex => m_ChefIndexOffset > m_Chefs.Count - 1 ? m_ChefIndexOffset = 0 : m_ChefIndexOffset++;
+
 
 
 

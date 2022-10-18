@@ -6,8 +6,10 @@ using UnityEngine;
 public class FoodData : ScriptableObject
 {
     public GameObject foodPrefab;
-    public int price;
+    public int dishPrice;
+    public int unlockPrice;
     public float cookDuration;
+    public Sprite icon;
     public List<FoodIngredient> ingredients = new();
 }
 

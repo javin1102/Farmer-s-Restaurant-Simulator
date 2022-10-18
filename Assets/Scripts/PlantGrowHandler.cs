@@ -32,7 +32,7 @@ public class PlantGrowHandler : MonoBehaviour
         tile = GetComponentInParent<Tile>();
         tileRenderer = GetComponentInParent<Renderer>();
 
-        InvokeRepeating("StartGrow", 1f, 1f);
+        //InvokeRepeating("StartGrow", 1f, 1f);
 
     }
 
