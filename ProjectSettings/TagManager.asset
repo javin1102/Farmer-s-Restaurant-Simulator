@@ -11,10 +11,10 @@ TagManager:
   - Farm Ground
   - Tile Parent
   - Restaurant
-  - Seat
-  - Table
   - Wet Tile
   - Crop
+  - Seat
+  - Table
   layers:
   - Default
   - TransparentFX
@@ -22,14 +22,14 @@ TagManager:
   - 
   - Water
   - UI
-  - Restaurant Ground
-  - PlayerBody
+  - 
+  - Player
   - Raycastable
   - Farm Ground
   - Ground
   - Hand
   - Restaurant
-  - 
+  - Outline
   - 
   - 
   - 

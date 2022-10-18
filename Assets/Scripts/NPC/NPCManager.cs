@@ -1,13 +1,22 @@
 using UnityEngine;
+using UnityEngine.AI;
+
 namespace NPC
 {
+    [RequireComponent( typeof( NavMeshAgent ) )]
     public abstract class NPCManager : MonoBehaviour
     {
-        protected NPCBaseState m_CurrentState;
+        public NavMeshAgent Agent { get => m_Agent; }
+        public Animator Animator { get => m_Animator; }
 
+        protected NPCBaseState m_CurrentState;
+        protected NavMeshAgent m_Agent;
+        protected Animator m_Animator;
         // Start is called before the first frame update
-        protected void Start()
+        protected void Awake()
         {
+            m_Agent = GetComponent<NavMeshAgent>();
+            m_Animator = GetComponent<Animator>();
         }
 
         public void ChangeState( NPCBaseState state )

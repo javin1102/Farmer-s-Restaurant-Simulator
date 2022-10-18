@@ -1,6 +1,4 @@
-using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
 namespace NPC.Chef
 {
     public class IdleState : NPCBaseState
@@ -9,7 +7,7 @@ namespace NPC.Chef
         public override void OnEnterState( NPCManager NPC )
         {
             m_Chef = NPC as Chef;
-            //Set to idle anim
+            m_Chef.Animator.SetBool( Utils.NPC_COOKING_ANIM_PARAM, false );
         }
 
         public override void OnExitState( NPCManager NPC )
@@ -18,10 +16,13 @@ namespace NPC.Chef
 
         public override void OnUpdateState( NPCManager NPC )
         {
-            if ( !m_Chef.OrderQueue.TryPeek( out _ ) ) return;
+            if ( m_Chef.Stove == null ) return;
+            m_Chef.transform.forward = m_Chef.Stove.transform.forward;
+            if ( !m_Chef.Restaurant.OrderQueue.TryPeek( out KeyValuePair<Seat, FoodData> food ) ) return;
+            m_Chef.OrderedFood = food;
+            m_Chef.Restaurant.OrderQueue.Dequeue();
             CookState cookState = new();
             NPC.ChangeState( cookState );
-            Debug.Log( "Cook State" );
         }
     }
 }

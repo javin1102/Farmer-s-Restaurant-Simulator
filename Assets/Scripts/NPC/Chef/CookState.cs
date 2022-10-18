@@ -9,15 +9,14 @@ namespace NPC.Chef
         private float m_CookTime;
         private Vector3 m_FoodPos = new();
         private Vector3 m_FoodPlace;
-        private RestaurantManager m_Restaurant;
-        private bool m_HasFood;
         public override void OnEnterState( NPCManager NPC )
         {
             m_Chef = NPC as Chef;
-            m_Restaurant = RestaurantManager.Instance;
-            m_FoodPlace = m_Restaurant.FoodPlace.position;
-            m_Food = m_Chef.OrderQueue.Peek();
+            m_FoodPlace = m_Chef.Restaurant.FoodPlace.position;
+            m_Food = m_Chef.OrderedFood;
             m_CookTime = m_Food.Value.cookDuration;
+            m_Chef.Animator.SetBool(Utils.NPC_COOKING_ANIM_PARAM, true);
+            m_Chef.Hoverable.IsHoverable = false;
         }
 
         public override void OnExitState( NPCManager NPC )
@@ -26,23 +25,25 @@ namespace NPC.Chef
 
         public override void OnUpdateState( NPCManager NPC )
         {
+            if ( m_Chef.Stove == null )
+            {
+                IdleState idleState = new();
+                NPC.ChangeState( idleState );
+                m_Chef.Restaurant.OrderQueue.Enqueue( m_Food );
+                return;
+            }
 
-
+            m_Chef.transform.forward = m_Chef.Stove.transform.forward;
             //TODO::Switch to cook anim
             if ( m_CookTime <= 0 )
             {
                 m_CookTime = 0;
                 GameObject foodGO = GameObject.Instantiate( m_Food.Value.foodPrefab, RandomPos(), Quaternion.identity );
                 ServedFood servedFood = new( foodGO, m_Food.Value.price );
-                m_Restaurant.Waiters[m_Restaurant.WaiterIndex].FoodsToServe.Enqueue( KeyValuePair.Create( m_Food.Key, servedFood ) );
-                m_Chef.OrderQueue.Dequeue();
-                m_Restaurant.DecreaseStock( m_Food.Value );
-                if ( m_Chef.OrderQueue.TryPeek( out m_Food ) ) m_CookTime = m_Food.Value.cookDuration;
-                else
-                {
-                    IdleState idleState = new();
-                    NPC.ChangeState( idleState );
-                }
+                m_Chef.Restaurant.FoodsToServe.Enqueue( KeyValuePair.Create( m_Food.Key, servedFood ) );
+                m_Chef.Restaurant.DecreaseStock( m_Food.Value );
+                IdleState idleState = new();
+                NPC.ChangeState( idleState );
                 return;
             }
 

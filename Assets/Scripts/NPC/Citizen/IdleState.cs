@@ -26,7 +26,7 @@ namespace NPC.Citizen
             yield return new WaitForSeconds( delay );
             VisitRestaurantState visitRestaurantState = new();
             TravelState travelState = new();
-            int randomize = Random.value < .8f ? 1 : 0;
+            int randomize = Random.value < .4f ? 1 : 0;
             if ( randomize == 0 ) m_Citizen.ChangeState( travelState );
             else m_Citizen.ChangeState( visitRestaurantState );
 

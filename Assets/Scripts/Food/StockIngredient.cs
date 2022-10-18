@@ -6,10 +6,10 @@ using UnityEngine;
 public class StockIngredient 
 {
     public int quantity;
-    public ItemData ingredient;
+    public ItemData data;
     public StockIngredient( ItemData ingredient, int quantity = 1 )
     {
         this.quantity = quantity;
-        this.ingredient = ingredient;
+        this.data = ingredient;
     }
 }

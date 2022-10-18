@@ -12,9 +12,11 @@ namespace NPC.Citizen
         public override void OnEnterState( NPCManager NPC )
         {
             m_Citizen = NPC as Citizen;
+            m_Citizen.Agent.enabled = true;
             m_Citizen.CurrentWaypoint = m_Citizen.DetermineNextWaypoint();
             m_Citizen.Agent.SetDestination( m_Citizen.CurrentWaypoint.GetPosition() );
             m_Spawner = BaseSpawner.Instance as CitizenSpawner;
+            m_Citizen.Animator.SetTrigger( Utils.NPC_WALK_ANIM_PARAM );
         }
 
         public override void OnExitState( NPCManager NPC )
@@ -24,7 +26,7 @@ namespace NPC.Citizen
 
         public override void OnUpdateState( NPCManager NPC )
         {
-            if ( !hasDetermine && m_Citizen.Agent.HasReachedDestination() )
+            if ( !hasDetermine && !m_Citizen.Agent.pathPending && m_Citizen.Agent.HasReachedDestination() )
             {
 
                 if ( ( m_Citizen.TravelBackwards == false && m_Citizen.CurrentWaypoint.nextWayPoint == null )

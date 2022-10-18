@@ -10,7 +10,7 @@ public class UIOtherController : MonoBehaviour
     [SerializeField] private UIMenu m_RecipesMenu;
     [SerializeField] private UIMenu m_UpgradeMenu;
     [SerializeField] private UIMenu m_InventoryMenu;
-    [SerializeField] private UIMenu m_SettingsMenu;
+    [SerializeField] private UIMenu m_IngredientsStockMenu;
     [SerializeField] private UIMarker m_Marker;
     [SerializeField] private Button m_CloseButton;
     [SerializeField] private UITab[] m_Tabs;
@@ -29,6 +29,7 @@ public class UIOtherController : MonoBehaviour
         m_PlayerAction.OnDisableUI += SelectDefaultTab;
         m_RecipesMenu.SelectAction += SelectRecipesTab;
         m_InventoryMenu.SelectAction += SelectInventoryTab;
+        m_IngredientsStockMenu.SelectAction += SelectIngredientsStockTab;
     }
     private void OnDisable()
     {
@@ -37,13 +38,18 @@ public class UIOtherController : MonoBehaviour
         m_PlayerAction.ToggleUI -= ToggleUI;
         m_RecipesMenu.SelectAction -= SelectRecipesTab;
         m_InventoryMenu.SelectAction -= SelectInventoryTab;
+        m_IngredientsStockMenu.SelectAction -= SelectIngredientsStockTab;
     }
 
     private void ToggleUI()
     {
         m_UI.SetActive( !m_UI.activeInHierarchy );
         m_PlayerAction.IsUIOpen = m_UI.activeInHierarchy;
-        if ( m_UI.activeInHierarchy ) m_PlayerAction.OnEnableUI?.Invoke();
+        if ( m_UI.activeInHierarchy )
+        {
+            m_PlayerAction.OnEnableUI?.Invoke();
+            SelectDefaultTab();
+        }
         else m_PlayerAction.OnDisableUI?.Invoke();
     }
 
@@ -57,6 +63,7 @@ public class UIOtherController : MonoBehaviour
     private void SelectDefaultTab() => SelectTab( "Recipes", 0 );
     private void SelectRecipesTab() => SelectTab( "Recipes" );
     private void SelectInventoryTab() => SelectTab( "Inventory" );
+    private void SelectIngredientsStockTab() => SelectTab( "Ingredients Stock" );
     private void CloseUI()
     {
         m_UI.SetActive( false );

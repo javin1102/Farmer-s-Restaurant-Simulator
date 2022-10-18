@@ -6,7 +6,7 @@ public class MaterialChanger : MonoBehaviour
     public Material FinalMaterial { get => m_FinalMaterial; }
     [SerializeField] private Material m_PreviewMaterial, m_FinalMaterial;
     [Tooltip( "Set Preview Material Color" )]
-    [SerializeField] private Color uninstatiableColor, instatiableColor;
+    //[SerializeField] private Color m_UninstatiableColor = new( 0.9f, .1f, 0.03f, .5f ), m_InstatiableColor = new( .5f, 1, .5f, .5f );
     private MeshRenderer m_MeshRenderer;
     void OnEnable()
     {
@@ -20,8 +20,9 @@ public class MaterialChanger : MonoBehaviour
 
     public void ChangePreviewMaterialColor( bool isInstatiable )
     {
-        if ( isInstatiable ) PreviewMaterial.color = instatiableColor;
-        else PreviewMaterial.color = uninstatiableColor;
+        //m_MeshRenderer.material = PreviewMaterial;
+        //if ( isInstatiable ) PreviewMaterial.color = m_InstatiableColor;
+        //else PreviewMaterial.color = m_UninstatiableColor;
     }
 
 }

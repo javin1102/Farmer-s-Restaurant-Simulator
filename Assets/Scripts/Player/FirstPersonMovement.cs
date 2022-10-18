@@ -43,7 +43,7 @@ public class FirstPersonMovement : MonoBehaviour
         m_CharacterController.Move( moveZ + moveX );
 
         //Jump
-        m_IsGrounded = Physics.Raycast( transform.position, Vector3.down, 1.1f, m_GroundMask );
+        m_IsGrounded = Physics.Raycast( transform.position, Vector3.down, .85f, m_GroundMask );
 
         if ( m_JumpAction.triggered && m_IsGrounded ) m_JumpVelocity += Mathf.Sqrt( m_JumpForce * -3.0f * m_Gravity );
 

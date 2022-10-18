@@ -12,8 +12,10 @@ namespace NPC.Waiter
         public override void OnEnterState( NPCManager NPC )
         {
             m_Waiter = NPC as Waiter;
-            m_Food = m_Waiter.FoodsToServe.Peek();
+            m_Food = m_Waiter.FoodToServe;
             m_Waiter.Agent.SetDestination( ServedFood.foodGO.transform.position );
+            m_Waiter.IsServing = true;
+            m_Waiter.Hoverable.IsHoverable = false;
         }
 
         public override void OnExitState( NPCManager NPC )

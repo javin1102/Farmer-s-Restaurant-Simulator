@@ -113,7 +113,7 @@ public class FoodDataEditor : Editor
 
     private List<ItemData> LoadIngredientsData()
     {
-        var guids = AssetDatabase.FindAssets( "t:ItemData", new[] { "Assets/Data/Ingredients" } );
+        var guids = AssetDatabase.FindAssets( "t:ItemData", new[] { "Assets/Resources/Data/Ingredients" } );
         var paths = guids.Select( AssetDatabase.GUIDToAssetPath );
         var ingredientsData = paths.Select( AssetDatabase.LoadAssetAtPath<ItemData> ).ToList();
         return ingredientsData;
