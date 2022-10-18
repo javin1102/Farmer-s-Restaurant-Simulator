@@ -1,8 +1,6 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.Events;
-using System;
-
 public class PlayerAction : MonoBehaviour
 {
     public event UnityAction OnPerformItemMainAction;
@@ -11,6 +9,7 @@ public class PlayerAction : MonoBehaviour
     public UnityAction ToggleInventoryUI { get => m_ToggleInventoryUI; set => m_ToggleInventoryUI = value; }
     public UnityAction ToggleUI { get => m_ToggleUI; set => m_ToggleUI = value; }
     public bool IsUIOpen { get => m_IsUIOpen; set => m_IsUIOpen = value; }
+    public InputAction InventoryAction { get => m_InventoryAction; }
 
     //Event Listener
     private event UnityAction m_OnEnableUI;
@@ -243,7 +242,6 @@ public class PlayerAction : MonoBehaviour
     }
     private void InvokeToggleInventoryUI( InputAction.CallbackContext obj ) => m_ToggleInventoryUI?.Invoke();
     private void InvokeToggleUI( InputAction.CallbackContext obj ) => m_ToggleUI?.Invoke();
-
     private void ExitCursorMode( InputAction.CallbackContext obj ) => ExitCursorMode();
     private void EnterCursorMode( InputAction.CallbackContext obj ) => EnterCursorMode();
     private void SelectActionSlot_1( InputAction.CallbackContext obj ) => m_ActionSlotsController.SelectActionSlot_1();

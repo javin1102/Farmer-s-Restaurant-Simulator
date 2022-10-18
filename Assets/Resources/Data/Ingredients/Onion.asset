@@ -14,5 +14,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   id: Onion
   prefab: {fileID: 100000, guid: 4d7659eaa2dbe2e46a70e6a4a2a8bf1a, type: 3}
-  icon: {fileID: 10913, guid: 0000000000000000f000000000000000, type: 0}
+  icon: {fileID: 21300000, guid: 7a8ea970c703e084c8792156e206cb94, type: 3}
   type: 1

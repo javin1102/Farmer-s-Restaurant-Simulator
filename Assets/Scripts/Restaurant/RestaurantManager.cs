@@ -2,9 +2,7 @@ using NPC.Chef;
 using NPC.Waiter;
 using System.Collections.Generic;
 using System.Linq;
-using UnityEditor;
 using UnityEngine;
-
 public class RestaurantManager : MonoBehaviour
 {
     public static RestaurantManager Instance { get => m_Instance; }
@@ -16,6 +14,7 @@ public class RestaurantManager : MonoBehaviour
     public int WaiterIndex => m_WaiterIndexOffset > m_Waiters.Count - 1 ? m_WaiterIndexOffset = 0 : m_WaiterIndexOffset++;
     public Queue<KeyValuePair<Seat, FoodData>> OrderQueue => m_OrderQueue;
     public Queue<KeyValuePair<Seat, ServedFood>> FoodsToServe => m_FoodsToServe;
+    public Dictionary<string, StockIngredient> StockIngredients => m_StockIngredients;
     public Transform RestaurantGround { get => m_RestaurantGround; }
     public BoxCollider GroundCollider { get => m_GroundCollider; }
 
@@ -35,6 +34,7 @@ public class RestaurantManager : MonoBehaviour
     [SerializeField] private List<Chef> m_Chefs = new();
     [SerializeField] private int m_ChefIndexOffset = 0;
     private int ChefIndex => m_ChefIndexOffset > m_Chefs.Count - 1 ? m_ChefIndexOffset = 0 : m_ChefIndexOffset++;
+
 
 
     //Waiters
@@ -64,10 +64,12 @@ public class RestaurantManager : MonoBehaviour
         m_GroundCollider = m_RestaurantGround.GetComponent<BoxCollider>();
         StockIngredient garlicStock = new( garlic, 100 );
         StockIngredient onionStock = new( onion, 100 );
-        StockIngredient carrotStock = new( carrot, 100 );
+        //StockIngredient carrotStock = new( carrot, 100 );
         m_StockIngredients.Add( garlic.id, garlicStock );
         m_StockIngredients.Add( onion.id, onionStock );
-        m_StockIngredients.Add( carrot.id, carrotStock );
+        //m_StockIngredients.Add( carrot.id, carrotStock );
+        //long score = 0;
+        //Debug.Log( FuzzySearch.FuzzyMatch( "was", "basket", ref score ) );
     }
     public bool FindUnoccupiedSeat( out Seat seat )
     {
@@ -82,9 +84,7 @@ public class RestaurantManager : MonoBehaviour
     }
     public void OrderFood( Seat seat, FoodData food )
     {
-        int index = ChefIndex;
         m_OrderQueue.Enqueue( KeyValuePair.Create( seat, food ) );
-        //m_Chefs[index].OrderQueue.Enqueue( KeyValuePair.Create( seat, food ) );
     }
     public void StoreIngredient( ItemData itemData )
     {
@@ -99,7 +99,12 @@ public class RestaurantManager : MonoBehaviour
             m_StockIngredients.Add( itemData.id, stockIngredient );
         }
     }
-    public void DecreaseStock( FoodData food ) => food.ingredients.ForEach( i => m_StockIngredients[i.ingredient.id].quantity -= i.quantity );
+    public void DecreaseStock( FoodData food ) => food.ingredients.ForEach( i => {
+        StockIngredient ingredient = m_StockIngredients[i.ingredient.id];
+        ingredient.quantity -= i.quantity;
+        if ( ingredient.quantity <= 0 ) m_StockIngredients.Remove( ingredient.data.id );
+
+    } );
     public bool TryGetRecipeToCook( out FoodData recipe )
     {
         var availableRecipes = m_UnlockedFoods.Where( StockIsSufficient ).ToList();
