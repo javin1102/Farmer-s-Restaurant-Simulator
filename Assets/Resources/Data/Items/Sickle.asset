@@ -10,18 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8c9c36c8f20505d47bfff2820a3a6d92, type: 3}
-<<<<<<<< HEAD:Assets/Resources/Data/Sickle.asset
   m_Name: Sickle
   m_EditorClassIdentifier: 
   id: Sickle
   prefab: {fileID: 620202778583190377, guid: 22157a346337c76489b1a299b3f09adb, type: 3}
   icon: {fileID: 0}
   type: 0
-========
-  m_Name: Table_Red
-  m_EditorClassIdentifier: 
-  id: Table_Red
-  prefab: {fileID: 5230036692580212780, guid: b2e51103e9b3b2e4db74d56e726e0662, type: 3}
-  icon: {fileID: 10913, guid: 0000000000000000f000000000000000, type: 0}
-  type: 2
->>>>>>>> Javin:Assets/Resources/Data/Items/Table_Red.asset
