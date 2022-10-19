@@ -22,7 +22,6 @@ public class UIIngredientsStock : MonoBehaviour
         {
             UIIngredientSlot slot = Instantiate( m_SlotPrefab, m_MainContent.transform ).GetComponent<UIIngredientSlot>();
             slot.IngredientData = ingredientData;
-            slot.UpdateUI();
             m_IngredientSlots.Add( slot );
         } );
 

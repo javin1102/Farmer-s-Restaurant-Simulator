@@ -11,20 +11,24 @@ public class UIRecipeIngredient : MonoBehaviour
 
     private FoodIngredient m_FoodIngredient;
     private RestaurantManager m_RestaurantManager;
-    private StockIngredient m_Stock;
 
-    private void OnEnable()
+
+    private void Update() => UpdateUI();
+    private void Start()
     {
-        if ( m_FoodIngredient == null ) return;
-        UpdateUI();
+        m_RestaurantManager = RestaurantManager.Instance;
     }
-
     public void UpdateUI()
     {
-        if ( m_RestaurantManager == null )
-            m_RestaurantManager = RestaurantManager.Instance;
-        m_Stock ??= m_RestaurantManager.StockIngredients[m_FoodIngredient.ingredient.id];
         m_Icon.sprite = m_FoodIngredient.ingredient.icon;
-        m_QtyText.text = $"{m_Stock.quantity}/{m_FoodIngredient.quantity}";
+        if ( m_RestaurantManager.StockIngredients.TryGetValue( m_FoodIngredient.ingredient.id, out StockIngredient stockIngredient ) )
+        {
+            m_QtyText.text = $"{stockIngredient.quantity}/{m_FoodIngredient.quantity}";
+        }
+        else
+        {
+            m_QtyText.text = $"{0}/{m_FoodIngredient.quantity}";
+        }
+
     }
 }

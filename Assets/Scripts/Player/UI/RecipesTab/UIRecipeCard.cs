@@ -18,15 +18,11 @@ public class UIRecipeCard : MonoBehaviour
         {
             UIRecipeIngredient uiIngredient =  Instantiate( m_IngredientPrefab, m_IngredientContent.transform ).GetComponent<UIRecipeIngredient>();
             uiIngredient.FoodIngredient = ingredient;
-            uiIngredient.UpdateUI();
         }
     }
 
-    private void OnEnable()
-    {
-        if ( m_Food.Key == null ) return;
-        UpdateUI();
-    }
+
+    private void Update() => UpdateUI();
     public void UpdateUI()
     {
         if ( m_Food.Value ) m_LockedOverlay.SetActive( false );
@@ -35,5 +31,6 @@ public class UIRecipeCard : MonoBehaviour
         m_CookDurText.text = $"{m_Food.Key.cookDuration} Seconds";
         m_DishPriceText.text = $"{m_Food.Key.dishPrice}/Dish";
         m_UnlockedPriceText.text = $"Unlock For <color=yellow>{m_Food.Key.unlockPrice}</color>";
+        m_FoodNameText.text = m_Food.Key.name;
     }
 }

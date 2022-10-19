@@ -8,7 +8,7 @@ public class UIOtherController : MonoBehaviour
     public static int TabIndex { get => m_TabIndex; set => m_TabIndex = value; }
     [SerializeField] private GameObject m_UI;
     [SerializeField] private UIMenu m_RecipesMenu;
-    [SerializeField] private UIMenu m_UpgradeMenu;
+    [SerializeField] private UIMenu m_UpgradesMenu;
     [SerializeField] private UIMenu m_InventoryMenu;
     [SerializeField] private UIMenu m_IngredientsStockMenu;
     [SerializeField] private UIMarker m_Marker;
@@ -30,6 +30,7 @@ public class UIOtherController : MonoBehaviour
         m_RecipesMenu.SelectAction += SelectRecipesTab;
         m_InventoryMenu.SelectAction += SelectInventoryTab;
         m_IngredientsStockMenu.SelectAction += SelectIngredientsStockTab;
+        m_UpgradesMenu.SelectAction += SelectUpgradesTab;
     }
     private void OnDisable()
     {
@@ -39,6 +40,7 @@ public class UIOtherController : MonoBehaviour
         m_RecipesMenu.SelectAction -= SelectRecipesTab;
         m_InventoryMenu.SelectAction -= SelectInventoryTab;
         m_IngredientsStockMenu.SelectAction -= SelectIngredientsStockTab;
+        m_UpgradesMenu.SelectAction -= SelectUpgradesTab;
     }
 
     private void ToggleUI()
@@ -63,6 +65,7 @@ public class UIOtherController : MonoBehaviour
     private void SelectDefaultTab() => SelectTab( "Recipes", 0 );
     private void SelectRecipesTab() => SelectTab( "Recipes" );
     private void SelectInventoryTab() => SelectTab( "Inventory" );
+    private void SelectUpgradesTab() => SelectTab( "Upgrades" );
     private void SelectIngredientsStockTab() => SelectTab( "Ingredients Stock" );
     private void CloseUI()
     {

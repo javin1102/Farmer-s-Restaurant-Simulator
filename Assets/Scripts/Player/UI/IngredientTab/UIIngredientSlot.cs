@@ -12,36 +12,34 @@ public class UIIngredientSlot : MonoBehaviour
     [SerializeField] private GameObject m_OverlayGO;
     private ItemData m_IngredientData;
     private RestaurantManager m_RestaurantManager;
-    private void OnEnable()
+    private void Start()
     {
-        if ( m_IngredientData == null ) return;
-        UpdateUI();
+        m_RestaurantManager = RestaurantManager.Instance;
     }
+
+    private void Update() => UpdateUI();
 
     public void UpdateUI()
     {
-        if ( m_RestaurantManager == null )
-            m_RestaurantManager = RestaurantManager.Instance;
-
         m_IngredientNameText.text = m_IngredientData.id;
         m_Icon.sprite = m_IngredientData.icon;
         if ( m_RestaurantManager.StockIngredients.TryGetValue( m_IngredientData.id, out StockIngredient ingredient ) )
         {
-            EnableUI( ingredient );
+            EnableOverlayUI( ingredient );
         }
         else
         {
-            DisableUI();
+            DisableOverlayUI();
         }
     }
 
-    private void EnableUI( StockIngredient ingredient)
+    private void EnableOverlayUI( StockIngredient ingredient)
     {
         m_OverlayGO.SetActive( false );
         m_QuantityText.text = ingredient.quantity.ToString();
     }
 
-    private void DisableUI()
+    private void DisableOverlayUI()
     {
         m_OverlayGO.SetActive( true );
         m_QuantityText.text = "0";
