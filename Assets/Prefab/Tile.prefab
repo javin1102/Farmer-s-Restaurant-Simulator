@@ -103,7 +103,7 @@ MonoBehaviour:
   m_defaultMaterial: {fileID: 2100000, guid: 35335ab3e103573478ae54dfb31378b1, type: 2}
   m_hoedMaterial: {fileID: 2100000, guid: 2b3754df8dc0d2f4cb8c368e880b460c, type: 2}
   m_wateredMaterial: {fileID: 2100000, guid: 886754fea5aa2b94ab5770f4651fd665, type: 2}
-  m_plantedMaterial: {fileID: 2100000, guid: c2dfba99839747c44ad99dffdac09447, type: 2}
+  m_planteMaterial: {fileID: 0}
   m_tileStatus: 0
 --- !u!114 &5523690768382460362
 MonoBehaviour:
@@ -119,8 +119,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_PreviewMaterial: {fileID: 2100000, guid: b000d333731ec2e4db2ecad574183a5e, type: 2}
   m_FinalMaterial: {fileID: 2100000, guid: 2b3754df8dc0d2f4cb8c368e880b460c, type: 2}
-  uninstatiableColor: {r: 0.90588236, g: 0.105882354, b: 0.03137255, a: 0.5882353}
-  instatiableColor: {r: 0.5686275, g: 1, b: 0.49411765, a: 0.5882353}
 --- !u!65 &3942176275098228793
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -130,7 +128,7 @@ BoxCollider:
   m_GameObject: {fileID: 7384007550945252367}
   m_Material: {fileID: 0}
   m_IsTrigger: 0
-  m_Enabled: 0
+  m_Enabled: 1
   serializedVersion: 2
   m_Size: {x: 1, y: 1.0000002, z: 6.123235e-17}
   m_Center: {x: 0, y: 0, z: 0}

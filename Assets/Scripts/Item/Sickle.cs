@@ -3,25 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
 
-/// <summary>
-/// 
-/// SCRIPT BUAT HANDLE ITEM SICKLE [WIP]
-/// 
-/// COMPARE TAG -> SIMPAN SELECTED OBJECT -> KALO DI KLIK KIRI DESTROY
-/// 
-/// 
-/// 
-/// </summary>
-
-    
-        /*
-        --- TODO ---
-        * add inventory
-        * add possibilities to drop seed
-        * jarak raycast kykny hrus dikurangi biar logis [DARI JAUH BISA SICKLE CROP]
-        * 
-        * 
-        */
 public class Sickle : Item,IRaycastAction
 {
     public GameObject selectedCrop;
@@ -35,9 +16,16 @@ public class Sickle : Item,IRaycastAction
 
     private float dropChance;
     private bool IsDrop = false;
+
+    private Matrix4x4 m_TileMatrix;
+    private Mesh m_PreviewTileMesh;
+    private TileManager m_TileManager;
+    private MaterialChanger previewTileMaterialChanger;
+
     private void Awake()
     {
         m_ItemDatabase = transform.root.GetComponent<ItemDatabase>();
+        m_TileManager = TileManager.instance;
         //m_ActionSlotsController = GetComponentInParent<ActionSlotsController>();
         //m_InventoryController = GetComponentInParent<InventoryController>();
     }
@@ -51,8 +39,6 @@ public class Sickle : Item,IRaycastAction
             float rand = Random.Range(1f, 10f);
             if (rand <= m_SeedData.dropChance) AddSeedToInventory(m_SeedData);
 
-            Debug.Log("random : " + rand + " " + m_SeedData.dropChance + " " + m_SeedData.id);
-
             AddCropToInventory(m_SeedData.harverstedCropData);
             selectedCrop.GetComponentInParent<Tile>().IsUsed = false;
             Destroy(selectedCrop.transform.parent.gameObject);
@@ -61,20 +47,25 @@ public class Sickle : Item,IRaycastAction
 
     public void PerformRaycastAction(RaycastHit hitInfo)
     {
-       Debug.Log("SICKLE SCRIPT : RAYCAST HIT GAMEOBJECT " + hitInfo.transform.gameObject.name);
-
-       // if (hitInfo.collider != null && hitInfo.collider.TryGetComponent(out PlantGrowHandler plantGrowHandler))
-        if(hitInfo.collider.CompareTag(Utils.CROP_TAG))
+        // if (hitInfo.collider != null && hitInfo.collider.TryGetComponent(out PlantGrowHandler plantGrowHandler))
+        if (hitInfo.collider.CompareTag(Utils.CROP_TAG))
         {
-            var selectObject = hitInfo.transform;
-            if (selectObject != null)
-            {
-                Debug.Log("performraycast sickle");
-                selectedCrop = hitInfo.transform.gameObject;
+            selectedCrop = hitInfo.transform.gameObject;
 
-                //   Debug.Log("Sickle script : destroy : " + selectedCrop.name);
-            }
+            previewTileMaterialChanger = selectedCrop.transform.parent.GetComponentInParent<MaterialChanger>();
+            m_PreviewTileMesh = selectedCrop.transform.parent.GetComponentInParent<MeshFilter>().sharedMesh;
+
+            Vector3 tilePos = m_TileManager.WorldToTilePos(hitInfo.point);
+            tilePos.Set(tilePos.x, .11f, tilePos.z);
+            Quaternion tileRot = Quaternion.Euler(90f, 0, 0);
+
+            m_TileMatrix = Matrix4x4.TRS(tilePos, tileRot, Vector3.one);
+            previewTileMaterialChanger.ChangePreviewMaterialColor(true);
+            Graphics.DrawMesh(m_PreviewTileMesh, m_TileMatrix, previewTileMaterialChanger.PreviewMaterial, 0);
+            return;
         }
+        previewTileMaterialChanger.ChangePreviewMaterialColor(false);
+        return;
     }
 
     public void AddSeedToInventory(SeedData seed)
