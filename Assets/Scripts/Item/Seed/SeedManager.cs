@@ -25,9 +25,13 @@ public class SeedManager : Seed,IRaycastAction
 
             m_tile.crop = m_seedData.cropPrefab;
             m_tile.SpawnCrop();
-            m_DecreseableEvent.RaiseEvent();
 
             this.m_tile.SwitchStatus(Tile.TileStatus.PLANTED);
+
+            // play planted soound effect
+            StartCoroutine(PlaySFX());
+            
+            m_DecreseableEvent.RaiseEvent();
         }
     }
 
@@ -52,5 +56,13 @@ public class SeedManager : Seed,IRaycastAction
             previewTileMaterialChanger.ChangePreviewMaterialColor(false);
             UIManager.Instance.HideActionHelper();
             return;
+    }
+
+    IEnumerator PlaySFX()
+    {
+        // child 1 beda dgn yg lains
+        transform.GetChild(1).gameObject.SetActive(true);
+        yield return new WaitForSeconds(0.4f);
+        transform.GetChild(1).gameObject.SetActive(false);
     }
 }

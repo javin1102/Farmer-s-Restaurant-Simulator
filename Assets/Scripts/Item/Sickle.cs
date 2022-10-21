@@ -42,6 +42,9 @@ public class Sickle : Item,IRaycastAction
             AddCropToInventory(m_SeedData.harverstedCropData);
             selectedCrop.GetComponentInParent<Tile>().IsUsed = false;
             Destroy(selectedCrop.transform.parent.gameObject);
+
+            // play sickle sound effect
+            StartCoroutine(PlaySFX());
         }
     }
 
@@ -83,5 +86,12 @@ public class Sickle : Item,IRaycastAction
         m_ItemDatabase.Store( item );
         //if (m_ActionSlotsController.StoreHarvestedCrop(item)) return;
         //if (m_InventoryController.Store(item)) return;
+    }
+
+    IEnumerator PlaySFX()
+    {
+        transform.GetChild(0).gameObject.SetActive(true);
+        yield return new WaitForSeconds(0.4f);
+        transform.GetChild(0).gameObject.SetActive(false);
     }
 }

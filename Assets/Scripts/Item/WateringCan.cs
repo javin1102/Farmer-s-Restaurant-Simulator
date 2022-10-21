@@ -32,7 +32,9 @@ public class WateringCan : Item,IRaycastAction
         {
             Debug.Log("WATER SCRIPT : WATERED");
             selectedTile.GetComponent<Tile>().SwitchStatus(Tile.TileStatus.WATERED);
-            
+
+            // play water can sound effect
+            StartCoroutine(PlaySFX());
         }
     }
 
@@ -59,5 +61,12 @@ public class WateringCan : Item,IRaycastAction
         previewTileMaterialChanger.ChangePreviewMaterialColor(false);
         UIManager.Instance.HideActionHelper();
         return;
+    }
+
+    IEnumerator PlaySFX()
+    {
+        transform.GetChild(0).gameObject.SetActive(true);
+        yield return new WaitForSeconds(0.5f);
+        transform.GetChild(0).gameObject.SetActive(false);
     }
 }
