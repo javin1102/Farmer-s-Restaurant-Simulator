@@ -18,7 +18,7 @@ MonoBehaviour:
   cookDuration: 5
   icon: {fileID: 21300000, guid: 893f45d32ac5370409d685864d6011da, type: 3}
   ingredients:
-  - ingredient: {fileID: 11400000, guid: c2629dcb0d8b8eb4e876c62f1f5c6d62, type: 2}
+  - ingredient: {fileID: 11400000, guid: e893fd2c6883e2147b04b14df1460bf1, type: 2}
     quantity: 4
-  - ingredient: {fileID: 11400000, guid: 37dc22333acdd0d4c8e0b65b7d76d0c7, type: 2}
+  - ingredient: {fileID: 11400000, guid: d9be9c26c1e8b274899163dff0d8046d, type: 2}
     quantity: 2

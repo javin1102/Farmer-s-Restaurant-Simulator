@@ -3,8 +3,11 @@ using UnityEngine;
 public class ItemData : ScriptableObject
 {
     [Header("--- ITEM DATA")]
-    public new string id;
+    public string id;
     public GameObject prefab;
     public Sprite icon;
-    public ItemType type;
+    //public ItemType type;
+    public int buyPrice;
+    public int sellPrice;
+    public bool decreaseable;
 }

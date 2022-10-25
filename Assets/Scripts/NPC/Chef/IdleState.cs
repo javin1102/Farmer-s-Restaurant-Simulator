@@ -16,7 +16,11 @@ namespace NPC.Chef
 
         public override void OnUpdateState( NPCManager NPC )
         {
-            if ( m_Chef.Stove == null ) return;
+            if ( m_Chef.Stove == null )
+            {
+                m_Chef.Hoverable.IsHoverable = true;
+                return;
+            }
             m_Chef.transform.forward = m_Chef.Stove.transform.forward;
             if ( !m_Chef.Restaurant.OrderQueue.TryPeek( out KeyValuePair<Seat, FoodData> food ) ) return;
             m_Chef.OrderedFood = food;

@@ -11,8 +11,7 @@ public class RestaurantManager : MonoBehaviour
     public Transform FoodPlace { get => m_FoodPlace; }
     public List<Chef> Chefs => m_Chefs;
     public List<Waiter> Waiters => m_Waiters;
-    public int WaiterIndex => m_WaiterIndexOffset > m_Waiters.Count - 1 ? m_WaiterIndexOffset = 0 : m_WaiterIndexOffset++;
-    public Dictionary<FoodData, bool> AllFoods => m_AllFoods;
+    public Dictionary<FoodData, FoodConfig> AllFoods => m_AllFoods;
     public Queue<KeyValuePair<Seat, FoodData>> OrderQueue => m_OrderQueue;
     public Queue<KeyValuePair<Seat, ServedFood>> FoodsToServe => m_FoodsToServe;
     public Dictionary<string, StockIngredient> StockIngredients => m_StockIngredients;
@@ -23,26 +22,20 @@ public class RestaurantManager : MonoBehaviour
     [SerializeField] private List<Table> m_Tables = new();
     [SerializeField] private List<Seat> m_Seats = new();
     private int RandomSeatIndex { get => Random.Range( 0, m_Seats.Count ); }
+    public float WaiterMoveSpeed { get => m_WaiterMoveSpeed; set => m_WaiterMoveSpeed =  value ; }
 
     //Food
-    private readonly Dictionary<FoodData, bool> m_AllFoods = new();
-    private readonly List<FoodData> m_UnlockedFoods = new();
+    private readonly Dictionary<FoodData, FoodConfig> m_AllFoods = new();
     private readonly Queue<KeyValuePair<Seat, FoodData>> m_OrderQueue = new();
     private readonly Queue<KeyValuePair<Seat, ServedFood>> m_FoodsToServe = new();
     private readonly Dictionary<string, StockIngredient> m_StockIngredients = new();
 
     //Chefs
     [SerializeField] private List<Chef> m_Chefs = new();
-    [SerializeField] private int m_ChefIndexOffset = 0;
-    private int ChefIndex => m_ChefIndexOffset > m_Chefs.Count - 1 ? m_ChefIndexOffset = 0 : m_ChefIndexOffset++;
-
-
-
 
     //Waiters
     [SerializeField] private List<Waiter> m_Waiters = new();
-    private int m_WaiterIndexOffset;
-
+    private float m_WaiterMoveSpeed = 1.5f;
     //Others
     private static RestaurantManager m_Instance;
     [SerializeField] private Transform m_RestaurantGround;
@@ -50,10 +43,14 @@ public class RestaurantManager : MonoBehaviour
     private bool m_FirstLoad = true;
     private BoxCollider m_GroundCollider;
 
+    //Upgrades
+    [SerializeField] private GameObject m_ChefPrefab;
+    [SerializeField] private GameObject m_WaiterPrefab;
+    [SerializeField] private RestaurantUpgradesChannel m_RestaurantUpgradesChannel;
     //Debug
-    [SerializeField] private ItemData garlic;
-    [SerializeField] private ItemData onion;
-    [SerializeField] private ItemData carrot;
+    [SerializeField] private IngredientData garlic;
+    [SerializeField] private IngredientData onion;
+    [SerializeField] private IngredientData carrot;
 
     private void Awake()
     {
@@ -62,7 +59,6 @@ public class RestaurantManager : MonoBehaviour
 
         //Check if player has save file
         if ( m_FirstLoad ) LoadRecipeData();
-        m_AllFoods.ToList().ForEach( AddUnlockRecipeToList );
         m_GroundCollider = m_RestaurantGround.GetComponent<BoxCollider>();
         StockIngredient garlicStock = new( garlic, 100 );
         StockIngredient onionStock = new( onion, 100 );
@@ -70,8 +66,21 @@ public class RestaurantManager : MonoBehaviour
         m_StockIngredients.Add( garlic.id, garlicStock );
         m_StockIngredients.Add( onion.id, onionStock );
         //m_StockIngredients.Add( carrot.id, carrotStock );
-        //long score = 0;
-        //Debug.Log( FuzzySearch.FuzzyMatch( "was", "basket", ref score ) );
+        
+
+    }
+
+    private void OnEnable()
+    {
+        m_RestaurantUpgradesChannel.AddChef += AddChef;
+        m_RestaurantUpgradesChannel.AddWaiter += AddWaiter;
+        m_RestaurantUpgradesChannel.IncreaseWaiterSpeed += IncreaseWaiterSpeed;
+    }
+    private void OnDisable()
+    {
+        m_RestaurantUpgradesChannel.AddChef -= AddChef;
+        m_RestaurantUpgradesChannel.AddWaiter -= AddWaiter;
+        m_RestaurantUpgradesChannel.IncreaseWaiterSpeed -= IncreaseWaiterSpeed;
     }
     public bool FindUnoccupiedSeat( out Seat seat )
     {
@@ -88,55 +97,81 @@ public class RestaurantManager : MonoBehaviour
     {
         m_OrderQueue.Enqueue( KeyValuePair.Create( seat, food ) );
     }
-    public void StoreIngredient( ItemData itemData )
+    public void StoreIngredient( IngredientData ingredient )
     {
-        if ( itemData.type != ItemType.Ingredient ) return;
-        if ( m_StockIngredients.TryGetValue( itemData.id, out StockIngredient stockIngredient ) )
+        if ( m_StockIngredients.TryGetValue( ingredient.id, out StockIngredient stockIngredient ) )
         {
             stockIngredient.quantity += 1;
         }
         else
         {
-            stockIngredient = new StockIngredient( itemData );
-            m_StockIngredients.Add( itemData.id, stockIngredient );
+            stockIngredient = new StockIngredient( ingredient );
+            m_StockIngredients.Add( ingredient.id, stockIngredient );
         }
     }
-    public void DecreaseStock( FoodData food ) => food.ingredients.ForEach( i => {
+    public void DecreaseStock( FoodData food ) => food.ingredients.ForEach( i =>
+    {
         StockIngredient ingredient = m_StockIngredients[i.ingredient.id];
         ingredient.quantity -= i.quantity;
         if ( ingredient.quantity <= 0 ) m_StockIngredients.Remove( ingredient.data.id );
 
     } );
-    public bool TryGetRecipeToCook( out FoodData recipe )
+    public bool TryGetRecipeToCook( out FoodData foodData, out FoodConfig foodConfig )
     {
-        var availableRecipes = m_UnlockedFoods.Where( StockIsSufficient ).ToList();
+        var availableRecipes = m_AllFoods.Where( IsFoodAvailable ).ToList();
         if ( availableRecipes.Count == 0 )
         {
-            recipe = null;
+            foodData = null;
+            foodConfig = null;
             return false;
         }
-        recipe = availableRecipes[Random.Range( 0, availableRecipes.Count )];
+        int rand = Random.Range( 0, availableRecipes.Count );
+        foodData = availableRecipes[rand].Key;
+        foodConfig = availableRecipes[rand].Value;
         return true;
     }
 
-    //Check stock is sufficient to make food/recipe
-    public bool StockIsSufficient( FoodData recipe )
-    => recipe.ingredients.All( i => m_StockIngredients.TryGetValue( i.ingredient.id, out StockIngredient stockIngredient ) && stockIngredient.quantity >= i.quantity );
+    public bool IsFoodAvailable( KeyValuePair<FoodData, FoodConfig> food )
+    {
+        if ( !food.Value.IsUnlock || !food.Value.IsSelling ) return false;
+        return food.Key.ingredients.All( i => m_StockIngredients.TryGetValue( i.ingredient.id, out StockIngredient stockIngredient ) && stockIngredient.quantity >= i.quantity );
+    }
+
     private void LoadRecipeData()
     {
         var foodData = Resources.LoadAll<FoodData>( "Data/Recipes" ).ToList();
-        foodData.ForEach( recipe => m_AllFoods.Add( recipe, true ) );
+        foodData.ForEach( recipe => m_AllFoods.Add( recipe, new( true, true ) ) );
     }
-    private void AddUnlockRecipeToList( KeyValuePair<FoodData, bool> recipe )
-    {
-        if ( recipe.Value == false ) return;
-        m_UnlockedFoods.Add( recipe.Key );
-    }
+
     public bool FindNoStoveChef( out Chef chef )
     {
-        chef = m_Chefs.SingleOrDefault( c => c.Stove == null );
+        chef = m_Chefs.FirstOrDefault( c => c.Stove == null );
         if ( chef == null ) return false;
         return true;
+    }
+
+    public Vector3 GetGroundRandPos()
+    {
+        float randX = Random.Range( GroundCollider.bounds.min.x, GroundCollider.bounds.max.x );
+        float randZ = Random.Range( GroundCollider.bounds.min.z, GroundCollider.bounds.max.z );
+        return new( randX, transform.position.y, randZ );
+    }
+
+    private void AddChef()
+    {
+        Chef chef = Instantiate( m_ChefPrefab, transform ).GetComponent<Chef>();
+        chef.Agent.Warp( GetGroundRandPos() );
+    }
+
+    private void AddWaiter()
+    {
+        Waiter waiter = Instantiate( m_WaiterPrefab, transform ).GetComponent<Waiter>();
+        waiter.Agent.Warp( GetGroundRandPos() );
+    }
+
+    private void IncreaseWaiterSpeed(float speed)
+    {
+        m_WaiterMoveSpeed += speed;
     }
 
 

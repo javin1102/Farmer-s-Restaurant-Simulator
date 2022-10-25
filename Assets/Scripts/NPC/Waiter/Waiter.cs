@@ -34,6 +34,7 @@ namespace NPC.Waiter
         {
             m_CurrentState.OnUpdateState( this );
             m_Animator.SetFloat( Utils.NPC_SPEED_ANIM_PARAM, Mathf.Abs( m_Agent.velocity.magnitude ) );
+            m_Agent.speed = m_Restaurant.WaiterMoveSpeed;
         }
 
         public void Interact()

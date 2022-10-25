@@ -6,8 +6,8 @@ using UnityEngine;
 public class StockIngredient 
 {
     public int quantity;
-    public ItemData data;
-    public StockIngredient( ItemData ingredient, int quantity = 1 )
+    public IngredientData data;
+    public StockIngredient( IngredientData ingredient, int quantity = 1 )
     {
         this.quantity = quantity;
         this.data = ingredient;

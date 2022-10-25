@@ -1,12 +1,12 @@
 using UnityEngine;
-using DG.Tweening;
-using static UnityEditor.Progress;
+using UnityEngine.AI;
 
 [RequireComponent( typeof( Rigidbody ) )]
 public abstract class Item : MonoBehaviour
 {
     public IRaycastAction ItemRaycastAction { get => m_ItemRaycastAction; }
     public ItemData Data { get => m_Data; }
+    public int DropQuantity { get => m_DropQuantity; set => m_DropQuantity =  value ; }
 
     [SerializeField] protected ItemData m_Data;
 
@@ -19,11 +19,15 @@ public abstract class Item : MonoBehaviour
     private Collider m_Collider;
     private MeshRenderer m_MeshRenderer;
     private bool m_IsGrounded;
-    private static int m_ShaderFloatProperty = Shader.PropertyToID( "_Float" );
+    private static readonly int m_ShaderFloatProperty = Shader.PropertyToID( "_Float" );
     private MaterialPropertyBlock m_Mpb;
+    private int m_DropQuantity;
+    private UIDropItem m_UIDropItem;
     protected void Awake()
     {
         m_Mpb = new();
+        m_UIDropItem = GetComponentInChildren<UIDropItem>(true);
+        m_UIDropItem.Item = this;
     }
     protected void OnEnable()
     {
@@ -46,13 +50,7 @@ public abstract class Item : MonoBehaviour
             m_Rigidbody.isKinematic = true;
             m_Rigidbody.useGravity = false;
             m_Collider.enabled = true;
-            float posY = transform.localPosition.y + .15f;
             m_MeshRenderer.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off;
-            //if ( !m_RotateTweener.IsPlaying() )
-            //{
-            //    m_RotateTweener.Play();
-            //    transform.DOLocalMoveY( posY, 1f ).SetLoops( -1, LoopType.Yoyo ).SetEase( Ease.InOutSine );
-            //}
             return;
         }
 
@@ -62,11 +60,11 @@ public abstract class Item : MonoBehaviour
     {
         if ( m_IsGrounded && other.TryGetComponent( out PlayerAction playerAction ) )
         {
-            playerAction.Store( this );
+            playerAction.Store( this, m_DropQuantity );
         }
     }
 
-    public void DropState()
+    public void DropState(int dropQuantity = 1)
     {
         if ( m_Collider.GetType() == typeof( MeshCollider ) )
         {
@@ -78,7 +76,7 @@ public abstract class Item : MonoBehaviour
         {
             hoverable.IsHoverable = false;
         }
-
+        m_DropQuantity = dropQuantity;
         m_Mpb.SetFloat( m_ShaderFloatProperty, 1 );
         m_Collider.enabled = false;
         m_Collider.isTrigger = true;
@@ -86,10 +84,12 @@ public abstract class Item : MonoBehaviour
         m_MeshRenderer.SetPropertyBlock( m_Mpb );
         m_IsDropState = true;
         transform.SetParent( null );
-
+        transform.forward = -transform.forward;
             
         transform.localScale = Vector3.one * .25f;
         m_Rigidbody.AddForce( 10f * Camera.main.transform.forward, ForceMode.VelocityChange );
+        m_UIDropItem.gameObject.SetActive( true );
+        Destroy( GetComponent<NavMeshObstacle>() );
 
     }
     public virtual void SetHandTf()

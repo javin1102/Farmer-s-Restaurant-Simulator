@@ -9,12 +9,15 @@ namespace NPC.Citizen
         private Citizen m_Citizen;
         private Seat m_Seat;
         private bool m_HasOrder, m_IsEating;
-        private FoodData m_Food;
+        private FoodData m_FoodData;
+        private FoodConfig m_FoodConfig;
+        private bool m_StartWaitTimer;
+        private float m_WaitTime = 30f;
         public override void OnEnterState( NPCManager NPC )
         {
             m_Restaurant = RestaurantManager.Instance;
             m_Citizen = NPC as Citizen;
-            if (!m_Restaurant.TryGetRecipeToCook( out m_Food ) || !m_Restaurant.FindUnoccupiedSeat( out m_Seat ) || !FindSeatDest( m_Citizen, m_Seat ) )
+            if ( !m_Restaurant.TryGetRecipeToCook( out m_FoodData, out m_FoodConfig ) || !m_Restaurant.FindUnoccupiedSeat( out m_Seat ) || !FindSeatDest( m_Citizen, m_Seat ) )
             {
                 TravelState travelState = new();
                 m_Citizen.ChangeState( travelState );
@@ -44,20 +47,24 @@ namespace NPC.Citizen
 
         public override void OnUpdateState( NPCManager NPC )
         {
-            if ( m_Seat == null || m_Seat.Table == null )
+            if ( m_Seat == null || m_Seat.Table == null || ( !m_HasOrder && !m_FoodConfig.IsSelling ) || m_WaitTime <= 0 )
             {
                 NPC.StopAllCoroutines();
                 m_Citizen.ChangeState( new TravelState() );
                 return;
             }
+
+            if ( m_StartWaitTimer ) m_WaitTime -= Time.deltaTime;
+
             if ( !m_HasOrder && !m_Citizen.Agent.pathPending && m_Citizen.Agent.HasReachedDestination() )
             {
-                m_Restaurant.OrderFood( m_Seat, m_Food );
+                m_Restaurant.OrderFood( m_Seat, m_FoodData );
                 m_HasOrder = true;
                 m_Citizen.Agent.enabled = false;
                 m_Citizen.transform.position = m_Seat.SitTf.position;
                 m_Citizen.transform.forward = m_Seat.transform.forward;
                 m_Citizen.Animator.SetTrigger( Utils.NPC_SIT_ANIM_PARAM );
+                m_StartWaitTimer = true;
             }
 
 

@@ -373,17 +373,6 @@
                 },
                 {
                     "name": "",
-                    "id": "1ec22f85-07b7-4539-bec8-97926c63c0a9",
-                    "path": "<Keyboard>/p",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "OpenUI",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
                     "id": "b614b1c7-ba26-4823-87dd-d6d0c407ec7d",
                     "path": "<Keyboard>/alt",
                     "interactions": "",

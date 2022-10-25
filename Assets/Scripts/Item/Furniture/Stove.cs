@@ -23,13 +23,11 @@ public class Stove : Furniture, IInteractable
         m_Restaurant = RestaurantManager.Instance;
         if ( !m_Restaurant.FindNoStoveChef( out m_Chef ) ) return;
         m_Chef.Stove = this;
-        m_Chef.Agent.isStopped = false;
         m_Chef.ChangeState( new GoToStoveState() );
     }
 
     private void UnsetChef()
     {
-        m_Chef.Agent.isStopped = true;
         m_Chef.Stove = null;
         m_Chef = null;
     }

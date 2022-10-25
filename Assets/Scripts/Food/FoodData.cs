@@ -16,6 +16,6 @@ public class FoodData : ScriptableObject
 [Serializable]
 public class FoodIngredient
 {
-    public ItemData ingredient;
+    public IngredientData ingredient;
     public int quantity;
 }

@@ -18,7 +18,11 @@ namespace NPC.Chef
 
         public override void OnUpdateState( NPCManager NPC )
         {
-            
+            if ( m_Chef.Stove == null )
+            {
+                NPC.ChangeState( new IdleState() );
+                return;
+            }
             if ( !m_Chef.Agent.pathPending && m_Chef.Agent.HasReachedDestination() )
             {
                 m_Chef.transform.forward = m_Chef.Stove.transform.forward;

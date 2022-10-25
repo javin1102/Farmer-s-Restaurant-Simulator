@@ -13,7 +13,7 @@ namespace NPC.Chef
         private RestaurantManager m_Restaurant;
         private readonly IdleState m_IdleState = new();
         private KeyValuePair<Seat, FoodData> m_OrderedFood;
-        private Stove m_Stove;
+        [SerializeField] private Stove m_Stove;
         private Hoverable m_Hoverable;
         private void Start()
         {
@@ -32,17 +32,17 @@ namespace NPC.Chef
             m_Animator.SetFloat( Utils.NPC_SPEED_ANIM_PARAM, Mathf.Abs( m_Agent.velocity.magnitude ) );
             m_CurrentState.OnUpdateState( this );
             if ( m_Stove ) m_Hoverable.IsHoverable = false;
+            else m_Hoverable.IsHoverable = true;
         }
 
 
         public void Interact()
         {
-            if ( m_Stove ) return;
-            if ( !m_Hoverable.IsHoverable ) return;
-            float randX = Random.Range( m_Restaurant.GroundCollider.bounds.min.x, m_Restaurant.GroundCollider.bounds.max.x );
-            float randZ = Random.Range( m_Restaurant.GroundCollider.bounds.min.z, m_Restaurant.GroundCollider.bounds.max.z );
-            Vector3 randPos = new( randX, transform.position.y, randZ );
-            m_Agent.SetDestination( randPos );
+            if ( m_Stove != null ) return;
+
+            //if ( !m_Hoverable.IsHoverable ) return;
+            m_Agent.SetDestination( m_Restaurant.GetGroundRandPos() );
+
         }
     }
 }

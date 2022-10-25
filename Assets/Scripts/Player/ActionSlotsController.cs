@@ -17,7 +17,9 @@ public class ActionSlotsController : ItemSlotsController
 
     private void Awake()
     {
-        m_Slots = new ItemSlot[6];
+        m_MaxSlotSize = 6;
+        m_SlotSize = 6;
+        m_Slots = new ItemSlot[m_MaxSlotSize];
     }
     private void Start()
     {
