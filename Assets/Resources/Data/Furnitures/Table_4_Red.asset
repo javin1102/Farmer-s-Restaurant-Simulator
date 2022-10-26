@@ -15,7 +15,7 @@ MonoBehaviour:
   id: Meja Merah
   prefab: {fileID: 5230036692580212780, guid: b2e51103e9b3b2e4db74d56e726e0662, type: 3}
   icon: {fileID: 755971026, guid: 4f730c0fb86b14b41a023e4dd9759715, type: 3}
-  buyPrice: 0
-  sellPrice: 0
+  buyPrice: 100
+  sellPrice: 35
   decreaseable: 1
   type: 0

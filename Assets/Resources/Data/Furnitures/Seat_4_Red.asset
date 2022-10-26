@@ -15,7 +15,7 @@ MonoBehaviour:
   id: Kursi Merah
   prefab: {fileID: 4297716925853398324, guid: 4a5dbe3896591e8469b7763d7fb8c46d, type: 3}
   icon: {fileID: 755971026, guid: 4f730c0fb86b14b41a023e4dd9759715, type: 3}
-  buyPrice: 0
-  sellPrice: 0
+  buyPrice: 100
+  sellPrice: 35
   decreaseable: 1
   type: 1

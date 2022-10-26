@@ -15,7 +15,7 @@ MonoBehaviour:
   id: Kursi Elit
   prefab: {fileID: 4767778158996239126, guid: 841cca00ebe1d4a40a716bf73908da7c, type: 3}
   icon: {fileID: 755971026, guid: 4f730c0fb86b14b41a023e4dd9759715, type: 3}
-  buyPrice: 0
-  sellPrice: 0
+  buyPrice: 100
+  sellPrice: 35
   decreaseable: 1
   type: 1

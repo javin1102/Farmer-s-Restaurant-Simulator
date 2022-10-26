@@ -15,7 +15,7 @@ MonoBehaviour:
   id: Meja Elit
   prefab: {fileID: 7481249282177833274, guid: f907cc93a2fd5e14b81cebbc6ae5196c, type: 3}
   icon: {fileID: 755971026, guid: 4f730c0fb86b14b41a023e4dd9759715, type: 3}
-  buyPrice: 0
-  sellPrice: 0
+  buyPrice: 100
+  sellPrice: 35
   decreaseable: 1
   type: 0

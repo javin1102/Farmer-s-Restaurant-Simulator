@@ -15,7 +15,7 @@ MonoBehaviour:
   id: Kursi Pink
   prefab: {fileID: 993385479923849243, guid: 56bae003c50021948b7566c468f64fe2, type: 3}
   icon: {fileID: 755971026, guid: 4f730c0fb86b14b41a023e4dd9759715, type: 3}
-  buyPrice: 0
-  sellPrice: 0
+  buyPrice: 100
+  sellPrice: 35
   decreaseable: 1
   type: 1

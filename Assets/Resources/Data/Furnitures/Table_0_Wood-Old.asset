@@ -15,7 +15,7 @@ MonoBehaviour:
   id: Meja Kayu
   prefab: {fileID: 7999102235871772208, guid: a84374f6428d52a4e9bf4eccaae66178, type: 3}
   icon: {fileID: 755971026, guid: 4f730c0fb86b14b41a023e4dd9759715, type: 3}
-  buyPrice: 0
-  sellPrice: 0
+  buyPrice: 100
+  sellPrice: 35
   decreaseable: 1
   type: 0
