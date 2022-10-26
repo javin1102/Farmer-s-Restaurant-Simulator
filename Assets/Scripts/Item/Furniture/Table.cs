@@ -46,6 +46,7 @@ public class Table : Furniture
     }
     private void OnDestroy()
     {
+        if ( !m_IsInstantiated ) return;
         m_Restaurant = RestaurantManager.Instance;
         m_Restaurant.Tables.Remove( this );
     }

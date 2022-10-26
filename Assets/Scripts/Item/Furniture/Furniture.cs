@@ -12,11 +12,11 @@ public abstract class Furniture : Item, IRaycastAction
     protected Mesh m_PreviewMesh;
     protected GameObject m_InstantiatedGO;
     protected RestaurantManager m_Restaurant;
+    protected bool m_IsInstantiated;
     private Vector3 m_InstantiatedSize;
     private float m_ObjRot;
     private MaterialChanger m_MaterialChanger;
     private Matrix4x4 m_PreviewMatrix;
-
 
     protected new void OnEnable()
     {
@@ -50,6 +50,7 @@ public abstract class Furniture : Item, IRaycastAction
         m_InstantiatedGO.transform.localScale = m_InstantiatedSize;
         m_InstantiatedGO.GetComponent<Collider>().enabled = true;
         Furniture furniture = m_InstantiatedGO.GetComponent<Furniture>();
+        furniture.m_IsInstantiated = true;
         furniture.m_ObjRotationInputRef.action.performed -= furniture.RotateObj;
         ResetProps();
     }

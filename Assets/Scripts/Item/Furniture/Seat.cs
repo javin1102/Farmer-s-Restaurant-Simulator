@@ -63,6 +63,7 @@ public class Seat : Furniture
 
     private void OnDestroy()
     {
+        if ( !m_IsInstantiated ) return;
         if ( m_Table != null ) m_Table.Seats.Remove( this );
         m_Restaurant = RestaurantManager.Instance;
         m_Restaurant.UnoccupiedSeats.Remove( this );

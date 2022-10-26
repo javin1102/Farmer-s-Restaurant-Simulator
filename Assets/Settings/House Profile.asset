@@ -20,7 +20,7 @@ MonoBehaviour:
     m_OverrideState: 1
     m_Value: 1
   scatter:
-    m_OverrideState: 0
+    m_OverrideState: 1
     m_Value: 0.7
   clamp:
     m_OverrideState: 0
@@ -30,7 +30,7 @@ MonoBehaviour:
     m_Value: {r: 1, g: 1, b: 1, a: 1}
   highQualityFiltering:
     m_OverrideState: 0
-    m_Value: 0
+    m_Value: 1
   skipIterations:
     m_OverrideState: 0
     m_Value: 1
@@ -64,7 +64,7 @@ MonoBehaviour:
     m_Value: 0.25
   smoothness:
     m_OverrideState: 1
-    m_Value: 0.4
+    m_Value: 0.25
   rounded:
     m_OverrideState: 0
     m_Value: 0
@@ -83,9 +83,9 @@ MonoBehaviour:
   active: 1
   postExposure:
     m_OverrideState: 1
-    m_Value: 0
+    m_Value: 0.15
   contrast:
-    m_OverrideState: 1
+    m_OverrideState: 0
     m_Value: 23.5
   colorFilter:
     m_OverrideState: 0
@@ -95,7 +95,7 @@ MonoBehaviour:
     m_Value: 0
   saturation:
     m_OverrideState: 1
-    m_Value: 5
+    m_Value: 60
 --- !u!114 &11400000
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -106,7 +106,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: d7fd9488000d3734a9e00ee676215985, type: 3}
-  m_Name: SampleSceneProfile
+  m_Name: House Profile
   m_EditorClassIdentifier: 
   components:
   - {fileID: 849379129802519247}
