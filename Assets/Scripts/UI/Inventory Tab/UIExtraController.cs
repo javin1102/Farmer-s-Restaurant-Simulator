@@ -20,37 +20,12 @@ public abstract class UIExtraController : MonoBehaviour
         m_IncreaseButton.onClick.AddListener( IncreaseQuantity );
         m_DecreaseButton.onClick.AddListener( DecreaseQuantity );
         m_InputField.onValueChanged.AddListener( ConvertText );
+        m_InputField.onEndEdit.AddListener( Validate );
         m_ActionButton.onClick.AddListener( DoAction );
     }
-    private void Update()
-    {
-        if ( m_UIInventoryController.SelectedSlot == null ) gameObject.SetActive( false );
-    }
-    private void OnDisable()
-    {
-        m_InputField.text = "";
-        m_Quantity = 0;
-    }
 
-    protected void DoAction()
+    protected virtual void Validate( string arg0 )
     {
-        Action();
-        if ( m_UIInventoryController.SelectedSlot.Slot.quantity <= 0 )
-        {
-            m_UIInventoryController.SelectedSlot.ResetSprite();
-            m_UIInventoryController.SelectedSlot = null;
-          
-        }
-        m_PlayerAction.OnDecreaseItemDatabase?.Invoke();
-    }
-
-    protected abstract void Action();
-    
-
-    private void ConvertText( string arg0 )
-    {
-
-        Int32.TryParse( arg0, out m_Quantity );
         if ( m_UIInventoryController.SelectedSlot == null ) return;
         if ( m_Quantity >= m_UIInventoryController.SelectedSlot.Slot.quantity )
         {
@@ -64,6 +39,39 @@ public abstract class UIExtraController : MonoBehaviour
             m_Quantity = 0;
             m_InputField.text = m_Quantity.ToString();
         }
+    }
+    protected void Update()
+    {
+        if ( m_UIInventoryController.SelectedSlot == null ) {
+            gameObject.SetActive( false );
+            return;
+        } 
+    }
+    protected void OnDisable()
+    {
+        m_InputField.text = "";
+        m_Quantity = 0;
+    }
+
+    protected void DoAction()
+    {
+        ButtonAction();
+        if ( m_UIInventoryController.SelectedSlot.Slot.quantity <= 0 )
+        {
+            m_UIInventoryController.SelectedSlot.ResetSprite();
+            m_UIInventoryController.SelectedSlot = null;
+          
+        }
+        m_PlayerAction.OnDecreaseItemDatabase?.Invoke();
+    }
+
+    protected abstract void ButtonAction();
+    
+
+    private void ConvertText( string arg0 )
+    {
+
+        Int32.TryParse( arg0, out m_Quantity );
     }
 
     private void IncreaseQuantity()

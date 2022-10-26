@@ -28,14 +28,19 @@ public abstract class UIStoreQuiz : MonoBehaviour
 
         m_SubmitButton.onClick.AddListener( FinalizeAnswer );
         m_ShuffleButton.onClick.AddListener( ShuffleQuiz );
-        m_TryAgainButton.onClick.AddListener( TryAgain );
+        m_TryAgainButton.onClick.AddListener( ResetQuiz );
     }
+    private void OnEnable()
+    {
+        ResetQuiz();
+    }
+
 
     private void Update()
     {
         if ( !m_ToggleGroup.AnyTogglesOn() ) m_SelectedAnswer = QuizAnswer.NONE;
     }
-    private void TryAgain()
+    private void ResetQuiz()
     {
         m_ResultMenu.SetActive( false );
         m_WrongAnswerMenu.SetActive( false );
@@ -90,10 +95,6 @@ public abstract class UIStoreQuiz : MonoBehaviour
         m_SelectedAnswer = QuizAnswer.D;
     }
 
-    private void OnEnable()
-    {
-        ShuffleQuiz();
-    }
 
     private void ShuffleQuiz()
     {

@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class UIBuyFurniture : MonoBehaviour
+public class UIFurnitureBuy : MonoBehaviour
 {
     [SerializeField] private GameObject m_UIItemPrefab;
     [SerializeField] private GameObject m_Content;
@@ -17,16 +17,16 @@ public class UIBuyFurniture : MonoBehaviour
         m_ChairToggle.onValueChanged.AddListener( ChairFilter );
         m_StoveToggle.onValueChanged.AddListener( StoveFilter );
 
-        m_TableItems.ForEach( EnableItem );
+        m_TableItems.ForEach( EnableUIItem );
     }
 
     private void StoveFilter( bool arg0 )
     {
         if ( arg0 == false ) return;
    
-        m_ChairItems.ForEach( DisableItem );
-        m_TableItems.ForEach( DisableItem );
-        m_StoveItems.ForEach( EnableItem );
+        m_ChairItems.ForEach( DisableUIItem );
+        m_TableItems.ForEach( DisableUIItem );
+        m_StoveItems.ForEach( EnableUIItem );
     }
 
 
@@ -34,25 +34,24 @@ public class UIBuyFurniture : MonoBehaviour
     private void ChairFilter( bool arg0 )
     {
         if ( arg0 == false ) return;
-        m_ChairItems.ForEach( EnableItem );
-        m_TableItems.ForEach( DisableItem );
-        m_StoveItems.ForEach( DisableItem );
+        m_ChairItems.ForEach( EnableUIItem );
+        m_TableItems.ForEach( DisableUIItem );
+        m_StoveItems.ForEach( DisableUIItem );
     }
 
     private void TableFilter( bool arg0 )
     {
         if ( arg0 == false ) return;
-        m_TableItems.ForEach( EnableItem );
-        m_ChairItems.ForEach( DisableItem );
-        m_StoveItems.ForEach( DisableItem );
+        m_TableItems.ForEach( EnableUIItem );
+        m_ChairItems.ForEach( DisableUIItem );
+        m_StoveItems.ForEach( DisableUIItem );
     }
-    private void DisableItem( UIFurnitureItem obj )
+    private void DisableUIItem( UIFurnitureItem obj )
     {
         obj.gameObject.SetActive( false );
-
     }
 
-    private void EnableItem( UIFurnitureItem obj )
+    private void EnableUIItem( UIFurnitureItem obj )
     {
         obj.gameObject.SetActive( true );
     }
@@ -60,7 +59,7 @@ public class UIBuyFurniture : MonoBehaviour
     void InstantiateUIItem( FurnitureData furnitureData )
     {
         UIFurnitureItem uiItem = Instantiate( m_UIItemPrefab, m_Content.transform ).GetComponent<UIFurnitureItem>();
-        uiItem.FurnitureData = furnitureData;
+        uiItem.ItemData = furnitureData;
         switch ( furnitureData.type )
         {
             case FurnitureType.TABLE:

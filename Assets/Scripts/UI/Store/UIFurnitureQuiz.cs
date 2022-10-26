@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class UIFurnitureQuiz : UIStoreQuiz
 {
-    UIFurnitureStoreController m_FurnitureStoreController;
+    private UIFurnitureStoreController m_FurnitureStoreController;
     private void Start()
     {
         m_FurnitureStoreController = UIFurnitureStoreController.Instance as UIFurnitureStoreController;

@@ -9,6 +9,7 @@ public class PlayerAction : MonoBehaviour
     public UnityAction ToggleInventoryUI { get => m_ToggleInventoryUI; set => m_ToggleInventoryUI = value; }
     public UnityAction ToggleMiscUI { get => m_ToggleMiscUI; set => m_ToggleMiscUI = value; }
     public UnityAction<Transform> ToggleFurnitureStoreUI { get => m_ToggleFurnitureStoreUI; set => m_ToggleFurnitureStoreUI =  value ; }
+    public UnityAction<Transform> ToggleSeedStoreUI { get => m_ToggleSeedStoreUI; set => m_ToggleSeedStoreUI = value; }
     public UnityAction OnDecreaseItemDatabase { get => m_OnDropInventory; set => m_OnDropInventory =  value ; }
     public bool IsUIOpen { get => m_IsUIOpen; set => m_IsUIOpen = value; }
     public InputAction InventoryAction { get => m_InventoryAction; }
@@ -19,6 +20,7 @@ public class PlayerAction : MonoBehaviour
     private UnityAction m_ToggleInventoryUI;
     private UnityAction m_ToggleMiscUI;
     private UnityAction<Transform> m_ToggleFurnitureStoreUI;
+    private UnityAction<Transform> m_ToggleSeedStoreUI;
     private UnityAction m_OnDropInventory;
 
     //Player Input Action

@@ -41,7 +41,6 @@ public class ItemDatabase : MonoBehaviour
         if ( m_InventoryDB.Count >= MaxSize ) return false;
         if ( m_InventoryDB.TryGetValue( itemData.id, out ItemSlot slot ) )
         {
-            Debug.Log( quantity );
             slot.quantity += quantity;
             m_OnStoreItem?.Invoke( slot );
             return true;
