@@ -1,5 +1,7 @@
 using UnityEngine;
 using UnityEngine.Events;
+using System.Collections;
+
 public class Shovel : Item, IRaycastAction
 {
     private static Transform tileParent;
@@ -50,6 +52,9 @@ public class Shovel : Item, IRaycastAction
         tileCopyGO.layer = 8;
         tileCopyGO.GetComponent<Tile>().SwitchStatus(Tile.TileStatus.HOED);
 
+        // play Hoe sound effect
+        // nanti harusnya pake animation event buat active deactive sfx
+        StartCoroutine(PlaySFX());
     }
 
     public void PerformRaycastAction( RaycastHit hitInfo )
@@ -69,13 +74,21 @@ public class Shovel : Item, IRaycastAction
             m_TileMatrix = Matrix4x4.TRS( tilePos, tileRot, Vector3.one );
             previewTileMaterialChanger.ChangePreviewMaterialColor( true );
             Graphics.DrawMesh( m_PreviewTileMesh, m_TileMatrix, previewTileMaterialChanger.PreviewMaterial, 0 );
+            UIManager.Instance.ShowActionHelper("Left","To Use Shovel...");
             return;
         }
 
         previewTileMaterialChanger.ChangePreviewMaterialColor( false );
+        UIManager.Instance.HideActionHelper();
         return;
     }
 
+    IEnumerator PlaySFX()
+    {
+        transform.GetChild(0).gameObject.SetActive(true);
+        yield return new WaitForSeconds(0.4f);
+        transform.GetChild(0).gameObject.SetActive(false);
+    }
 
 
 }

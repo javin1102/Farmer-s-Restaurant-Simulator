@@ -18,32 +18,22 @@ public class PlantGrowHandler : MonoBehaviour
 
     [SerializeField] private float growTime = 2f;
     public SeedData m_SeedData;
-
     private bool _isWet;
-
     private Tile tile;
-    private Renderer tileRenderer;
-
-    public Material tileDefaultMaterial;
 
 
     private void Start()
     {
         tile = GetComponentInParent<Tile>();
-        tileRenderer = GetComponentInParent<Renderer>();
 
-        //InvokeRepeating("StartGrow", 1f, 1f);
-
+       // InvokeRepeating("StartGrow", 1f, 1f);
     }
 
       
     public void StartGrow()
     {
-        Debug.Log("GROW SCRIPT : stateplant = " + statePlant);
-        if (tile.CompareTag(Utils.TILE_WET_TAG))
-        {
             GrowProgression();
-        }
+       
     }
 
     public void GrowProgression()
@@ -58,18 +48,20 @@ public class PlantGrowHandler : MonoBehaviour
         }
         if (statePlant < 3)
         {
+
              statePlant++;
             //StartCoroutine(WaitGrow());
         }
     }
-    
-/*    private IEnumerator WaitGrow()
-    {
-        yield return new WaitForSeconds(2f);
-        statePlant++;
-        tile.tag = Utils.TILE_TAG;
-        tileRenderer.material = tileDefaultMaterial;
-    }*/
-    
+
+
+    /*    private IEnumerator WaitGrow()
+        {
+            yield return new WaitForSeconds(2f);
+            statePlant++;
+            tile.tag = Utils.TILE_TAG;
+            tileRenderer.material = tileDefaultMaterial;
+        }*/
+
 
 }

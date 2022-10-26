@@ -58,6 +58,7 @@ public class ActionSlotsController : ItemSlotsController
     }
     private Item InstantiateItemToHand( ItemSlot item )
     {
+        UIManager.Instance.HideActionHelper();
         Item instantiatedItem = Instantiate( item.data.prefab, m_Hand ).GetComponent<Item>();
         ResetItemTf( instantiatedItem );
         instantiatedItem.gameObject.SetActive( true );

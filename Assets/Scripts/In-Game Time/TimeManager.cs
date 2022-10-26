@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using TMPro;
 
 public class TimeManager : MonoBehaviour
 {
@@ -12,8 +11,7 @@ public class TimeManager : MonoBehaviour
 
     public float m_timeScale = 1f;
 
-    public Transform m_sun;
-
+    public Material skybox;
 
     public List<ITimeTracker> m_listenner = new List<ITimeTracker>();
 
@@ -33,9 +31,13 @@ public class TimeManager : MonoBehaviour
     {
         // initialize GameTimeStamp day1, 6 : 00 AM
         m_timeStamp = new GameTimeStamp(1,6,0);
+        
+        // initialize Cubemap Transition to 0 
+        skybox.SetFloat("_CubemapTransition", 0);
 
         // start update time 
         StartCoroutine(TimeUpdate());
+
     }
 
     IEnumerator TimeUpdate()
@@ -50,6 +52,25 @@ public class TimeManager : MonoBehaviour
 
     public void Tick()
     {
+
+        // check time for plus or minus
+        if(m_timeStamp.hour > 6)
+        {
+            if (m_timeStamp.minute >= 59)
+            {
+                if (skybox.GetFloat("_CubemapTransition") >= 1f) skybox.SetFloat("_CubemapTransition", 1f);
+                else skybox.SetFloat("_CubemapTransition", (skybox.GetFloat("_CubemapTransition") + 0.065f) );
+            }
+        }
+        else
+        {
+            if(m_timeStamp.minute >= 59)
+            {
+                if (skybox.GetFloat("_CubemapTransition") <= 0f) skybox.SetFloat("_CubemapTransition", 0f);
+                else skybox.SetFloat("_CubemapTransition", (skybox.GetFloat("_CubemapTransition") - .19f));
+            }
+        }
+
         // update clock
         m_timeStamp.UpdateClock();
 
@@ -57,14 +78,6 @@ public class TimeManager : MonoBehaviour
         {
             m_listenner[i].ClockUpdate(m_timeStamp);
         }
-
-        // calculate sun angle
-        int timeInMinutes = GameTimeStamp.HourToMinutes(m_timeStamp.hour) + m_timeStamp.minute;
-        float sunAngle = .25f * timeInMinutes - 90;
-
-        // change the directional light angle
-        m_sun.eulerAngles = new Vector3(sunAngle, 0, 0);
-
     }
 
     public GameTimeStamp GetGameTimeStamp()
