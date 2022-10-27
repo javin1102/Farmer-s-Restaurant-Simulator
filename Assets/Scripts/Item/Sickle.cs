@@ -65,7 +65,7 @@ public class Sickle : Item,IRaycastAction
             m_TileMatrix = Matrix4x4.TRS(tilePos, tileRot, Vector3.one);
             previewTileMaterialChanger.ChangePreviewMaterialColor(true);
             Graphics.DrawMesh(m_PreviewTileMesh, m_TileMatrix, previewTileMaterialChanger.PreviewMaterial, 0);
-            UIManager.Instance.ShowActionHelper("Left", "To Use Sickle...");
+            UIManager.Instance.ShowActionHelperPrimary("Left", "To Use Sickle...");
             return;
         }
         previewTileMaterialChanger.ChangePreviewMaterialColor(false);

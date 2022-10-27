@@ -51,4 +51,8 @@ public class Utils
     public static int NPC_SIT_ANIM_PARAM = Animator.StringToHash( "Sit" );
     public static int NPC_SPEED_ANIM_PARAM = Animator.StringToHash( "Speed" );
     public static int NPC_COOKING_ANIM_PARAM = Animator.StringToHash( "Cooking" );
+
+    //Scenes
+    public const string SCENE_HOUSE = "House";
+    public const string SCENE_CITY = "City";
 }

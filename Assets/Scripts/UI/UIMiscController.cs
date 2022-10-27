@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -15,7 +13,7 @@ public class UIMiscController : MonoBehaviour
     [SerializeField] private UITab[] m_Tabs;
     private static int m_TabIndex = 1;
     private PlayerAction m_PlayerAction;
-    void Awake()
+    private  void Awake()
     {
         m_PlayerAction = transform.root.GetComponent<PlayerAction>();
         m_CloseButton.onClick.AddListener( CloseUI );
@@ -54,11 +52,11 @@ public class UIMiscController : MonoBehaviour
 
     }
 
-    public void CloseUI()
+    public void ToggleInventoryUI()
     {
-        gameObject.SetActive( false );
-        m_PlayerAction.IsUIOpen = false;
-        m_PlayerAction.OnDisableUI?.Invoke();
+        ToggleUI();
+        if ( !gameObject.activeInHierarchy ) return;
+        SelectTab( "Inventory", 0 );
     }
 
     public void ToggleUI()
@@ -68,21 +66,27 @@ public class UIMiscController : MonoBehaviour
         if ( gameObject.activeInHierarchy )
         {
             m_PlayerAction.OnEnableUI?.Invoke();
-            SelectDefaultTab();
         }
-        else m_PlayerAction.OnDisableUI?.Invoke();
+        else
+        {
+            m_PlayerAction.OnDisableUI?.Invoke();
+        }
+
     }
 
-    public void ToggleInventoryUI()
+    public void CloseUI()
     {
-        ToggleUI();
-        if ( !gameObject.activeInHierarchy ) return;
-        SelectTab( "Inventory", 0 );
+        gameObject.SetActive( false );
+        m_PlayerAction.IsUIOpen = false;
+        m_PlayerAction.OnDisableUI?.Invoke();
     }
+
+
     private void SelectDefaultTab() => SelectTab( "Recipes", 0 );
     private void SelectRecipesTab() => SelectTab( "Recipes" );
     private void SelectInventoryTab() => SelectTab( "Inventory" );
     private void SelectUpgradesTab() => SelectTab( "Upgrades" );
     private void SelectIngredientsTab() => SelectTab( "Ingredients" );
+
 }
 

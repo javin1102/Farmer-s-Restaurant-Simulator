@@ -50,7 +50,7 @@ public class SeedManager : Seed,IRaycastAction
             m_TileMatrix = Matrix4x4.TRS(tilePos, tileRot, Vector3.one);
             previewTileMaterialChanger.ChangePreviewMaterialColor(true);
             Graphics.DrawMesh(m_PreviewTileMesh, m_TileMatrix, previewTileMaterialChanger.PreviewMaterial, 0);
-            UIManager.Instance.ShowActionHelper("Left", "To Plant The Seed...");
+            UIManager.Instance.ShowActionHelperPrimary("Left", "To Plant The Seed...");
             return;    
         }
             previewTileMaterialChanger.ChangePreviewMaterialColor(false);

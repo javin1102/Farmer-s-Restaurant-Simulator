@@ -17,6 +17,5 @@ public class UIFarmStoreController : UIStoreController
         m_SeedsData = Resources.LoadAll<SeedData>( "Data/Seeds" ).ToList();
         m_CropsData = Resources.LoadAll<ItemData>( "Data/Crops" ).ToList();
         m_FarmsData = m_CropsData.Concat( m_SeedsData ).ToList();
-        print( m_FarmsData.Count );
     }
 }

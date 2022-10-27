@@ -8,11 +8,10 @@ public abstract class UIStoreController : MonoBehaviour
     public static UIStoreController Instance { get => m_Instance; }
 
     protected static UIStoreController m_Instance;
-    protected PlayerAction m_PlayerAction;
     protected BoxCollider m_SpawnCollider;
     [SerializeField] protected GameObject m_MainMenuGO, m_BuyMenuGO, m_SellMenuGO, m_QuizMenuGO;
     [SerializeField] protected Button m_BuyMenuButton, m_SellMenuButton, m_QuizMenuButton, m_ExitMenuButton, m_BackButton;
-
+    protected PlayerAction m_PlayerAction;
     protected void Awake()
     {
         if ( m_Instance == null ) m_Instance = this;

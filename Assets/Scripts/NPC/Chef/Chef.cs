@@ -36,7 +36,7 @@ namespace NPC.Chef
         }
 
 
-        public void Interact()
+        public void Interact(PlayerAction playerAction)
         {
             if ( m_Stove != null ) return;
 

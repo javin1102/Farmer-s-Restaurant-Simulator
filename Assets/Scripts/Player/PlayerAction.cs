@@ -8,9 +8,9 @@ public class PlayerAction : MonoBehaviour
     public UnityAction OnDisableUI { get => m_OnDisableUI; set => m_OnDisableUI = value; }
     public UnityAction ToggleInventoryUI { get => m_ToggleInventoryUI; set => m_ToggleInventoryUI = value; }
     public UnityAction ToggleMiscUI { get => m_ToggleMiscUI; set => m_ToggleMiscUI = value; }
-    public UnityAction<Transform> ToggleFurnitureStoreUI { get => m_ToggleFurnitureStoreUI; set => m_ToggleFurnitureStoreUI =  value ; }
+    public UnityAction<Transform> ToggleFurnitureStoreUI { get => m_ToggleFurnitureStoreUI; set => m_ToggleFurnitureStoreUI = value; }
     public UnityAction<Transform> ToggleSeedStoreUI { get => m_ToggleSeedStoreUI; set => m_ToggleSeedStoreUI = value; }
-    public UnityAction OnDecreaseItemDatabase { get => m_OnDropInventory; set => m_OnDropInventory =  value ; }
+    public UnityAction OnDecreaseItemDatabase { get => m_OnDropInventory; set => m_OnDropInventory = value; }
     public bool IsUIOpen { get => m_IsUIOpen; set => m_IsUIOpen = value; }
     public InputAction InventoryAction { get => m_InventoryAction; }
 
@@ -43,7 +43,8 @@ public class PlayerAction : MonoBehaviour
     private ItemDatabase m_ItemDatabase;
     private InventorySlotsController m_InventorySlotsController;
     private bool m_IsUIOpen;
-    private Hoverable m_Hovered;
+    [SerializeField] private Hoverable m_Hovered;
+    private UIManager m_UIManager;
     private void Awake()
     {
         //LockCursor();
@@ -55,6 +56,7 @@ public class PlayerAction : MonoBehaviour
     }
     private void Start()
     {
+        m_UIManager = UIManager.Instance;
         m_ActionSlotsController.SelectActionSlot( 0 );
         LockCursor();
     }
@@ -110,7 +112,7 @@ public class PlayerAction : MonoBehaviour
                     m_Hovered = null;
                 }
             }
-            if ( m_MainInputAction.triggered && hitInfo.collider.TryGetComponent( out IInteractable hit ) ) hit.Interact();
+            if ( m_MainInputAction.triggered && hitInfo.collider.TryGetComponent( out IInteractable hit ) ) hit.Interact( this );
             if ( m_StoreInputAction.triggered && hitInfo.collider.TryGetComponent( out Item raycastedItem ) )
             {
                 if ( Store( raycastedItem ) ) return;
@@ -123,6 +125,7 @@ public class PlayerAction : MonoBehaviour
         else
         {
             if ( m_Hovered == null ) return;
+            m_UIManager.HideActionHelper();
             m_Hovered.HoverExit();
             m_Hovered = null;
         }
@@ -140,10 +143,11 @@ public class PlayerAction : MonoBehaviour
     }
     public void InvokeToggleInventoryUI() => m_ToggleInventoryUI?.Invoke();
     public void InvokeToggleMiscUI() => m_ToggleMiscUI?.Invoke();
-    private void DropItem( InputAction.CallbackContext obj ) {
+    private void DropItem( InputAction.CallbackContext obj )
+    {
         if ( m_ActionSlotsController.CurrEquippedItem == null ) return;
         m_ItemDatabase.Decrease( m_ActionSlotsController.CurrEquippedItem.Data, 1, ItemDatabaseAction.DROP );
-    } 
+    }
     private void InitializeInputAction()
     {
         m_MainInputAction = m_PlayerInput.actions[Utils.MAIN_ACTION];

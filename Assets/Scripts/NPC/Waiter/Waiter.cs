@@ -37,7 +37,7 @@ namespace NPC.Waiter
             m_Agent.speed = m_Restaurant.WaiterMoveSpeed;
         }
 
-        public void Interact()
+        public void Interact(PlayerAction playerAction)
         {
             if ( !m_Hoverable.IsHoverable ) return;
             float randX = Random.Range( m_Restaurant.GroundCollider.bounds.min.x, m_Restaurant.GroundCollider.bounds.max.x );

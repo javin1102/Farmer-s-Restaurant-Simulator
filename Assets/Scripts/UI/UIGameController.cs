@@ -45,10 +45,4 @@ public class UIGameController : MonoBehaviour
             child.gameObject.SetActive( false );
         }
     }
-
-
-    private void EnableActionSlot() => m_ActionSlots.SetActive( true );
-    private void DisableActionSlot() => m_ActionSlots.SetActive( false );
-    private void EnableCrosshair() => m_Crosshair.SetActive( true );
-    private void DisableCrosshair() => m_Crosshair.SetActive( false );
 }

@@ -13,6 +13,7 @@ public abstract class Furniture : Item, IRaycastAction
     protected GameObject m_InstantiatedGO;
     protected RestaurantManager m_Restaurant;
     protected bool m_IsInstantiated;
+    protected Hoverable m_Hoverable;
     private Vector3 m_InstantiatedSize;
     private float m_ObjRot;
     private MaterialChanger m_MaterialChanger;
@@ -22,6 +23,7 @@ public abstract class Furniture : Item, IRaycastAction
     {
         m_Restaurant = RestaurantManager.Instance;
         m_PreviewMesh = GetComponent<MeshFilter>().sharedMesh;
+        m_Hoverable = GetComponent<Hoverable>();
         m_TileManager = TileManager.instance;
         base.OnEnable();
         m_ObjRotationInputRef.action.performed += RotateObj;

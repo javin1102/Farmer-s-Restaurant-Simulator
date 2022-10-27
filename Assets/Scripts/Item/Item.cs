@@ -13,6 +13,7 @@ public abstract class Item : MonoBehaviour
     protected IRaycastAction m_ItemRaycastAction;
     protected TileManager m_TileManager;
     protected bool m_IsDropState;
+    protected UIManager m_UIManager;
 
     //Drop Vars
     private Rigidbody m_Rigidbody;
@@ -32,6 +33,7 @@ public abstract class Item : MonoBehaviour
     protected void OnEnable()
     {
         TryGetComponent( out m_ItemRaycastAction );
+        m_UIManager = UIManager.Instance;
         m_Rigidbody = GetComponent<Rigidbody>();
         m_Collider = GetComponent<Collider>();
         m_MeshRenderer = GetComponent<MeshRenderer>();

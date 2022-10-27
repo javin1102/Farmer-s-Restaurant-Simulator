@@ -15,8 +15,9 @@ namespace NPC.Cashier
         {
             m_Hoverable = GetComponent<Hoverable>();
         }
-        public void Interact()
+        public void Interact(PlayerAction playerAction)
         {
+            m_PlayerAction = playerAction;
             OnInteract();
         }
 

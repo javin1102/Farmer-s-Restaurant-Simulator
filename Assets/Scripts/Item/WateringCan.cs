@@ -55,7 +55,7 @@ public class WateringCan : Item,IRaycastAction
             m_TileMatrix = Matrix4x4.TRS(tilePos, tileRot, Vector3.one);
             previewTileMaterialChanger.ChangePreviewMaterialColor(true);
             Graphics.DrawMesh(m_PreviewTileMesh, m_TileMatrix, previewTileMaterialChanger.PreviewMaterial, 0);
-            UIManager.Instance.ShowActionHelper("Left" , "To Use Water Can...");
+            UIManager.Instance.ShowActionHelperPrimary("Left" , "To Use Water Can...");
             return;
         }
         previewTileMaterialChanger.ChangePreviewMaterialColor(false);

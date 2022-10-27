@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.07050957, g: 0.35370088, b: 0.9707961, a: 1}
+  m_IndirectSpecularColor: {r: 0.070500046, g: 0.35370678, b: 0.97079957, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -4557,7 +4557,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_IncreaseButton: {fileID: 239734270}
   m_DecreaseButton: {fileID: 1512469528}
-  m_DropButton: {fileID: 740411164}
+  m_ActionButton: {fileID: 0}
   m_InputField: {fileID: 1643277442}
 --- !u!1 &370240146
 GameObject:
@@ -7812,14 +7812,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e3b8be9f84dbb3747b62a2255b57739f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_SelectedSlot:
-    rid: -2
-  m_DropUI: {fileID: 360895616}
-  references:
-    version: 2
-    RefIds:
-    - rid: -2
-      type: {class: , ns: , asm: }
+  m_SelectedSlot: {fileID: 0}
+  m_ExtraUI: {fileID: 0}
+  m_SelectedSprite: {fileID: 0}
+  m_UnselectedSprite: {fileID: 0}
 --- !u!114 &641116572
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10760,6 +10756,7 @@ MonoBehaviour:
   - rid: -2
   - rid: -2
   - rid: -2
+  m_SlotSize: 0
   m_Hand: {fileID: 1902609727}
   m_DeacreasableItemChannel: {fileID: 11400000, guid: 45b5ab5fff5be0b4e9c4366e438f6d25, type: 2}
   references:
@@ -10822,6 +10819,7 @@ MonoBehaviour:
   - rid: -2
   - rid: -2
   - rid: -2
+  m_SlotSize: 0
   references:
     version: 2
     RefIds:
@@ -13579,10 +13577,12 @@ MonoBehaviour:
   m_Tables: []
   m_Seats: []
   m_Chefs: []
-  m_ChefIndexOffset: 0
   m_Waiters: []
   m_RestaurantGround: {fileID: 0}
   m_FoodPlace: {fileID: 2103970411}
+  m_ChefPrefab: {fileID: 0}
+  m_WaiterPrefab: {fileID: 0}
+  m_RestaurantUpgradesChannel: {fileID: 0}
   garlic: {fileID: 11400000, guid: c2629dcb0d8b8eb4e876c62f1f5c6d62, type: 2}
   onion: {fileID: 11400000, guid: 37dc22333acdd0d4c8e0b65b7d76d0c7, type: 2}
   carrot: {fileID: 11400000, guid: 4aaa6f74f17019741b20cb5b2754220f, type: 2}
@@ -17232,7 +17232,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1447036991}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 1.51, z: 0}
+  m_LocalPosition: {x: 21.62, y: 1.666, z: 10.31}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -17338,7 +17338,7 @@ Camera:
     y: 0
     width: 1
     height: 1
-  near clip plane: 0.3
+  near clip plane: 0.01
   far clip plane: 1000
   field of view: 60
   orthographic: 0
@@ -19850,16 +19850,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5ffd80e64d2c83649b57a35e01a9f46e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_UI: {fileID: 1739871168}
-  m_RecipesMenu: {fileID: 1910894467}
-  m_UpgradeMenu: {fileID: 718444944}
-  m_InventoryMenu: {fileID: 1483373440}
-  m_IngredientsStockMenu: {fileID: 0}
-  m_Marker: {fileID: 370240148}
-  m_CloseButton: {fileID: 313681455}
-  m_Tabs:
-  - {fileID: 641116570}
-  - {fileID: 303312999}
+  m_UIMiscController: {fileID: 0}
+  m_FurnitureStoreController: {fileID: 0}
+  m_SeedStoreController: {fileID: 0}
 --- !u!114 &1604902589
 MonoBehaviour:
   m_ObjectHideFlags: 0
