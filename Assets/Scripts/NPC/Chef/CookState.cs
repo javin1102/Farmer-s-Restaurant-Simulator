@@ -17,6 +17,8 @@ namespace NPC.Chef
             m_CookTime = m_Food.Value.cookDuration;
             m_Chef.Animator.SetBool( Utils.NPC_COOKING_ANIM_PARAM, true );
             m_Chef.Hoverable.IsHoverable = false;
+            m_Chef.UIChef.gameObject.SetActive( true );
+            m_Chef.UIChef.SetIcon( m_Food.Value.icon );
         }
 
         public override void OnExitState( NPCManager NPC )
@@ -33,19 +35,31 @@ namespace NPC.Chef
                 return;
             }
 
+            if ( m_Food.Key == null || m_Food.Key.Citizen == null )
+            {
+                IdleState idleState = new();
+                NPC.ChangeState( idleState );
+                return;
+            }
+
             m_Chef.transform.forward = m_Chef.Stove.transform.forward;
             //TODO::Switch to cook anim
+            m_Chef.UIChef.SetFillAmount( m_CookTime, m_Food.Value.cookDuration );
             if ( m_CookTime <= 0 )
             {
                 m_CookTime = 0;
-                Food food = GameObject.Instantiate( m_Food.Value.foodPrefab, RandomPos(), Quaternion.identity ).GetComponent<Food>();
+                Food food = GameObject.Instantiate( m_Food.Value.foodPrefab ).GetComponent<Food>();
                 food.Seat = m_Food.Key;
-                m_Chef.Restaurant.FoodsToServe.Enqueue( food );
+                //m_Chef.Restaurant.FoodsToServe.Enqueue( food );
+                food.transform.position = food.Seat.Table.GetFoodPlace( food.Seat ).position;
+                food.Seat.Citizen.ServedFood = food;
                 m_Chef.Restaurant.DecreaseStock( m_Food.Value );
                 IdleState idleState = new();
                 NPC.ChangeState( idleState );
                 return;
             }
+
+
 
             m_CookTime -= Time.deltaTime;
         }

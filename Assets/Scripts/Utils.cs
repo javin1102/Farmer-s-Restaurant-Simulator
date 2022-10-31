@@ -6,11 +6,12 @@ public class Utils
     public static int RestaurantGroundMask = 1 << LayerMask.NameToLayer( "Restaurant Ground" );
     public static int RaycastableMask = 1 << LayerMask.NameToLayer( "Raycastable" ) | 1 << LayerMask.NameToLayer("Outline");
     public static int GroundMask = 1 << LayerMask.NameToLayer( "Ground" );
+    public static int PlayerMask = LayerMask.GetMask( "Player" );
     public static int RestaurantMask = 1 << LayerMask.NameToLayer( "Restaurant" );
+    public static int UILayer = LayerMask.NameToLayer( "UI" );
     public static int HandLayer = LayerMask.NameToLayer( "Hand" );
     public static int OutlineLayer = LayerMask.NameToLayer( "Outline" );
     public static int RaycastableLayer = LayerMask.NameToLayer( "Raycastable" );
-    public static int PlayerMask = LayerMask.GetMask( "Player" );
 
     //INPUT ACTION STRING
     public const string MAIN_ACTION = "Main Action";
@@ -44,6 +45,7 @@ public class Utils
     public const string SEAT_TAG = "SEAT";
     public const string TILE_WET_TAG = "Wet Tile";
     public const string CROP_TAG = "Crop";
+    public const string PLAYER_TAG = "Player";
 
     //Anim
     public static int NPC_WALK_ANIM_PARAM = Animator.StringToHash( "Walk" );

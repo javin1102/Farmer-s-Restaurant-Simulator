@@ -9,11 +9,13 @@ namespace NPC.Chef
         public KeyValuePair<Seat, FoodData> OrderedFood { get => m_OrderedFood; set => m_OrderedFood = value; }
         public Stove Stove { get => m_Stove; set => m_Stove = value; }
         public Hoverable Hoverable { get => m_Hoverable; }
+        public UIChef UIChef { get => m_UIChef; }
 
         private RestaurantManager m_Restaurant;
         private readonly IdleState m_IdleState = new();
         private KeyValuePair<Seat, FoodData> m_OrderedFood;
         [SerializeField] private Stove m_Stove;
+        [SerializeField] private UIChef m_UIChef;
         private Hoverable m_Hoverable;
         private void Start()
         {

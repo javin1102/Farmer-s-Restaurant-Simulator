@@ -6,7 +6,7 @@ using UnityEngine.AI;
 
 public static class ExtensionMethods
 {
-    public static bool HasReachedDestination( this NavMeshAgent agent ) => agent.remainingDistance - 1f <= agent.stoppingDistance;
+    public static bool HasReachedDestination( this NavMeshAgent agent, float offset = 0 ) => agent.remainingDistance - offset <= agent.stoppingDistance;
     public static Vector3 Round( this Vector3 vec )
     {
         vec.x = Mathf.Round( vec.x );
@@ -17,6 +17,7 @@ public static class ExtensionMethods
 
     public static void SetLayer( this Transform trans, int layer )
     {
+        if ( trans.gameObject.layer == Utils.UILayer ) return;
         trans.gameObject.layer = layer;
         foreach ( Transform child in trans )
             child.SetLayer( layer );
