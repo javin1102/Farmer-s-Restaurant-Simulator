@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d20252b2dcb71444fae5929b07c72cdb, type: 3}
   m_Name: Pecel
   m_EditorClassIdentifier: 
-  foodPrefab: {fileID: 1620823866523042, guid: 31f2ecfec20d54541ace8f82e1071325, type: 3}
+  foodPrefab: {fileID: 8735650615285411582, guid: e1cb25aac2c7c8043b37b8ee99b39c00, type: 3}
   dishPrice: 5
   unlockPrice: 34
   cookDuration: 5

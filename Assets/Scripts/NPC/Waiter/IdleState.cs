@@ -25,7 +25,13 @@ namespace NPC.Waiter
                 m_Waiter.IsServing = false;
                 m_Waiter.Hoverable.IsHoverable = true;
             }
-            if ( !m_Waiter.Restaurant.FoodsToServe.TryPeek( out KeyValuePair<Seat, ServedFood> food ) ) return;
+            if ( !m_Waiter.Restaurant.FoodsToServe.TryPeek( out Food food ) ) return;
+            if ( food.Seat == null || food.Seat.Citizen == null )
+            {
+                GameObject.Destroy( food.gameObject );
+                m_Waiter.Restaurant.FoodsToServe.Dequeue();
+                return;
+            }
             m_Waiter.FoodToServe = food;
             m_Waiter.Restaurant.FoodsToServe.Dequeue();
             GrabFoodState grabFoodState = new();

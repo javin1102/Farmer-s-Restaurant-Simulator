@@ -6,13 +6,13 @@ public class UIRecipesContent : MonoBehaviour
     [SerializeField] private GameObject m_CardPrefab;
     private HorizontalLayoutGroup m_HorizontalLayoutGroup;
     private RectTransform m_RectTransform;
-    private RestaurantManager m_Restaurant;
+    private FoodsController m_FoodsController;
     private void Start()
     {
         m_HorizontalLayoutGroup = GetComponent<HorizontalLayoutGroup>();
         m_RectTransform = GetComponent<RectTransform>();
-        m_Restaurant = RestaurantManager.Instance;
-        foreach ( var food in m_Restaurant.AllFoods )
+        m_FoodsController = FoodsController.Instance;
+        foreach ( var food in m_FoodsController.AllFoods )
         {
             UIRecipeCard card = Instantiate( m_CardPrefab, transform ).GetComponent<UIRecipeCard>();
             card.Food = food;

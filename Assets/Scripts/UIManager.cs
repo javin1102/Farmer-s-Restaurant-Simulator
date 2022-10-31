@@ -76,8 +76,6 @@ public class UIManager : MonoBehaviour,ITimeTracker
 
     public void HideActionHelper()
     {
-        Debug.Log("setactive false");
-        // deactive action helper container
         m_ActionHelperPrimaryGO.SetActive(false);
         m_ActionHelperSecondaryGO.SetActive( false );
     }

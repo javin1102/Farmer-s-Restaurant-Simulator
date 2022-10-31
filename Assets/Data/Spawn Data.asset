@@ -25,10 +25,10 @@ MonoBehaviour:
     eulerAngles: {x: 0, y: 0, z: 0}
     scale: {x: 0, y: 0, z: 0}
   houseDoorSpawnTf:
-    position: {x: 23.638, y: 1, z: 10.397}
+    position: {x: 23.638, y: 1, z: 174.377}
     eulerAngles: {x: 0, y: 0, z: 0}
     scale: {x: 1, y: 1, z: 1}
   houseBedSpawnTf:
-    position: {x: 10.201, y: 1, z: 5.48}
+    position: {x: 10.201, y: 1, z: 169.45999}
     eulerAngles: {x: 0, y: 0, z: 0}
     scale: {x: 1, y: 1, z: 1}

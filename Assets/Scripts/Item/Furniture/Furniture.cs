@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.InputSystem;
 
 [RequireComponent( typeof( MaterialChanger ) )]
@@ -12,8 +13,8 @@ public abstract class Furniture : Item, IRaycastAction
     protected Mesh m_PreviewMesh;
     protected GameObject m_InstantiatedGO;
     protected RestaurantManager m_Restaurant;
-    protected bool m_IsInstantiated;
-    protected Hoverable m_Hoverable;
+    [SerializeField] protected bool m_IsInstantiated;
+    [SerializeField] protected Hoverable m_Hoverable;
     private Vector3 m_InstantiatedSize;
     private float m_ObjRot;
     private MaterialChanger m_MaterialChanger;
@@ -40,7 +41,7 @@ public abstract class Furniture : Item, IRaycastAction
         //if ( !gameObject.activeInHierarchy || !m_IsInstantiable ) return;
         m_DecreaseableEvent.RaiseEvent();
 
-        m_InstantiatedGO = Instantiate( gameObject );
+        m_InstantiatedGO = Instantiate( m_Data.prefab );
         m_InstantiatedGO.name = m_Data.id;
         m_InstantiatedGO.layer = 8;
         m_InstantiatedGO.SetActive( true );
@@ -54,7 +55,12 @@ public abstract class Furniture : Item, IRaycastAction
         Furniture furniture = m_InstantiatedGO.GetComponent<Furniture>();
         furniture.m_IsInstantiated = true;
         furniture.m_ObjRotationInputRef.action.performed -= furniture.RotateObj;
+        furniture.m_Hoverable.OnHoverEnter += ShowHelper;
         ResetProps();
+    }
+    protected void OnDestroy()
+    {
+        if ( m_IsInstantiated ) m_Hoverable.OnHoverEnter -= ShowHelper;
     }
     public void PerformRaycastAction( RaycastHit hitInfo )
     {
@@ -95,5 +101,9 @@ public abstract class Furniture : Item, IRaycastAction
     private void ResetProps()
     {
         m_IsInstantiable = false;
+    }
+    private void ShowHelper()
+    {
+        m_UIManager.ShowActionHelperPrimary( "Left", "Simpan" );
     }
 }

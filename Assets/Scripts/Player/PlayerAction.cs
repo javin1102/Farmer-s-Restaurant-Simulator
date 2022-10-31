@@ -13,6 +13,7 @@ public class PlayerAction : MonoBehaviour
     public UnityAction OnDecreaseItemDatabase { get => m_OnDropInventory; set => m_OnDropInventory = value; }
     public bool IsUIOpen { get => m_IsUIOpen; set => m_IsUIOpen = value; }
     public InputAction InventoryAction { get => m_InventoryAction; }
+    public InputAction[] SelectSlotInputAction => m_SelectSlotInputAction;
 
     //Event Listener
     private event UnityAction m_OnEnableUI;
@@ -44,7 +45,7 @@ public class PlayerAction : MonoBehaviour
     private InventorySlotsController m_InventorySlotsController;
     private bool m_IsUIOpen;
     [SerializeField] private Hoverable m_Hovered;
-    private UIManager m_UIManager;
+    [SerializeField] private UIManager m_UIManager;
     private void Awake()
     {
         //LockCursor();

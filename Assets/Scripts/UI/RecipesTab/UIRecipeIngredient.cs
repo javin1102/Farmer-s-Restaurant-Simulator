@@ -10,20 +10,20 @@ public class UIRecipeIngredient : MonoBehaviour
     [SerializeField] private Image m_QtySlider;
 
     private FoodIngredient m_FoodIngredient;
-    private RestaurantManager m_RestaurantManager;
+    private FoodsController m_FoodsController;
 
 
     private void Update() => UpdateUI();
     private void Start()
     {
-        m_RestaurantManager = RestaurantManager.Instance;
+        m_FoodsController = FoodsController.Instance;
         
     }
     public void UpdateUI()
     {
         m_Icon.sprite = m_FoodIngredient.ingredient.icon;
         
-        if ( m_RestaurantManager.StockIngredients.TryGetValue( m_FoodIngredient.ingredient.id, out StockIngredient stockIngredient ) )
+        if ( m_FoodsController.StockIngredients.TryGetValue( m_FoodIngredient.ingredient.id, out StockIngredient stockIngredient ) )
         {
             m_QtyText.text = $"{stockIngredient.quantity}/{m_FoodIngredient.quantity}";
             m_QtySlider.fillAmount = Mathf.InverseLerp( 0, m_FoodIngredient.quantity, stockIngredient.quantity );

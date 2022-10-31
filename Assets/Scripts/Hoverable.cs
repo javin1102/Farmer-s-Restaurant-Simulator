@@ -5,7 +5,7 @@ public class Hoverable : MonoBehaviour
 {
     private int m_Layer;
     private bool m_IsHoverable;
-    protected UIManager m_UIManager;
+    [SerializeField] protected UIManager m_UIManager;
     public bool IsHoverable { get => m_IsHoverable; set => m_IsHoverable = value; }
     public event UnityAction OnHoverEnter;
     private void Awake()

@@ -9,13 +9,13 @@ namespace NPC.Waiter
     {
         public Vector3 InitPos { get => m_InitPos; }
         public RestaurantManager Restaurant { get => m_Restaurant; }
-        public KeyValuePair<Seat, ServedFood> FoodToServe { get => m_FoodToServe; set => m_FoodToServe =  value ; }
+        public Food FoodToServe { get => m_FoodToServe; set => m_FoodToServe =  value ; }
         public bool IsServing { get => m_IsServing; set => m_IsServing =  value ; }
         public Hoverable Hoverable { get => m_Hoverable; set => m_Hoverable =  value ; }
 
         private RestaurantManager m_Restaurant;
         private Vector3 m_InitPos;
-        private KeyValuePair<Seat, ServedFood> m_FoodToServe;
+        private Food m_FoodToServe;
         private readonly IdleState m_IdleState = new();
         private bool m_IsServing;
         private Hoverable m_Hoverable;

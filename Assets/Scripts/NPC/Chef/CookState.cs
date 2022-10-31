@@ -15,7 +15,7 @@ namespace NPC.Chef
             m_FoodPlace = m_Chef.Restaurant.FoodPlace.position;
             m_Food = m_Chef.OrderedFood;
             m_CookTime = m_Food.Value.cookDuration;
-            m_Chef.Animator.SetBool(Utils.NPC_COOKING_ANIM_PARAM, true);
+            m_Chef.Animator.SetBool( Utils.NPC_COOKING_ANIM_PARAM, true );
             m_Chef.Hoverable.IsHoverable = false;
         }
 
@@ -38,9 +38,9 @@ namespace NPC.Chef
             if ( m_CookTime <= 0 )
             {
                 m_CookTime = 0;
-                GameObject foodGO = GameObject.Instantiate( m_Food.Value.foodPrefab, RandomPos(), Quaternion.identity );
-                ServedFood servedFood = new( foodGO, m_Food.Value.dishPrice );
-                m_Chef.Restaurant.FoodsToServe.Enqueue( KeyValuePair.Create( m_Food.Key, servedFood ) );
+                Food food = GameObject.Instantiate( m_Food.Value.foodPrefab, RandomPos(), Quaternion.identity ).GetComponent<Food>();
+                food.Seat = m_Food.Key;
+                m_Chef.Restaurant.FoodsToServe.Enqueue( food );
                 m_Chef.Restaurant.DecreaseStock( m_Food.Value );
                 IdleState idleState = new();
                 NPC.ChangeState( idleState );

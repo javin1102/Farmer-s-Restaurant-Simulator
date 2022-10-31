@@ -8,7 +8,7 @@ namespace NPC.Citizen
         private RestaurantManager m_Restaurant;
         private Citizen m_Citizen;
         private Seat m_Seat;
-        private bool m_HasOrder, m_IsEating;
+        private bool m_HasOrder, m_IsEating, m_IsSitting;
         private FoodData m_FoodData;
         private FoodConfig m_FoodConfig;
         private bool m_StartWaitTimer;
@@ -17,7 +17,7 @@ namespace NPC.Citizen
         {
             m_Restaurant = RestaurantManager.Instance;
             m_Citizen = NPC as Citizen;
-            if ( !m_Restaurant.TryGetRecipeToCook( out m_FoodData, out m_FoodConfig ) || !m_Restaurant.FindUnoccupiedSeat( out m_Seat ) || !FindSeatDest( m_Citizen, m_Seat ) )
+            if ( !m_Restaurant.TryGetFoodToCook( out m_FoodData, out m_FoodConfig ) || !m_Restaurant.FindUnoccupiedSeat( out m_Seat ) || !FindSeatDest( m_Citizen, m_Seat ) )
             {
                 TravelState travelState = new();
                 m_Citizen.ChangeState( travelState );
@@ -31,13 +31,17 @@ namespace NPC.Citizen
             m_Citizen.Agent.enabled = true;
             if ( m_Seat != null )
             {
+                m_Seat.Citizen = null;
+                m_Seat.IsOccupied = false;
                 m_Restaurant.UnoccupiedSeats.Add( m_Seat );
             }
 
-            if ( m_Citizen.ServedFood == null ) return;
+            //TODO::HAS Served food -> ADD PLAYER MONEY FROM SERVED FOOD
+            if ( m_Citizen.ServedFood != null )
+            {
+                GameObject.Destroy( m_Citizen.ServedFood.gameObject );
+            }
 
-            //TODO::ADD PLAYER MONEY FROM SERVED FOOD
-            GameObject.Destroy( m_Citizen.ServedFood.foodGO );
             m_HasOrder = false;
             m_Seat = null;
             m_Citizen.ServedFood = null;
@@ -54,17 +58,23 @@ namespace NPC.Citizen
                 return;
             }
 
-            if ( m_StartWaitTimer ) m_WaitTime -= Time.deltaTime;
+            if ( m_StartWaitTimer && !m_IsEating ) m_WaitTime -= Time.deltaTime;
 
-            if ( !m_HasOrder && !m_Citizen.Agent.pathPending && m_Citizen.Agent.HasReachedDestination() )
+            if ( !m_IsSitting && !m_Citizen.Agent.pathPending && m_Citizen.Agent.HasReachedDestination() )
             {
-                m_Restaurant.OrderFood( m_Seat, m_FoodData );
-                m_HasOrder = true;
                 m_Citizen.Agent.enabled = false;
                 m_Citizen.transform.position = m_Seat.SitTf.position;
                 m_Citizen.transform.forward = m_Seat.transform.forward;
                 m_Citizen.Animator.SetTrigger( Utils.NPC_SIT_ANIM_PARAM );
                 m_StartWaitTimer = true;
+                m_IsSitting = true;
+
+            }
+
+            if ( m_IsSitting && !m_HasOrder && m_Restaurant.AnyChefHasStove() )
+            {
+                m_Restaurant.OrderFood( m_Seat, m_FoodData );
+                m_HasOrder = true;
             }
 
 
@@ -79,7 +89,7 @@ namespace NPC.Citizen
 
         private bool FindSeatDest( Citizen citizen, Seat seat )
         {
-            if ( seat == null ) return false;
+            if ( seat == null || seat.IsOccupied ) return false;
             if ( citizen.Agent.SetDestination( seat.transform.position ) )
             {
                 seat.IsOccupied = true;

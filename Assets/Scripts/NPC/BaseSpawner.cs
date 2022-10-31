@@ -15,15 +15,22 @@ namespace NPC
         protected bool m_HasSpawn;
         private static BaseSpawner m_Instance;
         private Vector2 delayTimeRange;
-
-
+        private readonly List<NPCManager> m_SpawnList = new();   
         private void Awake()
         {
             if ( m_Instance == null ) m_Instance = this;
             int i = 0;
             m_Pool = new( () => Instantiate( m_Prefabs[i++ % m_Prefabs.Length] ).GetComponent<NPCManager>(), npc => Get( npc ), npc => npc.gameObject.SetActive( false ), npc => Destroy( npc.gameObject ), false, m_SpawnSize, 60 );
+            Init();
         }
 
+        private void Start()
+        {
+            for ( int i = 0; i < m_SpawnSize; i++ )
+            {
+                m_Pool.Release( m_SpawnList[i] );
+            }
+        }
         private void Update()
         {
             if ( m_Pool.CountActive >= m_SpawnSize ) return;
@@ -37,6 +44,15 @@ namespace NPC
 
         protected abstract void Get( NPCManager npc );
         public void ReleaseNPC( NPCManager npc ) => m_Pool.Release( npc );
+
+        private void Init()
+        {
+            for ( int i = 0; i < m_SpawnSize; i++ )
+            {
+                m_Pool.Get( out NPCManager npc );
+                m_SpawnList.Add( npc );
+            }
+        }
 
         IEnumerator SpawnWithDelay( float delay )
         {

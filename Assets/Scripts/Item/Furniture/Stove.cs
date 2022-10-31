@@ -18,7 +18,10 @@ public class Stove : Furniture, IInteractable
 
     private void ShowHelper()
     {
-        m_UIManager.ShowActionHelperPrimary( "Left", "Pasang Chef" );
+        if ( m_Chef == null )
+            m_UIManager.ShowActionHelperPrimary( "Left", "Tugaskan Chef" );
+        else
+            m_UIManager.ShowActionHelperPrimary( "Left", "Cabut Chef" );
         m_UIManager.ShowActionHelperSecondary( "Left", "Simpan" );
     }
 

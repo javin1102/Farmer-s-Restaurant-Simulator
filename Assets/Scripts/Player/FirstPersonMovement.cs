@@ -19,7 +19,6 @@ public class FirstPersonMovement : MonoBehaviour
     private float m_Gravity;
     private int m_GroundMask;
     private Camera m_Cam;
-    private Vector3 move;
 
     void Start()
     {

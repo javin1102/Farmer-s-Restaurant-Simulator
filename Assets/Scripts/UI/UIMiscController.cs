@@ -21,6 +21,7 @@ public class UIMiscController : MonoBehaviour
 
     private void OnEnable()
     {
+        SelectDefaultTab();
         m_RecipesMenu.SelectAction += SelectRecipesTab;
         m_InventoryMenu.SelectAction += SelectInventoryTab;
         m_IngredientsStockMenu.SelectAction += SelectIngredientsTab;

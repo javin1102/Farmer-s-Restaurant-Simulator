@@ -6,7 +6,7 @@ using UnityEngine.AI;
 
 public static class ExtensionMethods
 {
-    public static bool HasReachedDestination( this NavMeshAgent agent ) => agent.remainingDistance - .5f <= agent.stoppingDistance;
+    public static bool HasReachedDestination( this NavMeshAgent agent ) => agent.remainingDistance - 1f <= agent.stoppingDistance;
     public static Vector3 Round( this Vector3 vec )
     {
         vec.x = Mathf.Round( vec.x );

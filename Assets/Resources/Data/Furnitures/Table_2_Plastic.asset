@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   id: Meja Plastik
   prefab: {fileID: 2046953323841180475, guid: d2d1da543b0ba3b4c97b22433d280a24, type: 3}
-  icon: {fileID: 755971026, guid: 4f730c0fb86b14b41a023e4dd9759715, type: 3}
+  icon: {fileID: 21300000, guid: 1bdf09806ac47a74bbbd740324baf095, type: 3}
   buyPrice: 100
   sellPrice: 35
   decreaseable: 1

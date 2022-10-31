@@ -8,9 +8,27 @@ public class Table : Furniture
     public bool HasSeat { get => m_Seats.Count > 0; }
     public List<Seat> Seats => m_Seats;
 
-    private List<Seat> m_Seats = new();
+    [SerializeField] private List<Seat> m_Seats = new();
     private Table m_InstantiatedTable;
+    private Transform m_FoodPlaces;
 
+    private void Start()
+    {
+        m_FoodPlaces = transform.GetChild( 1 );
+    }
+
+    public Transform GetFoodPlace( Seat seat )
+    {
+        foreach ( Transform child in m_FoodPlaces )
+        {
+            if ( child.forward == seat.transform.forward )
+            {
+                return child;
+            }
+        }
+
+        return null;
+    }
     public override void MainAction()
     {
         if ( !gameObject.activeInHierarchy || !m_IsInstantiable ) return;
@@ -31,21 +49,23 @@ public class Table : Furniture
             new Ray(m_InstantiatedGO.transform.position, -m_InstantiatedGO.transform.right),
         };
 
-
         foreach ( Ray ray in rays )
         {
-            Debug.DrawRay( ray.origin, ray.direction );
-            if ( Physics.Raycast( ray, out RaycastHit hitInfo, 2 ) )
+            RaycastHit[] hits = Physics.BoxCastAll( m_InstantiatedGO.transform.position, Vector3.one / 2, ray.direction, Quaternion.identity, 1 );
+            foreach ( var hitInfo in hits )
             {
                 if ( hitInfo.collider != null && hitInfo.collider.TryGetComponent( out Seat seat ) )
                 {
-                    seat.CheckTable_Instantiated();
+                    seat.Table = m_InstantiatedTable;
+                    m_Seats.Add( seat );
+                    m_Restaurant.UnoccupiedSeats.Add( seat );
                 }
             }
         }
     }
-    private void OnDestroy()
+    private new void OnDestroy()
     {
+        base.OnDestroy();
         if ( !m_IsInstantiated ) return;
         m_Restaurant = RestaurantManager.Instance;
         m_Restaurant.Tables.Remove( this );

@@ -4,15 +4,15 @@ using UnityEngine;
 public class Seat : Furniture
 {
     public bool IsOccupied { get => m_IsOccupied; set => m_IsOccupied = value; }
-    public Table Table { get => m_Table; }
+    public Table Table { get => m_Table; set => m_Table = value; }
     public Citizen Citizen { get => m_Citizen; set => m_Citizen = value; }
     public Transform SitTf { get => m_SitTf; }
 
     [SerializeField] private Transform m_SitTf;
-    private Table m_Table;
+    [SerializeField] private Table m_Table;
     private Seat m_InstantiatedSeat;
-    private bool m_IsOccupied;
-    private Citizen m_Citizen;
+    [SerializeField] private bool m_IsOccupied;
+    [SerializeField] private Citizen m_Citizen;
     public override void MainAction()
     {
         if ( !gameObject.activeInHierarchy || !m_IsInstantiable ) return;
@@ -25,8 +25,8 @@ public class Seat : Furniture
     private void CheckForTable()
     {
         Ray ray = new( m_InstantiatedGO.transform.position, m_InstantiatedGO.transform.forward );
-
-        if ( Physics.Raycast( ray, out RaycastHit hitInfo, 2 ) )
+        RaycastHit[] hits = Physics.BoxCastAll( m_InstantiatedGO.transform.position, Vector3.one / 3, ray.direction, Quaternion.identity, 1 );
+        foreach ( var hitInfo in hits )
         {
             if ( hitInfo.collider != null && hitInfo.collider.TryGetComponent( out Table table ) )
             {
@@ -45,8 +45,8 @@ public class Seat : Furniture
     public void CheckTable_Instantiated()
     {
         Ray ray = new( transform.position, transform.forward );
-
-        if ( Physics.Raycast( ray, out RaycastHit hitInfo, 2 ) )
+        RaycastHit[] hits = Physics.BoxCastAll( transform.position, Vector3.one / 2, ray.direction, Quaternion.identity, 1 );
+        foreach ( var hitInfo in hits )
         {
             if ( hitInfo.collider != null && hitInfo.collider.TryGetComponent( out Table table ) )
             {
@@ -59,10 +59,12 @@ public class Seat : Furniture
 
             }
         }
+
     }
 
-    private void OnDestroy()
+    private new void OnDestroy()
     {
+        base.OnDestroy();
         if ( !m_IsInstantiated ) return;
         if ( m_Table != null ) m_Table.Seats.Remove( this );
         m_Restaurant = RestaurantManager.Instance;

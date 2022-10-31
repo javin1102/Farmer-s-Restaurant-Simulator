@@ -7,26 +7,27 @@ namespace NPC.Citizen
     public class CitizenSpawner : BaseSpawner
     {
         private int waypointCount = 0;
+        private Citizen m_Citizen;
         protected override void Get( NPCManager npc )
         {
-            Citizen citizen = npc as Citizen;
-            citizen.gameObject.SetActive( true );
+            m_Citizen = npc as Citizen;
+            m_Citizen.gameObject.SetActive( true );
             int waypointIndex = waypointCount++ % transform.childCount;
             int randomize = Random.value < 0.5f ? 0 : 1;
-            Transform selectedWaypoint = transform.GetChild(waypointIndex);
+            Transform selectedWaypoint = transform.GetChild( waypointIndex );
             Transform initTf;
             if ( randomize == 0 )
             {
                 initTf = selectedWaypoint.GetChild( 0 );
-                citizen.TravelBackwards = false;
+                m_Citizen.TravelBackwards = false;
             }
             else
             {
                 initTf = selectedWaypoint.GetChild( selectedWaypoint.childCount - 1 );
-                citizen.TravelBackwards = true;
+                m_Citizen.TravelBackwards = true;
             }
-            citizen.CurrentWaypoint = initTf.GetComponent<Waypoint>();
-            citizen.Agent.Warp( initTf.position );
+            m_Citizen.CurrentWaypoint = initTf.GetComponent<Waypoint>();
+            m_Citizen.Agent.Warp( initTf.position );
         }
 
     }

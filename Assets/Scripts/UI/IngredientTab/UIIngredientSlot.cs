@@ -13,13 +13,13 @@ public class UIIngredientSlot : MonoBehaviour, IPointerEnterHandler, IPointerExi
     [SerializeField] private TMP_Text m_QuantityText, m_IngredientNameText;
     [SerializeField] private GameObject m_OverlayGO;
     private IngredientData m_IngredientData;
-    private RestaurantManager m_RestaurantManager;
+    private FoodsController m_FoodsController;
     private UnityAction<IngredientData, Vector3> m_OnHoverEnter;
     private UnityAction m_OnHoverExit;
     private RectTransform m_RectTf;
     private void Start()
     {
-        m_RestaurantManager = RestaurantManager.Instance;
+        m_FoodsController = FoodsController.Instance;
         m_RectTf = GetComponent<RectTransform>();
     }
 
@@ -29,7 +29,7 @@ public class UIIngredientSlot : MonoBehaviour, IPointerEnterHandler, IPointerExi
     {
         m_IngredientNameText.text = m_IngredientData.id;
         m_Icon.sprite = m_IngredientData.icon;
-        if ( m_RestaurantManager.StockIngredients.TryGetValue( m_IngredientData.id, out StockIngredient ingredient ) )
+        if ( m_FoodsController.StockIngredients.TryGetValue( m_IngredientData.id, out StockIngredient ingredient ) )
         {
             EnableOverlayUI( ingredient );
         }

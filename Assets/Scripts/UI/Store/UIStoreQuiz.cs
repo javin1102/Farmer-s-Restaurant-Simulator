@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using TMPro;
@@ -99,10 +98,10 @@ public abstract class UIStoreQuiz : MonoBehaviour
     private void ShuffleQuiz()
     {
         m_SelectedQuiz = m_QuizData[RandQuizIndex];
-        Bind();
+        UpdateUI();
     }
 
-    private void Bind()
+    private void UpdateUI()
     {
         m_QuestionText.text = m_SelectedQuiz.question;
         m_AnswerA.text = m_SelectedQuiz.answerA;
