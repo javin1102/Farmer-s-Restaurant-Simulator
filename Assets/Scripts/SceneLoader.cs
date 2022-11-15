@@ -154,6 +154,6 @@ public class SceneLoader : MonoBehaviour
     {
         yield return StartCoroutine( LoadSceneAsync( Utils.SCENE_CITY, LoadSceneMode.Additive, SPAWN_TYPE.HOUSE_BED ) );
         yield return StartCoroutine( LoadSceneAsync( Utils.SCENE_HOUSE, LoadSceneMode.Additive, SPAWN_TYPE.HOUSE_BED ) );
-        yield return StartCoroutine( LoadSceneAsync( Utils.SCENE_FARM, LoadSceneMode.Additive, SPAWN_TYPE.CITY_FARM ) );
+        yield return StartCoroutine( LoadSceneAsync( Utils.SCENE_FARM, LoadSceneMode.Additive, SPAWN_TYPE.HOUSE_BED ) );
     }
 }
