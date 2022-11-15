@@ -22,9 +22,23 @@ public class ItemDatabase : MonoBehaviour
         m_ActionSlots = GetComponent<ActionSlotsController>();
         m_InventorySlots = GetComponent<InventorySlotsController>();
         m_ActionSlots.DBRemoveAction += RemoveFromDB;
-        ItemData[] x = Resources.LoadAll<ItemData>( "Data/Furnitures" );
-        foreach ( var item in x )
+        ItemData[] furnitureItems = Resources.LoadAll<ItemData>( "Data/Furnitures" );
+        ItemData[] equipmentItems = Resources.LoadAll<ItemData>( "Data/Equipments" );
+        ItemData[] seedItems = Resources.LoadAll<ItemData>( "Data/Seeds" );
+        foreach ( var item in furnitureItems )
         {
+            Store( item );
+            Store( item );
+            Store( item );
+            Store( item );
+        }
+        foreach ( var item in equipmentItems )
+        {
+            Store( item );
+        }
+        foreach ( var item in seedItems )
+        {
+            Store( item );
             Store( item );
             Store( item );
             Store( item );

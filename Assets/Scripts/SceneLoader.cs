@@ -31,11 +31,14 @@ public class SceneLoader : MonoBehaviour
     [SerializeField] private SPAWN_TYPE m_SpawnType = SPAWN_TYPE.HOUSE_BED;
     [SerializeField] private CinemachineVirtualCamera m_VCam;
     private FirstPersonMovement m_FirstPersonMovement;
+    private Camera m_MainCam;
     private void Awake()
     {
         if ( m_Instance == null ) m_Instance = this;
         else Destroy( gameObject );
         DontDestroyOnLoad( this );
+
+        m_MainCam = Camera.main;
     }
 
     private void Start()
@@ -116,16 +119,25 @@ public class SceneLoader : MonoBehaviour
                 m_PlayerAction.transform.position = m_SpawnPosData.houseBedSpawnTf.position;
                 m_VCam.ForceCameraPosition( m_SpawnPosData.houseBedSpawnTf.position, Quaternion.Euler( m_SpawnPosData.houseBedSpawnTf.eulerAngles ) );
                 m_PostProcessingVolume.profile = m_HouseProfile;
+                m_MainCam.cullingMask = Utils.HouseMask;
                 break;
             case SPAWN_TYPE.HOUSE_DOOR:
                 m_PlayerAction.transform.position = m_SpawnPosData.houseDoorSpawnTf.position;
                 m_VCam.ForceCameraPosition( m_SpawnPosData.houseDoorSpawnTf.position, Quaternion.Euler( m_SpawnPosData.houseDoorSpawnTf.eulerAngles ) );
                 m_PostProcessingVolume.profile = m_HouseProfile;
+                m_MainCam.cullingMask = Utils.HouseMask;
                 break;
             case SPAWN_TYPE.CITY_DOOR:
                 m_PlayerAction.transform.position = m_SpawnPosData.cityDoorSpawnTf.position;
                 m_VCam.ForceCameraPosition( m_SpawnPosData.cityDoorSpawnTf.position, Quaternion.Euler( m_SpawnPosData.cityDoorSpawnTf.eulerAngles ) );
                 m_PostProcessingVolume.profile = m_CityProfile;
+                m_MainCam.cullingMask = Utils.CityMask;
+                break;
+            case SPAWN_TYPE.CITY_FARM:
+                m_PlayerAction.transform.position = m_SpawnPosData.farmSpawnTf.position;
+                m_VCam.ForceCameraPosition( m_SpawnPosData.farmSpawnTf.position, Quaternion.Euler( m_SpawnPosData.farmSpawnTf.eulerAngles ) );
+                m_PostProcessingVolume.profile = m_CityProfile;
+                m_MainCam.cullingMask = Utils.FarmMask;
                 break;
         }
 
@@ -142,5 +154,6 @@ public class SceneLoader : MonoBehaviour
     {
         yield return StartCoroutine( LoadSceneAsync( Utils.SCENE_CITY, LoadSceneMode.Additive, SPAWN_TYPE.HOUSE_BED ) );
         yield return StartCoroutine( LoadSceneAsync( Utils.SCENE_HOUSE, LoadSceneMode.Additive, SPAWN_TYPE.HOUSE_BED ) );
+        yield return StartCoroutine( LoadSceneAsync( Utils.SCENE_FARM, LoadSceneMode.Additive, SPAWN_TYPE.CITY_FARM ) );
     }
 }

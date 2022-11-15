@@ -14,5 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   id: Shovel
   prefab: {fileID: 1204819915319817827, guid: e67036ba7a8950c4e92e3f2ef8aea48e, type: 3}
-  icon: {fileID: 10901, guid: 0000000000000000f000000000000000, type: 0}
-  type: 0
+  icon: {fileID: 21300000, guid: 3728580c149181a44b359e89f6edacae, type: 3}
+  buyPrice: 0
+  sellPrice: 0
+  decreaseable: 0

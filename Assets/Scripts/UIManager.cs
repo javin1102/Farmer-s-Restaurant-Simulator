@@ -24,7 +24,6 @@ public class UIManager : MonoBehaviour,ITimeTracker
     {
         if ( Instance == null ) Instance = this;
         else Destroy( gameObject );
-
         DontDestroyOnLoad( this );
     }
     

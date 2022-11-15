@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.Events;
 
 [RequireComponent( typeof( Rigidbody ) )]
 public abstract class Item : MonoBehaviour
@@ -11,7 +12,7 @@ public abstract class Item : MonoBehaviour
     [SerializeField] protected ItemData m_Data;
 
     protected IRaycastAction m_ItemRaycastAction;
-    protected TileManager m_TileManager;
+    [SerializeField] protected TileManager m_TileManager;
     protected bool m_IsDropState;
     protected UIManager m_UIManager;
 
@@ -23,12 +24,10 @@ public abstract class Item : MonoBehaviour
     private static readonly int m_ShaderFloatProperty = Shader.PropertyToID( "_Float" );
     private MaterialPropertyBlock m_Mpb;
     private int m_DropQuantity;
-    private UIDropItem m_UIDropItem;
+    public UnityAction OnDrop { get; set; }
     protected void Awake()
     {
         m_Mpb = new();
-        m_UIDropItem = GetComponentInChildren<UIDropItem>(true);
-        m_UIDropItem.Item = this;
     }
     protected void OnEnable()
     {
@@ -40,6 +39,7 @@ public abstract class Item : MonoBehaviour
         m_Rigidbody.isKinematic = true;
         m_Mpb.SetFloat( m_ShaderFloatProperty, 0 );
         m_MeshRenderer.SetPropertyBlock( m_Mpb );
+        m_TileManager = TileManager.instance;
     }
     public abstract void MainAction();
     protected void Update()
@@ -90,7 +90,7 @@ public abstract class Item : MonoBehaviour
             
         transform.localScale = Vector3.one * .25f;
         m_Rigidbody.AddForce( 10f * Camera.main.transform.forward, ForceMode.VelocityChange );
-        m_UIDropItem.gameObject.SetActive( true );
+        OnDrop?.Invoke();
         Destroy( GetComponent<NavMeshObstacle>() );
 
     }

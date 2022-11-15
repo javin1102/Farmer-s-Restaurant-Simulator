@@ -13,14 +13,16 @@ public class Shovel : Item, IRaycastAction
 
     private Mesh m_PreviewTileMesh;
     private Matrix4x4 m_TileMatrix;
-
-    
-
+    MaterialChanger previewTileMaterialChanger;
+    private new void Awake()
+    {
+        base.Awake();
+        previewTileMaterialChanger = m_TilePrefab.GetComponent<MaterialChanger>();
+    }
     private void Start()
     {
         tileParent = GameObject.FindGameObjectWithTag( Utils.TILE_PARENT_TAG ).transform;
         m_PreviewTileMesh = m_TilePrefab.GetComponent<MeshFilter>().sharedMesh;
-        m_TileManager = TileManager.instance;
     }
     private void OnDisable()
     {
@@ -49,45 +51,43 @@ public class Shovel : Item, IRaycastAction
         boxCollider.enabled = true;
         boxCollider.isTrigger = true;
 
-        tileCopyGO.layer = 8;
-        tileCopyGO.GetComponent<Tile>().SwitchStatus(Tile.TileStatus.HOED);
+        tileCopyGO.layer = 9;
+        tileCopyGO.GetComponent<Tile>().SwitchStatus( Tile.TileStatus.HOED );
 
         // play Hoe sound effect
         // nanti harusnya pake animation event buat active deactive sfx
-        StartCoroutine(PlaySFX());
+        StartCoroutine( PlaySFX() );
     }
 
     public void PerformRaycastAction( RaycastHit hitInfo )
     {
-        if ( hitInfo.collider == null ) return;
-        m_IsFarmGroundTag = hitInfo.collider.CompareTag( Utils.FARM_GROUND_TAG );
-        m_Collided = hitInfo.collider.CompareTag( Utils.TILE_TAG );
-        MaterialChanger previewTileMaterialChanger = m_TilePrefab.GetComponent<MaterialChanger>();
-
-
-        if ( m_IsFarmGroundTag )
+        if ( hitInfo.collider != null )
         {
-            Vector3 tilePos = m_TileManager.WorldToTilePos( hitInfo.point );
-            tilePos.Set( tilePos.x, .11f, tilePos.z );
-            Quaternion tileRot = Quaternion.Euler( 90f, 0, 0 );
+            m_Collided = hitInfo.collider.CompareTag( Utils.TILE_TAG );
+            if ( m_IsFarmGroundTag = hitInfo.collider.CompareTag( Utils.FARM_GROUND_TAG ) )
+            {
+                Vector3 tilePos = m_TileManager.WorldToTilePos( hitInfo.point );
+                tilePos.Set( tilePos.x, .001f, tilePos.z );
+                Quaternion tileRot = Quaternion.Euler( 90f, 0, 0 );
 
-            m_TileMatrix = Matrix4x4.TRS( tilePos, tileRot, Vector3.one );
-            previewTileMaterialChanger.ChangePreviewMaterialColor( true );
-            Graphics.DrawMesh( m_PreviewTileMesh, m_TileMatrix, previewTileMaterialChanger.PreviewMaterial, 0 );
-            m_UIManager.ShowActionHelperPrimary("Left","To Use Shovel...");
-            return;
+                m_TileMatrix = Matrix4x4.TRS( tilePos, tileRot, Vector3.one );
+                previewTileMaterialChanger.ChangePreviewMaterialColor( true );
+                Graphics.DrawMesh( m_PreviewTileMesh, m_TileMatrix, previewTileMaterialChanger.PreviewMaterial, 0 );
+                m_UIManager.ShowActionHelperPrimary( "Left", "Cangkul" );
+            }
+            else
+            {
+                m_UIManager.HideActionHelper();
+                if ( previewTileMaterialChanger != null ) previewTileMaterialChanger.ChangePreviewMaterialColor( false );
+            }
         }
-
-        previewTileMaterialChanger.ChangePreviewMaterialColor( false );
-        m_UIManager.HideActionHelper();
-        return;
     }
 
     IEnumerator PlaySFX()
     {
-        transform.GetChild(0).gameObject.SetActive(true);
-        yield return new WaitForSeconds(0.4f);
-        transform.GetChild(0).gameObject.SetActive(false);
+        transform.GetChild( 0 ).gameObject.SetActive( true );
+        yield return new WaitForSeconds( 0.4f );
+        transform.GetChild( 0 ).gameObject.SetActive( false );
     }
 
 

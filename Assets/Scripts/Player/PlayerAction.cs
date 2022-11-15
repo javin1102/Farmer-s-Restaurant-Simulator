@@ -125,8 +125,8 @@ public class PlayerAction : MonoBehaviour
         }
         else
         {
-            if ( m_Hovered == null ) return;
             m_UIManager.HideActionHelper();
+            if ( m_Hovered == null ) return;
             m_Hovered.HoverExit();
             m_Hovered = null;
         }

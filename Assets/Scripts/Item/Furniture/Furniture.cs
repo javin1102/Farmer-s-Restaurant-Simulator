@@ -19,7 +19,6 @@ public abstract class Furniture : Item, IRaycastAction
     private float m_ObjRot;
     private MaterialChanger m_MaterialChanger;
     private Matrix4x4 m_PreviewMatrix;
-
     protected new void OnEnable()
     {
         m_Restaurant = RestaurantManager.Instance;

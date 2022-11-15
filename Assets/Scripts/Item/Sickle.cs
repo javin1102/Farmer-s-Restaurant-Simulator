@@ -19,13 +19,17 @@ public class Sickle : Item,IRaycastAction
 
     private Matrix4x4 m_TileMatrix;
     private Mesh m_PreviewTileMesh;
-    private TileManager m_TileManager;
     private MaterialChanger previewTileMaterialChanger;
+    //private new void OnEnable()
+    //{
+    //    base.OnEnable();
+    //}
 
-    private void Awake()
+    private new void Awake()
     {
+        base.Awake();
         m_ItemDatabase = transform.root.GetComponent<ItemDatabase>();
-        m_TileManager = TileManager.instance;
+        //m_TileManager = TileManager.instance;
         //m_ActionSlotsController = GetComponentInParent<ActionSlotsController>();
         //m_InventoryController = GetComponentInParent<InventoryController>();
     }
@@ -68,7 +72,7 @@ public class Sickle : Item,IRaycastAction
             UIManager.Instance.ShowActionHelperPrimary("Left", "To Use Sickle...");
             return;
         }
-        previewTileMaterialChanger.ChangePreviewMaterialColor(false);
+        if( previewTileMaterialChanger != null )previewTileMaterialChanger.ChangePreviewMaterialColor(false);
         UIManager.Instance.HideActionHelper();
         return;
     }

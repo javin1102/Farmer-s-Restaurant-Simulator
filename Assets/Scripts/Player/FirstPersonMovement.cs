@@ -17,12 +17,10 @@ public class FirstPersonMovement : MonoBehaviour
 
     private float m_JumpVelocity;
     private float m_Gravity;
-    private int m_GroundMask;
     private Camera m_Cam;
 
     void Start()
     {
-        m_GroundMask = Utils.FarmGroundMask | Utils.RestaurantGroundMask | Utils.GroundMask;
 
         m_PlayerInput = GetComponent<PlayerInput>();
         m_MoveAction = m_PlayerInput.actions[Utils.MOVE_ACTION];
@@ -42,7 +40,10 @@ public class FirstPersonMovement : MonoBehaviour
         m_CharacterController.Move( moveZ + moveX );
 
         //Jump
-        m_IsGrounded = Physics.Raycast( transform.position, Vector3.down, .85f, m_GroundMask );
+        m_IsGrounded = Physics.Raycast( transform.position, Vector3.down, .85f );
+        
+
+        
 
         if ( m_JumpAction.triggered && m_IsGrounded ) m_JumpVelocity += Mathf.Sqrt( m_JumpForce * -3.0f * m_Gravity );
 

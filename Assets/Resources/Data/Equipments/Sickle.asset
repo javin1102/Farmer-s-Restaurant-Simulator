@@ -14,5 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   id: Sickle
   prefab: {fileID: 620202778583190377, guid: 22157a346337c76489b1a299b3f09adb, type: 3}
-  icon: {fileID: 0}
-  type: 0
+  icon: {fileID: 21300000, guid: 7fd3cda14282bb7429b8eeb6c121e5bb, type: 3}
+  buyPrice: 0
+  sellPrice: 0
+  decreaseable: 0

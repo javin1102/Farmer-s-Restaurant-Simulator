@@ -16,16 +16,7 @@ public class WateringCan : Item,IRaycastAction
     public GameObject selectedTile;
     private Matrix4x4 m_TileMatrix;
     private Mesh m_PreviewTileMesh;
-    private TileManager m_TileManager;
     private MaterialChanger previewTileMaterialChanger;
-
-
-    private void Start()
-    {
-        m_PreviewTileMesh = selectedTile.GetComponent<MeshFilter>().sharedMesh;
-        m_TileManager = TileManager.instance;
-    }
-
     public override void MainAction()
     {
         if (selectedTile != null && !selectedTile.CompareTag(Utils.TILE_WET_TAG))
@@ -45,11 +36,11 @@ public class WateringCan : Item,IRaycastAction
         {
             // save tile gameobject to variable
             selectedTile = hitInfo.transform.gameObject;
-
+            m_PreviewTileMesh = selectedTile.GetComponent<MeshFilter>().sharedMesh;
             previewTileMaterialChanger = selectedTile.GetComponent<MaterialChanger>();
 
             Vector3 tilePos = m_TileManager.WorldToTilePos(hitInfo.point);
-            tilePos.Set(tilePos.x, .11f, tilePos.z);
+            tilePos.Set(tilePos.x, .0015f, tilePos.z);
             Quaternion tileRot = Quaternion.Euler(90f, 0, 0);
 
             m_TileMatrix = Matrix4x4.TRS(tilePos, tileRot, Vector3.one);
@@ -58,7 +49,7 @@ public class WateringCan : Item,IRaycastAction
             UIManager.Instance.ShowActionHelperPrimary("Left" , "To Use Water Can...");
             return;
         }
-        previewTileMaterialChanger.ChangePreviewMaterialColor(false);
+        if( previewTileMaterialChanger != null) previewTileMaterialChanger.ChangePreviewMaterialColor(false);
         UIManager.Instance.HideActionHelper();
         return;
     }

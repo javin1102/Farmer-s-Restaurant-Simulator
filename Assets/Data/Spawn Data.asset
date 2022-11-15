@@ -21,8 +21,8 @@ MonoBehaviour:
     eulerAngles: {x: 0, y: 0, z: 0}
     scale: {x: 0, y: 0, z: 0}
   farmSpawnTf:
-    position: {x: 0, y: 0, z: 0}
-    eulerAngles: {x: 0, y: 0, z: 0}
+    position: {x: 498.979, y: 1, z: -179.58}
+    eulerAngles: {x: 0, y: 90, z: 0}
     scale: {x: 0, y: 0, z: 0}
   houseDoorSpawnTf:
     position: {x: 23.638, y: 1, z: 174.377}

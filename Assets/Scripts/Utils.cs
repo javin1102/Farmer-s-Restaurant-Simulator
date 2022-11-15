@@ -13,7 +13,10 @@ public class Utils
     public static int OutlineLayer = LayerMask.NameToLayer( "Outline" );
     public static int RaycastableLayer = LayerMask.NameToLayer( "Raycastable" );
     public static int HelperLayer = LayerMask.NameToLayer( "Helper" );
-
+    public static int DefaultMask = ( 1 << 0 ) | ( 1 << 1 ) | ( 1 << 2 ) | ( 1 << 3 ) | ( 1 << 4 ) | ( 1 << 5 ) | ( 1 << 13 );
+    public static int CityMask = DefaultMask | ( 1 << 6 ) | ( 1 << 8 ) | ( 1 << 12 );
+    public static int HouseMask = DefaultMask | ( 1 << 14 ) | ( 1 << 15 );
+    public static int FarmMask = DefaultMask | ( 1 << 9 );
 
     //INPUT ACTION STRING
     public const string MAIN_ACTION = "Main Action";
@@ -59,4 +62,5 @@ public class Utils
     //Scenes
     public const string SCENE_HOUSE = "House";
     public const string SCENE_CITY = "City";
+    public const string SCENE_FARM = "Farm";
 }
