@@ -109,7 +109,7 @@ public class PlayerAction : MonoBehaviour
             {
                 if ( m_Hovered != null )
                 {
-                    m_Hovered.HoverExit();  
+                    m_Hovered.HoverExit();
                     m_Hovered = null;
                 }
             }

@@ -22,7 +22,7 @@ Preset:
     objectReference: {fileID: 0}
   - target: {fileID: 0}
     propertyPath: m_Radius
-    value: 0.25
+    value: 0.4
     objectReference: {fileID: 0}
   - target: {fileID: 0}
     propertyPath: m_Speed
@@ -70,6 +70,6 @@ Preset:
     objectReference: {fileID: 0}
   - target: {fileID: 0}
     propertyPath: m_ObstacleAvoidanceType
-    value: 4
+    value: 0
     objectReference: {fileID: 0}
   m_ExcludedProperties: []

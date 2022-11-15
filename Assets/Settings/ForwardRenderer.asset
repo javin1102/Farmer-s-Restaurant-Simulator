@@ -37,20 +37,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Active: 1
   _outlineResources: {fileID: 11400000, guid: 231d88937a104094b8e4e0fdb8d2e77b, type: 2}
-  _outlineLayers: {fileID: 0}
+  _outlineLayers: {fileID: 11400000, guid: e70e2932a90e7dc4dbc69c8ef43fa508, type: 2}
   _outlineSettings:
     _outlineSettings: {fileID: 0}
     _outlineColor: {r: 0.38579965, g: 1, b: 0.3820755, a: 1}
-    _outlineWidth: 11
-    _outlineIntensity: 2
-    _outlineAlphaCutoff: 0.9
-    _outlineMode: 1
+    _outlineWidth: 2
+    _outlineIntensity: 1
+    _outlineAlphaCutoff: 0
+    _outlineMode: 3
     _filterMode: 1
     _layerMask:
       serializedVersion: 2
       m_Bits: 8192
     _renderingLayerMask: 1
-  _renderPassEvent: 400
+  _renderPassEvent: 1000
   _shaderPassNames: []
 --- !u!114 &11400000
 MonoBehaviour:

@@ -21,6 +21,7 @@ public class RestaurantManager : MonoBehaviour
     [SerializeField] private List<Seat> m_Seats = new();
     private int RandomSeatIndex { get => Random.Range( 0, m_Seats.Count ); }
     public float WaiterMoveSpeed { get => m_WaiterMoveSpeed; set => m_WaiterMoveSpeed = value; }
+    public BoxCollider GroundCollider2 { get => m_GroundCollider2;  }
 
     private readonly Queue<KeyValuePair<Seat, FoodData>> m_OrderQueue = new();
     private readonly Queue<Food> m_FoodsToServe = new();
@@ -34,9 +35,11 @@ public class RestaurantManager : MonoBehaviour
     //Others
     private static RestaurantManager m_Instance;
     [SerializeField] private Transform m_RestaurantGround;
+    [SerializeField] private Transform m_RestaurantGround2;
     [SerializeField] private Transform m_FoodPlace;
     private bool m_FirstLoad = true;
     private BoxCollider m_GroundCollider;
+    private BoxCollider m_GroundCollider2;
 
     //Upgrades
     [SerializeField] private GameObject m_ChefPrefab;
@@ -54,6 +57,7 @@ public class RestaurantManager : MonoBehaviour
         else Destroy( gameObject );
 
         m_GroundCollider = m_RestaurantGround.GetComponent<BoxCollider>();
+        m_GroundCollider2 = m_RestaurantGround2.GetComponent<BoxCollider>();
     }
 
     private void Start()

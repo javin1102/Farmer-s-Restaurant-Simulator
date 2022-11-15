@@ -30,15 +30,12 @@ public class SceneLoader : MonoBehaviour
     [SerializeField] private VolumeProfile m_CityProfile, m_HouseProfile;
     [SerializeField] private SPAWN_TYPE m_SpawnType = SPAWN_TYPE.HOUSE_BED;
     [SerializeField] private CinemachineVirtualCamera m_VCam;
-    private Camera m_Cam;
     private FirstPersonMovement m_FirstPersonMovement;
     private void Awake()
     {
         if ( m_Instance == null ) m_Instance = this;
         else Destroy( gameObject );
         DontDestroyOnLoad( this );
-
-        m_Cam = Camera.main;
     }
 
     private void Start()

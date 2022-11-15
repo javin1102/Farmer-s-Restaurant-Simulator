@@ -64,21 +64,24 @@ public abstract class Furniture : Item, IRaycastAction
     }
     public void PerformRaycastAction( RaycastHit hitInfo )
     {
-
+        if ( m_Restaurant == null ) m_Restaurant = RestaurantManager.Instance;
         if ( m_MaterialChanger == null ) m_MaterialChanger = GetComponent<MaterialChanger>();
         if ( hitInfo.collider.CompareTag( Utils.RESTAURANT_GROUND_TAG ) )
         {
+           
             Vector3 objPos = m_TileManager.WorldToTilePos( hitInfo.point ) + Vector3.up * m_PreviewMesh.bounds.size.y / 2;
             Quaternion objRotation = Quaternion.Euler( 0, m_ObjRot, 0 );
 
             m_PreviewMatrix = Matrix4x4.TRS( objPos, objRotation, m_InstantiatedSize );
             Collider[] colliders = Physics.OverlapBox( objPos, Vector3.Scale( m_PreviewMesh.bounds.size / 2 - Vector3.one * .01f, m_InstantiatedSize ), objRotation, Utils.RaycastableMask );
             bool m_Collided = false;
+
             foreach ( var collider in colliders )
             {
                 m_Collided = collider.CompareTag( Utils.PROP_TAG );
             }
-            if ( m_Collided )
+            //bool isNotInsideBox = hitInfo.point.x < m_Restaurant.GroundCollider2.bounds.min.x || hitInfo.point.x > m_Restaurant.GroundCollider2.bounds.max.x || hitInfo.point.z < m_Restaurant.GroundCollider2.bounds.min.z || hitInfo.point.z > m_Restaurant.GroundCollider2.bounds.max.z;
+            if ( m_Collided || !m_Restaurant.GroundCollider2.bounds.Contains( hitInfo.point ) )
             {
                 m_IsInstantiable = false;
             }
