@@ -10,11 +10,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8c9c36c8f20505d47bfff2820a3a6d92, type: 3}
-  m_Name: Crop_corn
+  m_Name: Crop_BeanSprout
   m_EditorClassIdentifier: 
-  id: Crop_Corn
-  prefab: {fileID: 4851928877410794951, guid: 4cdf5e7d61a81c742b48bb1da85c3dc7, type: 3}
-  icon: {fileID: 21300000, guid: 7a8ea970c703e084c8792156e206cb94, type: 3}
+  id: Crop_Beansprout
+  prefab: {fileID: 919132149155446097, guid: 09c92e4e84214644aa1565505a0659eb, type: 3}
+  icon: {fileID: 755971026, guid: 4f730c0fb86b14b41a023e4dd9759715, type: 3}
   buyPrice: 0
   sellPrice: 0
   decreaseable: 1

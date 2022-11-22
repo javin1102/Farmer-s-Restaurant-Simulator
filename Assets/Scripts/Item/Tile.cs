@@ -115,7 +115,7 @@ public class Tile : MonoBehaviour,ITimeTracker
         }
         if (this.m_tileStatus == TileStatus.PLANTED)
         {
-            if (this.timeElapsed > 19 && this.CompareTag(Utils.TILE_WET_TAG))
+            if (this.timeElapsed > m_plantGrowHandler.m_SeedData.daytoGrow && this.CompareTag(Utils.TILE_WET_TAG))
             {
                 this.m_plantGrowHandler.GrowProgression();
                 this.SwitchStatus(TileStatus.HOED);
