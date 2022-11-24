@@ -5,9 +5,10 @@ public class Hoverable : MonoBehaviour
 {
     private int m_Layer;
     private bool m_IsHoverable;
-    [SerializeField] protected UIManager m_UIManager;
+    protected UIManager m_UIManager;
     public bool IsHoverable { get => m_IsHoverable; set => m_IsHoverable = value; }
     public event UnityAction OnHoverEnter;
+    public event UnityAction OnHoverExit;
     private void Awake()
     {
         m_Layer = Utils.RaycastableLayer;
@@ -31,6 +32,7 @@ public class Hoverable : MonoBehaviour
         gameObject.layer = m_Layer;
         transform.SetLayer( m_Layer );
         m_UIManager.HideActionHelper();
+        OnHoverExit?.Invoke();
     }
 
 

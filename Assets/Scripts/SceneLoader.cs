@@ -1,6 +1,5 @@
 using Cinemachine;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.Rendering;
@@ -20,6 +19,7 @@ public class SceneLoader : MonoBehaviour
     public SPAWN_TYPE SpawnType { get => m_SpawnType; set => m_SpawnType = value; }
 
     private static SceneLoader m_Instance;
+    private float m_MinTimeSpawnCooldown = 1f;
     public event UnityAction OnStartLoading;
     public event UnityAction OnFinishLoading;
     [SerializeField] private PlayerAction m_PlayerAction;
@@ -46,40 +46,40 @@ public class SceneLoader : MonoBehaviour
         m_FirstPersonMovement = m_PlayerAction.GetComponent<FirstPersonMovement>();
         StartCoroutine( InitializeScene() );
     }
-    private void OnEnable()
-    {
-        SceneManager.sceneLoaded += OnSceneLoaded;
-    }
-    private void OnDisable()
-    {
-        SceneManager.sceneLoaded -= OnSceneLoaded;
-    }
-    private void OnSceneLoaded( Scene scene, LoadSceneMode mode )
-    {
-    }
 
-    public void UnloadAndLoadSceneAsynchronous( string unloadScene, string loadScene, LoadSceneMode loadSceneMode, SPAWN_TYPE spawnType ) => StartCoroutine( UnloadAndLoadSceneAsync( unloadScene, loadScene, loadSceneMode, spawnType ) );
-    public void LoadSceneAsynchronous( string scene, LoadSceneMode loadSceneMode, SPAWN_TYPE spawnType ) => StartCoroutine( LoadSceneAsync( scene, loadSceneMode, spawnType ) );
-    public void UnloadSceneAsynchronous( string scene ) => StartCoroutine( UnloadSceneAsync( scene ) );
-    private IEnumerator UnloadSceneAsync( string scene )
+    private void Update()
+    {
+        if ( m_MinTimeSpawnCooldown <= 0 )
+        {
+            m_MinTimeSpawnCooldown = 0;
+            return;
+        }
+
+        m_MinTimeSpawnCooldown -= Time.deltaTime;
+    }
+    public void UnloadAndLoadSceneAsynchronous( string unloadScene, string loadScene, LoadSceneMode loadSceneMode, SPAWN_TYPE spawnType ) => StartCoroutine( UnloadAndLoadSceneAsync_Coroutine( unloadScene, loadScene, loadSceneMode, spawnType ) );
+    public void LoadSceneAsynchronous( string scene, LoadSceneMode loadSceneMode, SPAWN_TYPE spawnType ) => StartCoroutine( LoadSceneAsync_Coroutine( scene, loadSceneMode, spawnType ) );
+    public void UnloadSceneAsynchronous( string scene ) => StartCoroutine( UnloadSceneAsync_Coroutine( scene ) );
+    public void SpawnToScene( SPAWN_TYPE spawnType ) => StartCoroutine( SpawnToScene_Coroutine( spawnType ) );
+    private IEnumerator UnloadSceneAsync_Coroutine( string scene )
     {
         OnStartLoading?.Invoke();
         m_LoadingUI.SetActive( true );
-        m_PlayerAction.OnEnableUI?.Invoke();
+        m_PlayerAction.OnEnableMiscUI?.Invoke();
         AsyncOperation operation = SceneManager.UnloadSceneAsync( scene );
         while ( !operation.isDone )
         {
             yield return null;
         }
         m_LoadingUI.SetActive( false );
-        m_PlayerAction.OnDisableUI?.Invoke();
+        m_PlayerAction.OnDisableMiscUI?.Invoke();
         OnFinishLoading?.Invoke();
     }
 
-    private IEnumerator LoadSceneAsync( string scene, LoadSceneMode loadSceneMode, SPAWN_TYPE spawnType )
+    private IEnumerator LoadSceneAsync_Coroutine( string scene, LoadSceneMode loadSceneMode, SPAWN_TYPE spawnType )
     {
         m_SpawnType = spawnType;
-        m_PlayerAction.OnEnableUI?.Invoke();
+        m_PlayerAction.OnEnableMiscUI?.Invoke();
         m_LoadingUI.SetActive( true );
         OnStartLoading?.Invoke();
 
@@ -89,7 +89,7 @@ public class SceneLoader : MonoBehaviour
             if ( s == SceneManager.GetSceneByName( scene ) )
             {
                 m_LoadingUI.SetActive( false );
-                m_PlayerAction.OnDisableUI?.Invoke();
+                m_PlayerAction.OnDisableMiscUI?.Invoke();
                 OnFinishLoading?.Invoke();
                 DeterminePlayerSpawnPos();
                 SceneManager.SetActiveScene( SceneManager.GetSceneByName( scene ) );
@@ -104,10 +104,46 @@ public class SceneLoader : MonoBehaviour
             yield return null;
         }
         m_LoadingUI.SetActive( false );
-        m_PlayerAction.OnDisableUI?.Invoke();
+        m_PlayerAction.OnDisableMiscUI?.Invoke();
         OnFinishLoading?.Invoke();
         SceneManager.SetActiveScene( SceneManager.GetSceneByName( scene ) );
         DeterminePlayerSpawnPos();
+    }
+
+    private IEnumerator SpawnToScene_Coroutine( SPAWN_TYPE spawnType )
+    {
+        if ( m_MinTimeSpawnCooldown > 0 ) yield break;
+        m_SpawnType = spawnType;
+        string scene = DetermineScene( spawnType );
+        m_PlayerAction.OnEnableMiscUI?.Invoke();
+        m_LoadingUI.SetActive( true );
+        OnStartLoading?.Invoke();
+        yield return new WaitForSeconds( .5f );
+        m_LoadingUI.SetActive( false );
+        m_PlayerAction.OnDisableMiscUI?.Invoke();
+        OnFinishLoading?.Invoke();
+        DeterminePlayerSpawnPos();
+        SceneManager.SetActiveScene( SceneManager.GetSceneByName( scene ) );
+        m_MinTimeSpawnCooldown = 1;
+    }
+    private string DetermineScene( SPAWN_TYPE spawnType )
+    {
+        if ( spawnType == SPAWN_TYPE.HOUSE_BED || spawnType == SPAWN_TYPE.HOUSE_DOOR )
+        {
+            return Utils.SCENE_HOUSE;
+        }
+
+        if ( spawnType == SPAWN_TYPE.CITY_DOOR || spawnType == SPAWN_TYPE.FARM_CITY )
+        {
+            return Utils.SCENE_CITY;
+        }
+
+        if ( spawnType == SPAWN_TYPE.CITY_FARM )
+        {
+            return Utils.SCENE_FARM;
+        }
+
+        return null;
     }
 
     private void DeterminePlayerSpawnPos()
@@ -144,16 +180,16 @@ public class SceneLoader : MonoBehaviour
         m_FirstPersonMovement.enabled = true;
     }
 
-    private IEnumerator UnloadAndLoadSceneAsync( string unloadScene, string loadScene, LoadSceneMode loadSceneMode, SPAWN_TYPE spawnType )
+    private IEnumerator UnloadAndLoadSceneAsync_Coroutine( string unloadScene, string loadScene, LoadSceneMode loadSceneMode, SPAWN_TYPE spawnType )
     {
-        yield return StartCoroutine( UnloadSceneAsync( unloadScene ) );
-        yield return StartCoroutine( LoadSceneAsync( loadScene, loadSceneMode, spawnType ) );
+        yield return StartCoroutine( UnloadSceneAsync_Coroutine( unloadScene ) );
+        yield return StartCoroutine( LoadSceneAsync_Coroutine( loadScene, loadSceneMode, spawnType ) );
     }
 
     private IEnumerator InitializeScene()
     {
-        yield return StartCoroutine( LoadSceneAsync( Utils.SCENE_CITY, LoadSceneMode.Additive, SPAWN_TYPE.HOUSE_BED ) );
-        yield return StartCoroutine( LoadSceneAsync( Utils.SCENE_HOUSE, LoadSceneMode.Additive, SPAWN_TYPE.HOUSE_BED ) );
-        yield return StartCoroutine( LoadSceneAsync( Utils.SCENE_FARM, LoadSceneMode.Additive, SPAWN_TYPE.HOUSE_BED ) );
+        yield return StartCoroutine( LoadSceneAsync_Coroutine( Utils.SCENE_FARM, LoadSceneMode.Additive, SPAWN_TYPE.CITY_FARM ) );
+        //yield return StartCoroutine( LoadSceneAsync_Coroutine( Utils.SCENE_CITY, LoadSceneMode.Additive, SPAWN_TYPE.CITY_DOOR ) );
+        //yield return StartCoroutine( LoadSceneAsync_Coroutine( Utils.SCENE_HOUSE, LoadSceneMode.Additive, SPAWN_TYPE.HOUSE_BED ) );
     }
 }

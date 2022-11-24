@@ -12,10 +12,12 @@ public abstract class UIStoreController : MonoBehaviour
     [SerializeField] protected GameObject m_MainMenuGO, m_BuyMenuGO, m_SellMenuGO, m_QuizMenuGO;
     [SerializeField] protected Button m_BuyMenuButton, m_SellMenuButton, m_QuizMenuButton, m_ExitMenuButton, m_BackButton;
     protected PlayerAction m_PlayerAction;
+    protected ResourcesLoader m_ResourcesLoader;
     protected void Awake()
     {
         if ( m_Instance == null ) m_Instance = this;
         m_PlayerAction = transform.root.GetComponent<PlayerAction>();
+        m_ResourcesLoader = ResourcesLoader.Instance;
         m_BackButton.onClick.AddListener( OpenMainMenu );
         m_BuyMenuButton.onClick.AddListener( OpenBuyMenu );
         m_SellMenuButton.onClick.AddListener( OpenSellMenu );
@@ -26,17 +28,17 @@ public abstract class UIStoreController : MonoBehaviour
     public void ToggleUI( Transform spawnTf )
     {
         gameObject.SetActive( !gameObject.activeInHierarchy );
-        m_PlayerAction.IsUIOpen = gameObject.activeInHierarchy;
+        m_PlayerAction.IsOtherUIOpen = gameObject.activeInHierarchy;
         if ( gameObject.activeInHierarchy )
         {
             SpawnTf = spawnTf;
             m_SpawnCollider = SpawnTf.GetComponent<BoxCollider>();
-            m_PlayerAction.OnEnableUI?.Invoke();
+            m_PlayerAction.OnEnableMiscUI?.Invoke();
         }
         else
         {
             SpawnTf = null;
-            m_PlayerAction.OnDisableUI?.Invoke();
+            m_PlayerAction.OnDisableMiscUI?.Invoke();
         }
 
 
@@ -60,8 +62,8 @@ public abstract class UIStoreController : MonoBehaviour
     void CloseStoreMenu()
     {
         gameObject.SetActive( false );
-        m_PlayerAction.IsUIOpen = false;
-        m_PlayerAction.OnDisableUI?.Invoke();
+        m_PlayerAction.IsOtherUIOpen = false;
+        m_PlayerAction.OnDisableMiscUI?.Invoke();
         SpawnTf = null;
     }
 

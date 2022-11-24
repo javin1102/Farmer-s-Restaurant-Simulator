@@ -18,19 +18,20 @@ public class Snapshot : MonoBehaviour
         _snapshotCamera.defaultPositionOffset = Vector3.zero;
         _snapshotCamera.transform.position = _cam.transform.position;
         _snapshotCamera.transform.rotation = _cam.transform.rotation;
-        TakeAllFurnituresSnapshot();
+        //TakeAllFurnituresSnapshot();
+        TakeSnapshot();
 
     }
 
     [ContextMenu("Take Snapshot")]
     public void TakeSnapshot()
     {
-        Texture2D texture = _snapshotCamera.TakePrefabSnapshot( prefab, Vector3.forward + Vector3.up * -.5f, Quaternion.Euler( 0, 160, 0 ), Vector3.one, 512, 512 );
+        Texture2D texture = _snapshotCamera.TakePrefabSnapshot( prefab, Vector3.forward + Vector3.up * -1f, Quaternion.Euler( -90, 0, 65 - 120 ), prefab.transform.localScale, 2048, 2048 );
         SnapshotCamera.SavePNG( texture, prefab.name, "Assets/Snapshots" );
     }
     private void TakeSnapshot(GameObject prefab)
     {
-        Texture2D texture = _snapshotCamera.TakePrefabSnapshot( prefab, Vector3.forward + Vector3.up * -.5f, Quaternion.Euler( 0, 160, 0 ), Vector3.one, 2048, 2048 );
+        Texture2D texture = _snapshotCamera.TakePrefabSnapshot( prefab, Vector3.forward + Vector3.up * -.5f, Quaternion.Euler( 0, 160, 0 ), prefab.transform.localScale, 2048, 2048 );
         SnapshotCamera.SavePNG( texture, prefab.name, "Assets/Snapshots" );
     }
 

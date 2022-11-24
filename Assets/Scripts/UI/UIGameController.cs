@@ -13,7 +13,6 @@ public class UIGameController : MonoBehaviour
     private void Awake()
     {
         m_PlayerAction = transform.root.GetComponent<PlayerAction>();
-
     }
 
     private void Start()
@@ -23,14 +22,14 @@ public class UIGameController : MonoBehaviour
     }
     private void OnEnable()
     {
-        m_PlayerAction.OnEnableUI += DisableChilds;
-        m_PlayerAction.OnDisableUI += EnableChilds;
+        m_PlayerAction.OnEnableMiscUI += DisableChilds;
+        m_PlayerAction.OnDisableMiscUI += EnableChilds;
     }
 
     private void OnDisable()
     {
-        m_PlayerAction.OnEnableUI -= DisableChilds;
-        m_PlayerAction.OnDisableUI -= EnableChilds;
+        m_PlayerAction.OnEnableMiscUI -= DisableChilds;
+        m_PlayerAction.OnDisableMiscUI -= EnableChilds;
     }
 
 

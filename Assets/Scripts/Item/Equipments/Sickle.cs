@@ -62,8 +62,7 @@ public class Sickle : Item,IRaycastAction
             previewTileMaterialChanger = selectedCrop.transform.parent.GetComponentInParent<MaterialChanger>();
             m_PreviewTileMesh = selectedCrop.transform.parent.GetComponentInParent<MeshFilter>().sharedMesh;
 
-            Vector3 tilePos = m_TileManager.WorldToTilePos(hitInfo.point);
-            tilePos.Set(tilePos.x, .11f, tilePos.z);
+            Vector3 tilePos = m_TileManager.WorldToTilePos( hitInfo.point ) + Vector3.up * .1f;
             Quaternion tileRot = Quaternion.Euler(90f, 0, 0);
 
             m_TileMatrix = Matrix4x4.TRS(tilePos, tileRot, Vector3.one);

@@ -1,19 +1,22 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.Events;
+
 public class PlayerAction : MonoBehaviour
 {
     public event UnityAction OnPerformItemMainAction;
-    public UnityAction OnEnableUI { get => m_OnEnableUI; set => m_OnEnableUI = value; }
-    public UnityAction OnDisableUI { get => m_OnDisableUI; set => m_OnDisableUI = value; }
+    public UnityAction OnEnableMiscUI { get => m_OnEnableUI; set => m_OnEnableUI = value; }
+    public UnityAction OnDisableMiscUI { get => m_OnDisableUI; set => m_OnDisableUI = value; }
     public UnityAction ToggleInventoryUI { get => m_ToggleInventoryUI; set => m_ToggleInventoryUI = value; }
     public UnityAction ToggleMiscUI { get => m_ToggleMiscUI; set => m_ToggleMiscUI = value; }
     public UnityAction<Transform> ToggleFurnitureStoreUI { get => m_ToggleFurnitureStoreUI; set => m_ToggleFurnitureStoreUI = value; }
     public UnityAction<Transform> ToggleSeedStoreUI { get => m_ToggleSeedStoreUI; set => m_ToggleSeedStoreUI = value; }
     public UnityAction OnDecreaseItemDatabase { get => m_OnDropInventory; set => m_OnDropInventory = value; }
-    public bool IsUIOpen { get => m_IsUIOpen; set => m_IsUIOpen = value; }
+    public bool IsOtherUIOpen { get => m_IsOtherUIOpen; set => m_IsOtherUIOpen = value; }
     public InputAction InventoryAction { get => m_InventoryAction; }
-    public InputAction[] SelectSlotInputAction => m_SelectSlotInputAction;
+    public float ActionTime { get => m_ActionTime; set => m_ActionTime = value; }
+    public float DefaultActionTime { get => m_DefaultActionTime; set => m_DefaultActionTime = value; }
+    public Item CurrEquippedItem { get => m_ActionSlotsController.CurrEquippedItem; }
 
     //Event Listener
     private event UnityAction m_OnEnableUI;
@@ -41,11 +44,13 @@ public class PlayerAction : MonoBehaviour
     private Camera m_Cam;
     private readonly float m_RaycastDistance = 5f;
     private ActionSlotsController m_ActionSlotsController;
-    private ItemDatabase m_ItemDatabase;
     private InventorySlotsController m_InventorySlotsController;
-    private bool m_IsUIOpen;
-    [SerializeField] private Hoverable m_Hovered;
-    [SerializeField] private UIManager m_UIManager;
+    private ItemDatabase m_ItemDatabase;
+    private bool m_IsOtherUIOpen; //check if "other" ui is open
+    private Hoverable m_Hovered;
+    private UIManager m_UIManager;
+    private float m_ActionTime; //time passed for certain action to be done (ex: chopping tree)
+    private float m_DefaultActionTime; //time needed for certain action to be done (ex: chopping tree)
     private void Awake()
     {
         //LockCursor();
@@ -65,8 +70,8 @@ public class PlayerAction : MonoBehaviour
     private void OnEnable()
     {
         InitializeInputAction();
-        OnEnableUI += EnterCursorMode;
-        OnDisableUI += ExitCursorMode;
+        OnEnableMiscUI += EnterCursorMode;
+        OnDisableMiscUI += ExitCursorMode;
         m_MainInputAction.performed += PerformEquippedItemMainAction;
         m_DropInputAction.performed += DropItem;
         m_InventoryAction.performed += InvokeToggleInventoryUI;
@@ -76,12 +81,14 @@ public class PlayerAction : MonoBehaviour
         m_OnDropInventory += m_InventorySlotsController.CheckItem;
     }
 
+
+
     private void OnDisable()
     {
         UnitializeSelectSlotAction();
         m_OnDropInventory -= m_InventorySlotsController.CheckItem;
-        OnEnableUI -= EnterCursorMode;
-        OnDisableUI -= ExitCursorMode;
+        OnEnableMiscUI -= EnterCursorMode;
+        OnDisableMiscUI -= ExitCursorMode;
         m_InventoryAction.performed -= InvokeToggleInventoryUI;
         m_OpenMiscUIAction.performed -= InvokeToggleMiscUI;
         m_MainInputAction.performed -= PerformEquippedItemMainAction;
@@ -97,7 +104,21 @@ public class PlayerAction : MonoBehaviour
         Physics.Raycast( ray, out RaycastHit hitInfo, m_RaycastDistance, ~Utils.PlayerMask );
         if ( hitInfo.collider != null )
         {
-            if ( m_ActionSlotsController.CurrEquippedItem != null ) TryPerformSelectedItemRaycastAction( hitInfo );
+            if ( m_ActionSlotsController.CurrEquippedItem != null )
+            {
+                TryPerformSelectedItemRaycastAction( hitInfo );
+            }
+
+            if ( hitInfo.collider.TryGetComponent( out IActionTime actionTime ) )
+            {
+                if ( m_MainInputAction.IsPressed() ) actionTime.OnHoldMainAction( this );
+                else actionTime.OnReleaseMainAction( this );
+            }
+            else
+            {
+                m_ActionTime = 0;
+                m_DefaultActionTime = 0;
+            }
             if ( hitInfo.collider.TryGetComponent( out Hoverable hover ) )
             {
                 //if ( m_Hovered == hover ) return;
@@ -129,7 +150,11 @@ public class PlayerAction : MonoBehaviour
             if ( m_Hovered == null ) return;
             m_Hovered.HoverExit();
             m_Hovered = null;
+            m_ActionTime = 0;
+            m_DefaultActionTime = 0;
         }
+
+        if ( ActionTime <= 0 ) ActionTime = 0;
 
     }
 
@@ -177,6 +202,7 @@ public class PlayerAction : MonoBehaviour
     {
         m_ActionSlotsController.CurrEquippedItem.ItemRaycastAction?.PerformRaycastAction( hitInfo );
     }
+
     private void InitializeSelectSlotAction()
     {
         m_SelectSlotInputAction[0].performed += SelectActionSlot_1;
@@ -250,7 +276,7 @@ public class PlayerAction : MonoBehaviour
     }
     private void ExitCursorMode()
     {
-        if ( m_IsUIOpen ) return;
+        if ( m_IsOtherUIOpen ) return;
         LockCursor();
         EnablePlayerInput();
     }

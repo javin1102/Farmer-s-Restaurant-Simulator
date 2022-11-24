@@ -6,8 +6,9 @@ public class ActionSlotsController : ItemSlotsController
 {
     public Item CurrEquippedItem { get => m_CurrEquippedItem; }
     public UnityAction<string> DBRemoveAction { get => m_DBRemoveAction; set => m_DBRemoveAction = value; }
-
+    public UnityAction<int> OnSelectSlot { get; set; }
     [SerializeField] private Transform m_Hand;
+    [SerializeField] private GameObject m_HandModel;
     [SerializeField] private ItemMainActionChannel m_DeacreasableItemChannel;
     private Item m_CurrEquippedItem;
     private int m_SelectedSlotIndex;
@@ -95,15 +96,16 @@ public class ActionSlotsController : ItemSlotsController
     public void SelectActionSlot( int index )
     {
         m_SelectedSlotIndex = index;
+        OnSelectSlot?.Invoke( index );
     }
 
 
-    public void SelectActionSlot_1() => m_SelectedSlotIndex = 0;
-    public void SelectActionSlot_2() => m_SelectedSlotIndex = 1;
-    public void SelectActionSlot_3() => m_SelectedSlotIndex = 2;
-    public void SelectActionSlot_4() => m_SelectedSlotIndex = 3;
-    public void SelectActionSlot_5() => m_SelectedSlotIndex = 4;
-    public void SelectActionSlot_6() => m_SelectedSlotIndex = 5;
+    public void SelectActionSlot_1() => SelectActionSlot( 0 );
+    public void SelectActionSlot_2() => SelectActionSlot( 1 );
+    public void SelectActionSlot_3() => SelectActionSlot( 2 );
+    public void SelectActionSlot_4() => SelectActionSlot( 3 );
+    public void SelectActionSlot_5() => SelectActionSlot( 4 );
+    public void SelectActionSlot_6() => SelectActionSlot( 5 );
 
     public void CheckEquippedItem()
     {
@@ -112,6 +114,7 @@ public class ActionSlotsController : ItemSlotsController
             if ( m_CurrEquippedItem == null ) return;
             m_CurrEquippedItem = null;
             m_Slots[m_SelectedSlotIndex] = null;
+            m_HandModel.SetActive( true );
             DestroyAllItemsInHand();
         }
         else
@@ -128,7 +131,7 @@ public class ActionSlotsController : ItemSlotsController
                     m_CurrEquippedItem = InstantiateItemToHand( m_Slots[m_SelectedSlotIndex] );
                 }
             }
-
+            m_HandModel.SetActive( false );
         }
 
     }

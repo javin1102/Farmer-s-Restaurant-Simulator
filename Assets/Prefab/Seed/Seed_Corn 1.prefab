@@ -48,7 +48,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c5b88203c98c5684c8ed05585c23cd31, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Data: {fileID: 11400000, guid: 4ead86c5eb6270141aa949101a615640, type: 2}
+  m_Data: {fileID: 11400000, guid: abfc2db7e14a83644826e3eec9a6e2b5, type: 2}
+  m_HandPosOffset: {x: 0, y: 0, z: 0}
+  m_HandEulerAngles: {x: 0, y: 0, z: 0}
+  m_HandScale: {x: 0.3, y: 0.3, z: 0.3}
   m_TileManager: {fileID: 0}
   m_seedData: {fileID: 11400000, guid: abfc2db7e14a83644826e3eec9a6e2b5, type: 2}
   m_DecreseableEvent: {fileID: 11400000, guid: 45b5ab5fff5be0b4e9c4366e438f6d25, type: 2}

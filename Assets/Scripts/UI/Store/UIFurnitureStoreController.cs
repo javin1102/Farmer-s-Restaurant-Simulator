@@ -16,7 +16,7 @@ public class UIFurnitureStoreController : UIStoreController
     private new void Awake()
     {
         base.Awake();
-        m_FurnituresData = Resources.LoadAll<FurnitureData>( "Data/Furnitures" ).ToList();
+        m_FurnituresData = m_ResourcesLoader.FurnituresData;
         m_ChairsData = m_FurnituresData.Where( furniture => furniture.type == FurnitureType.CHAIR ).ToList();
         m_TablesData = m_FurnituresData.Where( furniture => furniture.type == FurnitureType.TABLE ).ToList();
         m_StovesData = m_FurnituresData.Where( furniture => furniture.type == FurnitureType.STOVE ).ToList();

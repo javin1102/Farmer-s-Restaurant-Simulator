@@ -26,7 +26,7 @@ public class UIMiscController : MonoBehaviour
         m_InventoryMenu.SelectAction += SelectInventoryTab;
         m_IngredientsStockMenu.SelectAction += SelectIngredientsTab;
         m_UpgradesMenu.SelectAction += SelectUpgradesTab;
-        m_PlayerAction.OnDisableUI += SelectDefaultTab;
+        m_PlayerAction.OnDisableMiscUI += SelectDefaultTab;
     }
 
     private void OnDisable()
@@ -35,7 +35,7 @@ public class UIMiscController : MonoBehaviour
         m_InventoryMenu.SelectAction -= SelectInventoryTab;
         m_IngredientsStockMenu.SelectAction -= SelectIngredientsTab;
         m_UpgradesMenu.SelectAction -= SelectUpgradesTab;
-        m_PlayerAction.OnDisableUI -= SelectDefaultTab;
+        m_PlayerAction.OnDisableMiscUI -= SelectDefaultTab;
     }
 
     private void SelectTab( string name, float dur = 0.25f )
@@ -63,14 +63,14 @@ public class UIMiscController : MonoBehaviour
     public void ToggleUI()
     {
         gameObject.SetActive( !gameObject.activeInHierarchy );
-        m_PlayerAction.IsUIOpen = gameObject.activeInHierarchy;
+        m_PlayerAction.IsOtherUIOpen = gameObject.activeInHierarchy;
         if ( gameObject.activeInHierarchy )
         {
-            m_PlayerAction.OnEnableUI?.Invoke();
+            m_PlayerAction.OnEnableMiscUI?.Invoke();
         }
         else
         {
-            m_PlayerAction.OnDisableUI?.Invoke();
+            m_PlayerAction.OnDisableMiscUI?.Invoke();
         }
 
     }
@@ -78,8 +78,8 @@ public class UIMiscController : MonoBehaviour
     public void CloseUI()
     {
         gameObject.SetActive( false );
-        m_PlayerAction.IsUIOpen = false;
-        m_PlayerAction.OnDisableUI?.Invoke();
+        m_PlayerAction.IsOtherUIOpen = false;
+        m_PlayerAction.OnDisableMiscUI?.Invoke();
     }
 
 

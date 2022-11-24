@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
@@ -16,34 +15,14 @@ public class ItemDatabase : MonoBehaviour
     private ActionSlotsController m_ActionSlots;
     private InventorySlotsController m_InventorySlots;
     private int MaxSize { get => m_ActionSlots.SlotSize + m_InventorySlots.SlotSize; }
-
+    private ResourcesLoader m_ResourcesLoader;
     private void Start()
     {
         m_ActionSlots = GetComponent<ActionSlotsController>();
         m_InventorySlots = GetComponent<InventorySlotsController>();
         m_ActionSlots.DBRemoveAction += RemoveFromDB;
-        ItemData[] furnitureItems = Resources.LoadAll<ItemData>( "Data/Furnitures" );
-        ItemData[] equipmentItems = Resources.LoadAll<ItemData>( "Data/Equipments" );
-        ItemData[] seedItems = Resources.LoadAll<ItemData>( "Data/Seeds" );
-        foreach ( var item in furnitureItems )
-        {
-            Store( item );
-            Store( item );
-            Store( item );
-            Store( item );
-        }
-        foreach ( var item in equipmentItems )
-        {
-            Store( item );
-        }
-        foreach ( var item in seedItems )
-        {
-            Store( item );
-            Store( item );
-            Store( item );
-            Store( item );
-            Store( item );
-        }
+        m_ResourcesLoader = ResourcesLoader.Instance;
+        m_ResourcesLoader.StarterPackData.ForEach( item => Store( item, 5 ) );
     }
     private void OnDestroy()
     {
@@ -53,14 +32,17 @@ public class ItemDatabase : MonoBehaviour
     public bool Store( ItemData itemData, int quantity = 1 )
     {
         if ( m_InventoryDB.Count >= MaxSize ) return false;
+        
         if ( m_InventoryDB.TryGetValue( itemData.id, out ItemSlot slot ) )
         {
+            if ( !itemData.decreaseable ) quantity = 0;
             slot.quantity += quantity;
             m_OnStoreItem?.Invoke( slot );
             return true;
         }
         else
         {
+            if ( !itemData.decreaseable ) quantity = 1;
             ItemSlot itemSlot = new( itemData, quantity );
             m_InventoryDB.Add( itemData.id, itemSlot );
             m_OnStoreItem?.Invoke( itemSlot );

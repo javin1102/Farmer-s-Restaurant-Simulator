@@ -164,8 +164,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Data: {fileID: 11400000, guid: f82a6400dacbeb641802d2a9315ed429, type: 2}
+  m_HandPosOffset: {x: 0, y: -0.2, z: 0}
+  m_HandEulerAngles: {x: 0, y: 0, z: 0}
+  m_HandScale: {x: 0.3, y: 0.3, z: 0.3}
+  m_TileManager: {fileID: 0}
   m_DecreaseableEvent: {fileID: 11400000, guid: 45b5ab5fff5be0b4e9c4366e438f6d25, type: 2}
   m_ObjRotationInputRef: {fileID: 6348698597332287396, guid: 7669bc3b4a375a84ab07601d14946d36, type: 3}
+  m_IsInstantiated: 0
+  m_Hoverable: {fileID: 0}
   m_ChefStandTf: {fileID: 709637267}
 --- !u!114 &1849961971551038810
 MonoBehaviour:

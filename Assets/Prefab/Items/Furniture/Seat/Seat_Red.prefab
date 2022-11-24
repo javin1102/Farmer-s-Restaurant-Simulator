@@ -134,7 +134,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d993bfafec65fc34ca71bcaccc5fb582, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_UIManager: {fileID: 0}
 --- !u!114 &3991850734774765667
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -178,9 +177,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Data: {fileID: 11400000, guid: ac3e7fd5fb54deb41b5ba41a0049cbde, type: 2}
+  m_HandPosOffset: {x: -0.35, y: -0.15, z: -0.55}
+  m_HandEulerAngles: {x: 0, y: 180, z: 0}
+  m_HandScale: {x: 0.2, y: 0.2, z: 0.2}
+  m_TileManager: {fileID: 0}
   m_DecreaseableEvent: {fileID: 11400000, guid: 45b5ab5fff5be0b4e9c4366e438f6d25, type: 2}
   m_ObjRotationInputRef: {fileID: 6348698597332287396, guid: 7669bc3b4a375a84ab07601d14946d36, type: 3}
+  m_IsInstantiated: 0
+  m_Hoverable: {fileID: 0}
   m_SitTf: {fileID: 5279787588528716714}
+  m_Table: {fileID: 0}
+  m_IsOccupied: 0
+  m_Citizen: {fileID: 0}
 --- !u!208 &3991850734774765670
 NavMeshObstacle:
   m_ObjectHideFlags: 0

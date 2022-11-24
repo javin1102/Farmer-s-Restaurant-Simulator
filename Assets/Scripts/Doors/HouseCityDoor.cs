@@ -1,6 +1,6 @@
 using UnityEngine.SceneManagement;
 
-public class HouseDoor : Door
+public class HouseCityDoor : Door
 {
     protected override void OnInteract()
     {

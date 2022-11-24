@@ -14,6 +14,7 @@ public class Shovel : Item, IRaycastAction
     private Mesh m_PreviewTileMesh;
     private Matrix4x4 m_TileMatrix;
     MaterialChanger previewTileMaterialChanger;
+    private BoxCollider m_FarmGroundBoundsCollider;
     private new void Awake()
     {
         base.Awake();
@@ -66,10 +67,27 @@ public class Shovel : Item, IRaycastAction
             m_Collided = hitInfo.collider.CompareTag( Utils.TILE_TAG );
             if ( m_IsFarmGroundTag = hitInfo.collider.CompareTag( Utils.FARM_GROUND_TAG ) )
             {
-                Vector3 tilePos = m_TileManager.WorldToTilePos( hitInfo.point );
-                tilePos.Set( tilePos.x, .001f, tilePos.z );
+                if ( m_FarmGroundBoundsCollider == null ) m_FarmGroundBoundsCollider = hitInfo.collider.transform.GetChild( 0 ).GetComponent<BoxCollider>();
+                Vector3 tilePos = m_TileManager.WorldToTilePos( hitInfo.point ) + Vector3.up * .01f;
                 Quaternion tileRot = Quaternion.Euler( 90f, 0, 0 );
-
+                Collider[] colliders = Physics.OverlapBox( tilePos, Vector3.one / 4, tileRot );
+                foreach ( var collider in colliders )
+                {
+                    if ( collider.CompareTag( Utils.TREE_OBSTACLE_TAG ) )
+                    {
+                        m_Collided = true;
+                        m_UIManager.HideActionHelper();
+                        if ( previewTileMaterialChanger != null ) previewTileMaterialChanger.ChangePreviewMaterialColor( false );
+                        return;
+                    }
+                }
+                if ( !m_FarmGroundBoundsCollider.bounds.Contains( tilePos ) )
+                {
+                    m_Collided = true;
+                    m_UIManager.HideActionHelper();
+                    if ( previewTileMaterialChanger != null ) previewTileMaterialChanger.ChangePreviewMaterialColor( false );
+                    return;
+                }
                 m_TileMatrix = Matrix4x4.TRS( tilePos, tileRot, Vector3.one );
                 previewTileMaterialChanger.ChangePreviewMaterialColor( true );
                 Graphics.DrawMesh( m_PreviewTileMesh, m_TileMatrix, previewTileMaterialChanger.PreviewMaterial, 0 );

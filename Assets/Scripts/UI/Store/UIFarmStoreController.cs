@@ -1,10 +1,9 @@
 using System.Collections.Generic;
 using System.Linq;
-using UnityEngine;
 
 public class UIFarmStoreController : UIStoreController
 {
-    public List<SeedData> SeedsData { get => m_SeedsData;  }
+    public List<SeedData> SeedsData { get => m_SeedsData; }
     public List<ItemData> CropsData { get => m_CropsData; }
     public List<ItemData> FarmsData { get => m_FarmsData; }
 
@@ -14,8 +13,8 @@ public class UIFarmStoreController : UIStoreController
     private new void Awake()
     {
         base.Awake();
-        m_SeedsData = Resources.LoadAll<SeedData>( "Data/Seeds" ).ToList();
-        m_CropsData = Resources.LoadAll<ItemData>( "Data/Crops" ).ToList();
-        m_FarmsData = m_CropsData.Concat( m_SeedsData ).ToList();
+        m_SeedsData = m_ResourcesLoader.SeedsData;
+        m_CropsData = m_ResourcesLoader.CropsData;
+        m_FarmsData = m_ResourcesLoader.CropsData.Concat( m_SeedsData ).ToList();
     }
 }

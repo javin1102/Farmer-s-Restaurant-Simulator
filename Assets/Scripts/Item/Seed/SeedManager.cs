@@ -34,11 +34,11 @@ public class SeedManager : Seed, IRaycastAction
         if ( hitInfo.collider != null && hitInfo.collider.TryGetComponent( out Tile tile ) )
         {
             m_tile = tile;
-
+            if ( m_tile.crop != null ) return;
             m_PreviewTileMesh = m_tile.GetComponent<MeshFilter>().sharedMesh;
             previewTileMaterialChanger = m_tile.GetComponent<MaterialChanger>();
             Vector3 tilePos = m_TileManager.WorldToTilePos( hitInfo.point );
-            tilePos.Set( tilePos.x, .0015f, tilePos.z );
+            tilePos.Set( tilePos.x, .02f, tilePos.z );
             Quaternion tileRot = Quaternion.Euler( 90f, 0, 0 );
 
             m_TileMatrix = Matrix4x4.TRS( tilePos, tileRot, Vector3.one );

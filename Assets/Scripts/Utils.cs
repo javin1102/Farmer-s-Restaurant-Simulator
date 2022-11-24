@@ -15,8 +15,8 @@ public class Utils
     public static int HelperLayer = LayerMask.NameToLayer( "Helper" );
     public static int DefaultMask = ( 1 << 0 ) | ( 1 << 1 ) | ( 1 << 2 ) | ( 1 << 3 ) | ( 1 << 4 ) | ( 1 << 5 ) | ( 1 << 13 );
     public static int CityMask = DefaultMask | ( 1 << 6 ) | ( 1 << 8 ) | ( 1 << 12 );
-    public static int HouseMask = DefaultMask | ( 1 << 14 ) | ( 1 << 15 );
-    public static int FarmMask = DefaultMask | ( 1 << 9 );
+    public static int HouseMask = DefaultMask | ( 1 << 14 ) | ( 1 << 8 ) | ( 1 << 15 );
+    public static int FarmMask = DefaultMask | ( 1 << 8 ) | ( 1 << 9 );
 
     //INPUT ACTION STRING
     public const string MAIN_ACTION = "Main Action";
@@ -51,6 +51,7 @@ public class Utils
     public const string TILE_WET_TAG = "Wet Tile";
     public const string CROP_TAG = "Crop";
     public const string PLAYER_TAG = "Player";
+    public const string TREE_OBSTACLE_TAG = "Tree Obstacle";
 
     //Anim
     public static int NPC_WALK_ANIM_PARAM = Animator.StringToHash( "Walk" );

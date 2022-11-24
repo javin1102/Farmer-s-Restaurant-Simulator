@@ -39,8 +39,7 @@ public class WateringCan : Item,IRaycastAction
             m_PreviewTileMesh = selectedTile.GetComponent<MeshFilter>().sharedMesh;
             previewTileMaterialChanger = selectedTile.GetComponent<MaterialChanger>();
 
-            Vector3 tilePos = m_TileManager.WorldToTilePos(hitInfo.point);
-            tilePos.Set(tilePos.x, .0015f, tilePos.z);
+            Vector3 tilePos = m_TileManager.WorldToTilePos(hitInfo.point) + Vector3.up * .01f;
             Quaternion tileRot = Quaternion.Euler(90f, 0, 0);
 
             m_TileMatrix = Matrix4x4.TRS(tilePos, tileRot, Vector3.one);
