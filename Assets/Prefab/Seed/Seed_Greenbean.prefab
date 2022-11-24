@@ -276,7 +276,7 @@ GameObject:
   - component: {fileID: 1915676863558394332}
   - component: {fileID: 4232832403412701064}
   m_Layer: 0
-  m_Name: Seed_Corn
+  m_Name: Seed_Greenbean
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -311,9 +311,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c5b88203c98c5684c8ed05585c23cd31, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Data: {fileID: 11400000, guid: 4ead86c5eb6270141aa949101a615640, type: 2}
+  m_Data: {fileID: 11400000, guid: 8cb1a4607053ae643a5bbc1e0fcda47a, type: 2}
   m_TileManager: {fileID: 0}
-  m_seedData: {fileID: 11400000, guid: abfc2db7e14a83644826e3eec9a6e2b5, type: 2}
+  m_seedData: {fileID: 11400000, guid: 61b0b06371426cf46b8c669fceaa4561, type: 2}
   m_DecreseableEvent: {fileID: 11400000, guid: 45b5ab5fff5be0b4e9c4366e438f6d25, type: 2}
   plantedMaterial: {fileID: 2100000, guid: 8195b661a96bde943aa2a4e920dd8205, type: 2}
   m_SFXTf: {fileID: 2057515507287312548, guid: 10d4af0d3ec0f4547b0bb358ee65c3bc, type: 3}
