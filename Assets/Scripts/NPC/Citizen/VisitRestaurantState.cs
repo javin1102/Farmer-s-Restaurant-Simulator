@@ -109,6 +109,8 @@ namespace NPC.Citizen
         private IEnumerator EatFinish( float delay )
         {
             yield return new WaitForSeconds( delay );
+         
+            m_Citizen.StartCoroutine("CoinTipDrop");
             TravelState travelState = new();
             m_Citizen.ChangeState( travelState );
 
