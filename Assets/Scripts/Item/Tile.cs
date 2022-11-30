@@ -21,23 +21,19 @@ public class Tile : MonoBehaviour,ITimeTracker
     public enum TileStatus {NORMAL,WATERED,HOED,PLANTED };
     public TileStatus m_tileStatus;
 
-    public static Tile Instance { get; set; }
+    //public static Tile Instance { get; set; }
 
     private int timeElapsed;
-    private GameTimeStamp m_time;
+    private GameTimeStamp m_Time;
     private PlantGrowHandler m_plantGrowHandler;
-    private TimeManager m_timeManager;
+    [SerializeField] private TimeManager m_TimeManager;
 
 
-    private void Awake()
-    {
-        Instance = this;
-        m_timeManager = FindObjectOfType<TimeManager>();
-    }
     private void Start()
     {
-        this.m_timeManager.RegisterListener(this);
-        //TimeManager.Instance.RegisterListener(this);        
+        m_TimeManager = TimeManager.Instance;
+        m_TimeManager.RegisterListener(this);
+        m_Time = m_TimeManager.GetCurrentTimeStamp();
     }
     public void SpawnCrop()
     {
@@ -48,30 +44,27 @@ public class Tile : MonoBehaviour,ITimeTracker
 
     public void SwitchStatus(TileStatus tileStatus)
     {
+        if ( m_TimeManager == null ) m_TimeManager = TimeManager.Instance;
         this.m_tileStatus = tileStatus;
-
         Material materialSwitch = m_defaultMaterial;
 
         switch(tileStatus)
         {
-            case TileStatus.NORMAL:
-                materialSwitch = m_defaultMaterial;
-                break;
             case  TileStatus.WATERED:
                 materialSwitch = m_wateredMaterial;
                 this.tag = Utils.TILE_WET_TAG;
-                this.m_time = TimeManager.Instance.GetGameTimeStamp();
+                this.m_Time = m_TimeManager.GetCurrentTimeStamp();
                 break;
             case TileStatus.HOED:
                 materialSwitch = m_hoedMaterial;
                 this.tag = Utils.TILE_TAG;
-                this.m_time = TimeManager.Instance.GetGameTimeStamp();
+                this.m_Time = m_TimeManager.GetCurrentTimeStamp();
                 break;
             case TileStatus.PLANTED:
                 if (this.CompareTag(Utils.TILE_WET_TAG)) materialSwitch = m_wateredMaterial;
                 else if (this.CompareTag(Utils.TILE_TAG)) materialSwitch = m_hoedMaterial;
                 this.m_plantGrowHandler = GetComponentInChildren<PlantGrowHandler>();
-                this.m_time = TimeManager.Instance.GetGameTimeStamp();
+                this.m_Time = m_TimeManager.GetCurrentTimeStamp();
                 break;
         }
 
@@ -81,7 +74,7 @@ public class Tile : MonoBehaviour,ITimeTracker
 
     public void ClockUpdate(GameTimeStamp timeStamp)
     {
-        this.timeElapsed = GameTimeStamp.CompareTImeStamps(m_time, timeStamp);
+        this.timeElapsed = GameTimeStamp.CompareTimeStamps(m_Time, timeStamp);
         if (this.m_tileStatus == TileStatus.HOED)
         {
             Debug.Log("timehoed : " + timeElapsed);
@@ -93,7 +86,7 @@ public class Tile : MonoBehaviour,ITimeTracker
             {
                 if (this.timeElapsed > 36)
                 {
-                    this.m_timeManager.UnRegisterListener(this);
+                    this.m_TimeManager.UnRegisterListener(this);
                     Destroy(this.gameObject);
                 }
             }
@@ -122,7 +115,7 @@ public class Tile : MonoBehaviour,ITimeTracker
             }
             else if(this.timeElapsed > 35 && this.CompareTag(Utils.TILE_TAG))
             {
-                this.m_timeManager.UnRegisterListener(this);
+                this.m_TimeManager.UnRegisterListener(this);
                 Destroy(this.transform.GetChild(0).gameObject);
             }
         }

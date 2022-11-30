@@ -12,12 +12,14 @@ public class ResourcesLoader : MonoBehaviour
     public List<FurnitureData> FurnituresData { get => m_FurnituresData; }
     public List<IngredientData> IngredientsData { get => m_IngredientsData; }
     public List<FoodData> FoodsData { get => m_FoodsData; }
+    public List<GameObject> FarmObjects { get => m_FarmObjects; }
 
     private List<ItemData> m_EquipmentsData, m_CropsData, m_StarterPackData;
     private List<SeedData> m_SeedsData;
     private List<FurnitureData> m_FurnituresData;
     private List<IngredientData> m_IngredientsData;
     private List<FoodData> m_FoodsData;
+    [SerializeField] private List<GameObject> m_FarmObjects;
     private static ResourcesLoader m_Instance;
     private void Awake()
     {
@@ -32,5 +34,23 @@ public class ResourcesLoader : MonoBehaviour
         m_IngredientsData = Resources.LoadAll<IngredientData>( "Data/Ingredients" ).ToList();
         m_FurnituresData = Resources.LoadAll<FurnitureData>( "Data/Furnitures" ).ToList();
         m_FoodsData = Resources.LoadAll<FoodData>( "Data/Recipes" ).ToList();
+        m_FarmObjects = Resources.LoadAll<GameObject>( "Prefabs/FarmObjects" ).ToList();
     }
+
+    public void GetFarmObjectIndex<T>( out int index )
+    {
+        index = FarmObjects.Select( GetFarmObjectIndex<T> ).Where( index => index != -1 ).First();
+    }
+
+    private int GetFarmObjectIndex<T>( GameObject obj, int index )
+    {
+        if ( obj.TryGetComponent( out T _ ) )
+        {
+            return index;
+        }
+        return -1;
+    }
+
+
+
 }

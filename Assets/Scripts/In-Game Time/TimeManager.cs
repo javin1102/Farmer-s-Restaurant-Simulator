@@ -7,13 +7,13 @@ public class TimeManager : MonoBehaviour
     public static TimeManager Instance { get; private set; }
 
     [SerializeField]
-    GameTimeStamp m_timeStamp;
+    GameTimeStamp m_CurrentTimeStamp;
 
     public float m_timeScale = 1f;
 
     public Material skybox;
 
-    public List<ITimeTracker> m_listenner = new List<ITimeTracker>();
+    public List<ITimeTracker> m_Listener = new List<ITimeTracker>();
 
     private void Awake()
     {
@@ -25,12 +25,13 @@ public class TimeManager : MonoBehaviour
         {
             Instance = this;
         }
+        DontDestroyOnLoad(this);
     }
 
     private void Start()
     {
         // initialize GameTimeStamp day1, 6 : 00 AM
-        m_timeStamp = new GameTimeStamp(1,6,0);
+        m_CurrentTimeStamp = new GameTimeStamp(1,6,0);
         
         // initialize Cubemap Transition to 0 
         skybox.SetFloat("_CubemapTransition", 0);
@@ -54,9 +55,9 @@ public class TimeManager : MonoBehaviour
     {
 
         // check time for plus or minus
-        if(m_timeStamp.hour > 6)
+        if(m_CurrentTimeStamp.hour > 6)
         {
-            if (m_timeStamp.minute >= 59)
+            if (m_CurrentTimeStamp.minute >= 59)
             {
                 if (skybox.GetFloat("_CubemapTransition") >= 1f) skybox.SetFloat("_CubemapTransition", 1f);
                 else skybox.SetFloat("_CubemapTransition", (skybox.GetFloat("_CubemapTransition") + 0.065f) );
@@ -64,7 +65,7 @@ public class TimeManager : MonoBehaviour
         }
         else
         {
-            if(m_timeStamp.minute >= 59)
+            if(m_CurrentTimeStamp.minute >= 59)
             {
                 if (skybox.GetFloat("_CubemapTransition") <= 0f) skybox.SetFloat("_CubemapTransition", 0f);
                 else skybox.SetFloat("_CubemapTransition", (skybox.GetFloat("_CubemapTransition") - .19f));
@@ -72,28 +73,28 @@ public class TimeManager : MonoBehaviour
         }
 
         // update clock
-        m_timeStamp.UpdateClock();
+        m_CurrentTimeStamp.UpdateClock();
 
-        for (int i = 0; i < m_listenner.Count; i++)
+        for (int i = 0; i < m_Listener.Count; i++)
         {
-            m_listenner[i].ClockUpdate(m_timeStamp);
+            m_Listener[i].ClockUpdate(m_CurrentTimeStamp);
         }
     }
 
-    public GameTimeStamp GetGameTimeStamp()
+    public GameTimeStamp GetCurrentTimeStamp()
     {
-        return new GameTimeStamp(m_timeStamp);
+        return new GameTimeStamp(m_CurrentTimeStamp);
     }
 
 
     public void RegisterListener(ITimeTracker listener)
     {
-        m_listenner.Add(listener);
+        m_Listener.Add(listener);
     }
 
     public void UnRegisterListener(ITimeTracker listner)
     {
-        m_listenner.Remove(listner);
+        m_Listener.Remove(listner);
     }
 
 }

@@ -14,10 +14,9 @@ public class PlayerAction : MonoBehaviour
     public UnityAction OnDecreaseItemDatabase { get => m_OnDropInventory; set => m_OnDropInventory = value; }
     public bool IsOtherUIOpen { get => m_IsOtherUIOpen; set => m_IsOtherUIOpen = value; }
     public InputAction InventoryAction { get => m_InventoryAction; }
-    public float ActionTime { get => m_ActionTime; set => m_ActionTime = value; }
+    public float ActionTime { get => m_ActionTimeRemaining; set => m_ActionTimeRemaining = value; }
     public float DefaultActionTime { get => m_DefaultActionTime; set => m_DefaultActionTime = value; }
     public Item CurrEquippedItem { get => m_ActionSlotsController.CurrEquippedItem; }
-
     //Event Listener
     private event UnityAction m_OnEnableUI;
     private event UnityAction m_OnDisableUI;
@@ -49,8 +48,9 @@ public class PlayerAction : MonoBehaviour
     private bool m_IsOtherUIOpen; //check if "other" ui is open
     private Hoverable m_Hovered;
     private UIManager m_UIManager;
-    private float m_ActionTime; //time passed for certain action to be done (ex: chopping tree)
+    private float m_ActionTimeRemaining; //time passed for certain action to be done (ex: chopping tree)
     private float m_DefaultActionTime; //time needed for certain action to be done (ex: chopping tree)
+
     private void Awake()
     {
         //LockCursor();
@@ -116,7 +116,7 @@ public class PlayerAction : MonoBehaviour
             }
             else
             {
-                m_ActionTime = 0;
+                m_ActionTimeRemaining = 0;
                 m_DefaultActionTime = 0;
             }
             if ( hitInfo.collider.TryGetComponent( out Hoverable hover ) )
@@ -137,11 +137,15 @@ public class PlayerAction : MonoBehaviour
             if ( m_MainInputAction.triggered && hitInfo.collider.TryGetComponent( out IInteractable hit ) ) hit.Interact( this );
             if ( m_StoreInputAction.triggered && hitInfo.collider.TryGetComponent( out Item raycastedItem ) )
             {
-                if ( Store( raycastedItem ) ) return;
+                if ( Store( raycastedItem ) )
+                {
 
-                //TODO::Handle Inventory is full
-                Debug.Log( "Inventory is full" );
-
+                }
+                else
+                {
+                    //TODO::Handle Inventory is full
+                    Debug.Log( "Inventory is full" );
+                }
             }
         }
         else
@@ -150,7 +154,7 @@ public class PlayerAction : MonoBehaviour
             if ( m_Hovered == null ) return;
             m_Hovered.HoverExit();
             m_Hovered = null;
-            m_ActionTime = 0;
+            m_ActionTimeRemaining = 0;
             m_DefaultActionTime = 0;
         }
 

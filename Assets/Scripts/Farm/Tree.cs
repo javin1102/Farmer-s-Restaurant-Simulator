@@ -1,6 +1,7 @@
 using UnityEngine;
 
 [RequireComponent( typeof( Hoverable ) )]
+[RequireComponent( typeof( FarmObject ) )]
 public class Tree : MonoBehaviour, IActionTime
 {
     public float ActionTime { get; set; }

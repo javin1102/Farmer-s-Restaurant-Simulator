@@ -1483,8 +1483,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3940a48721a88be48b6e7b8b71b06c90, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_ObsPrefab: {fileID: 7916790408581228774, guid: 84d4242a8ec526343b5cc952b6334a04, type: 3}
-  m_Size: 100
+  m_Size: 50
 --- !u!1001 &1119730792
 PrefabInstance:
   m_ObjectHideFlags: 0

@@ -58,7 +58,7 @@ public class GameTimeStamp
         return days * 24;
     }
 
-    public static int CompareTImeStamps(GameTimeStamp timeStamp1 , GameTimeStamp timeStamp2)
+    public static int CompareTimeStamps(GameTimeStamp timeStamp1 , GameTimeStamp timeStamp2)
     {
         int timeStamp1Hour = DayToHour(timeStamp1.day) + timeStamp1.hour;
         int timeStamp2Hour = DayToHour(timeStamp2.day) + timeStamp2.hour;

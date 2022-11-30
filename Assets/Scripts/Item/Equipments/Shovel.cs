@@ -1,11 +1,14 @@
 using UnityEngine;
 using UnityEngine.Events;
 using System.Collections;
+using System.Linq;
 
+[RequireComponent( typeof( FarmObject ) )]
 public class Shovel : Item, IRaycastAction
 {
     private static Transform tileParent;
-    [SerializeField] private GameObject m_TilePrefab;
+    [SerializeField]private int m_TileResourcesIndex;
+    private GameObject m_TileGO;
     [SerializeField][Readonly] private GameObject m_PreviewTile;
     [SerializeField] private bool m_IsFarmGroundTag;
     [SerializeField] private bool m_Collided;
@@ -15,15 +18,21 @@ public class Shovel : Item, IRaycastAction
     private Matrix4x4 m_TileMatrix;
     MaterialChanger previewTileMaterialChanger;
     private BoxCollider m_FarmGroundBoundsCollider;
+    private ResourcesLoader m_ResourceLoader;
+    private FarmGround m_FarmGround;
     private new void Awake()
     {
         base.Awake();
-        previewTileMaterialChanger = m_TilePrefab.GetComponent<MaterialChanger>();
+        m_ResourceLoader = ResourcesLoader.Instance;
+        m_FarmGround = FarmGround.Instance;
+        m_ResourceLoader.GetFarmObjectIndex<Tile>( out m_TileResourcesIndex );
+        m_TileGO = m_ResourceLoader.FarmObjects[m_TileResourcesIndex];
+        previewTileMaterialChanger = m_TileGO.GetComponent<MaterialChanger>();
     }
     private void Start()
     {
         tileParent = GameObject.FindGameObjectWithTag( Utils.TILE_PARENT_TAG ).transform;
-        m_PreviewTileMesh = m_TilePrefab.GetComponent<MeshFilter>().sharedMesh;
+        m_PreviewTileMesh = m_TileGO.GetComponent<MeshFilter>().sharedMesh;
     }
     private void OnDisable()
     {
@@ -41,7 +50,7 @@ public class Shovel : Item, IRaycastAction
     {
         if ( !m_IsFarmGroundTag || m_Collided ) return;
 
-        GameObject tileCopyGO = Instantiate( m_TilePrefab, m_TileMatrix.MultiplyPoint3x4( Vector3.zero ), m_TileMatrix.rotation );
+        GameObject tileCopyGO = Instantiate( m_TileGO, m_TileMatrix.MultiplyPoint3x4( Vector3.zero ), m_TileMatrix.rotation );
         tileCopyGO.name = "Tile";
         tileCopyGO.transform.parent = tileParent;
 
@@ -54,6 +63,11 @@ public class Shovel : Item, IRaycastAction
 
         tileCopyGO.layer = 9;
         tileCopyGO.GetComponent<Tile>().SwitchStatus( Tile.TileStatus.HOED );
+
+        int tileIndex = m_FarmGround.GetUniqueIdx( tileCopyGO.transform.position );
+        FarmObject farmObject = tileCopyGO.GetComponent<FarmObject>();
+        farmObject.Set( m_TileResourcesIndex, tileIndex );
+        m_FarmGround.FarmObjects.Add( tileIndex, farmObject );
 
         // play Hoe sound effect
         // nanti harusnya pake animation event buat active deactive sfx
