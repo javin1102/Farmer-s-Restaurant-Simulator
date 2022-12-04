@@ -16,13 +16,13 @@ public abstract class UIStoreItem : MonoBehaviour
     protected void Start()
     {
         UpdateUI();
-        m_BuyButton.onClick.AddListener( BuyItem );
+        m_BuyButton.onClick.AddListener(BuyItem);
     }
 
     protected abstract void BuyItem();
     protected void UpdateUI()
     {
-        m_NameText.text = m_ItemData.id;
+        m_NameText.text = m_ItemData.ID;
         m_PriceText.text = $"<sprite=0> {m_ItemData.buyPrice}";
         m_Icon.sprite = m_ItemData.icon;
     }

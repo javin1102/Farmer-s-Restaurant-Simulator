@@ -49,8 +49,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   statePlant: 0
-  growTime: 2
-  m_SeedData: {fileID: 11400000, guid: abfc2db7e14a83644826e3eec9a6e2b5, type: 2}
+  SeedData: {fileID: 11400000, guid: abfc2db7e14a83644826e3eec9a6e2b5, type: 2}
 --- !u!64 &4022771280473758962
 MeshCollider:
   m_ObjectHideFlags: 0

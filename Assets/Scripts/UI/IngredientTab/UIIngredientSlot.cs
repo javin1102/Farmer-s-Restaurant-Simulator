@@ -6,8 +6,8 @@ using UnityEngine.Events;
 public class UIIngredientSlot : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
     public IngredientData IngredientData { get => m_IngredientData; set => m_IngredientData = value; }
-    public UnityAction<IngredientData, Vector3> OnHoverEnter { get => m_OnHoverEnter; set => m_OnHoverEnter =  value ; }
-    public UnityAction OnHoverExit { get => m_OnHoverExit; set => m_OnHoverExit =  value ; }
+    public UnityAction<IngredientData, Vector3> OnHoverEnter { get => m_OnHoverEnter; set => m_OnHoverEnter = value; }
+    public UnityAction OnHoverExit { get => m_OnHoverExit; set => m_OnHoverExit = value; }
 
     [SerializeField] private Image m_Icon;
     [SerializeField] private TMP_Text m_QuantityText, m_IngredientNameText;
@@ -27,11 +27,11 @@ public class UIIngredientSlot : MonoBehaviour, IPointerEnterHandler, IPointerExi
 
     public void UpdateUI()
     {
-        m_IngredientNameText.text = m_IngredientData.id;
+        m_IngredientNameText.text = m_IngredientData.ID;
         m_Icon.sprite = m_IngredientData.icon;
-        if ( m_FoodsController.StockIngredients.TryGetValue( m_IngredientData.id, out StockIngredient ingredient ) )
+        if (m_FoodsController.StockIngredients.TryGetValue(m_IngredientData.ID, out StockIngredient ingredient))
         {
-            EnableOverlayUI( ingredient );
+            EnableOverlayUI(ingredient);
         }
         else
         {
@@ -39,24 +39,24 @@ public class UIIngredientSlot : MonoBehaviour, IPointerEnterHandler, IPointerExi
         }
     }
 
-    private void EnableOverlayUI( StockIngredient ingredient)
+    private void EnableOverlayUI(StockIngredient ingredient)
     {
-        m_OverlayGO.SetActive( false );
+        m_OverlayGO.SetActive(false);
         m_QuantityText.text = ingredient.quantity.ToString();
     }
 
     private void DisableOverlayUI()
     {
-        m_OverlayGO.SetActive( true );
+        m_OverlayGO.SetActive(true);
         m_QuantityText.text = "0";
     }
 
-    public void OnPointerEnter( PointerEventData eventData )
+    public void OnPointerEnter(PointerEventData eventData)
     {
-        OnHoverEnter?.Invoke( IngredientData, m_RectTf.anchoredPosition );
+        OnHoverEnter?.Invoke(IngredientData, m_RectTf.anchoredPosition);
     }
 
-    public void OnPointerExit( PointerEventData eventData )
+    public void OnPointerExit(PointerEventData eventData)
     {
         OnHoverExit?.Invoke();
         //print( "exit" );

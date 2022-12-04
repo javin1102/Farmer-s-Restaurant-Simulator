@@ -14,7 +14,6 @@ GameObject:
   - component: {fileID: -4933692796650254206}
   - component: {fileID: 5706225810747854488}
   - component: {fileID: 6911773953523138955}
-  - component: {fileID: -3210700001268568364}
   m_Layer: 0
   m_Name: Tree Obstacle
   m_TagString: Untagged
@@ -124,15 +123,3 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 0.53048706, y: 4.950701, z: 0.4242401}
   m_Center: {x: -0.007095337, y: 2.4756033, z: -0.0017929077}
---- !u!114 &-3210700001268568364
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7916790408581228774}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7c4b2ed5b2e65654ea70c2725f5c4feb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 

@@ -30,18 +30,18 @@ public class ActionSlotsController : ItemSlotsController
         m_DeacreasableItemChannel.OnMainAction -= DecreaseQuantity;
     }
 
-    public override bool TrySetSlot( ItemSlot slot )
+    public override bool TrySetSlot(ItemSlot slot)
     {
-        if ( m_Slots[m_SelectedSlotIndex] == null )
+        if (m_Slots[m_SelectedSlotIndex] == null)
         {
             m_Slots[m_SelectedSlotIndex] = slot;
             return true;
         }
         else
         {
-            for ( int i = 0; i < m_Slots.Length; i++ )
+            for (int i = 0; i < m_Slots.Length; i++)
             {
-                if ( m_Slots[i] == null )
+                if (m_Slots[i] == null)
                 {
                     m_Slots[i] = slot;
                     return true;
@@ -55,20 +55,20 @@ public class ActionSlotsController : ItemSlotsController
     {
         CheckEquippedItem();
     }
-    private Item InstantiateItemToHand( ItemSlot item )
+    private Item InstantiateItemToHand(ItemSlot item)
     {
         UIManager.Instance.HideActionHelper();
-        Item instantiatedItem = Instantiate( item.data.prefab, m_Hand ).GetComponent<Item>();
-        ResetItemTf( instantiatedItem );
-        instantiatedItem.gameObject.SetActive( true );
+        Item instantiatedItem = Instantiate(item.data.prefab, m_Hand).GetComponent<Item>();
+        ResetItemTf(instantiatedItem);
+        instantiatedItem.gameObject.SetActive(true);
         return instantiatedItem;
     }
 
     private void DestroyAllItemsInHand()
     {
-        foreach ( Transform child in m_Hand )
+        foreach (Transform child in m_Hand)
         {
-            Destroy( child.gameObject );
+            Destroy(child.gameObject);
         }
     }
 
@@ -76,10 +76,10 @@ public class ActionSlotsController : ItemSlotsController
     private void DecreaseQuantity()
     {
         m_Slots[m_SelectedSlotIndex].quantity -= 1;
-        if ( m_Slots[m_SelectedSlotIndex].quantity <= 0 )
+        if (m_Slots[m_SelectedSlotIndex].quantity <= 0)
         {
 
-            m_DBRemoveAction?.Invoke( m_Slots[m_SelectedSlotIndex].data.id );
+            m_DBRemoveAction?.Invoke(m_Slots[m_SelectedSlotIndex].data.ID);
             m_Slots[m_SelectedSlotIndex] = null;
             m_CurrEquippedItem = null;
             DestroyAllItemsInHand();
@@ -87,51 +87,51 @@ public class ActionSlotsController : ItemSlotsController
     }
 
 
-    private void ResetItemTf( Item item )
+    private void ResetItemTf(Item item)
     {
         item.transform.parent = m_Hand;
         item.SetHandTf();
     }
 
-    public void SelectActionSlot( int index )
+    public void SelectActionSlot(int index)
     {
         m_SelectedSlotIndex = index;
-        OnSelectSlot?.Invoke( index );
+        OnSelectSlot?.Invoke(index);
     }
 
 
-    public void SelectActionSlot_1() => SelectActionSlot( 0 );
-    public void SelectActionSlot_2() => SelectActionSlot( 1 );
-    public void SelectActionSlot_3() => SelectActionSlot( 2 );
-    public void SelectActionSlot_4() => SelectActionSlot( 3 );
-    public void SelectActionSlot_5() => SelectActionSlot( 4 );
-    public void SelectActionSlot_6() => SelectActionSlot( 5 );
+    public void SelectActionSlot_1() => SelectActionSlot(0);
+    public void SelectActionSlot_2() => SelectActionSlot(1);
+    public void SelectActionSlot_3() => SelectActionSlot(2);
+    public void SelectActionSlot_4() => SelectActionSlot(3);
+    public void SelectActionSlot_5() => SelectActionSlot(4);
+    public void SelectActionSlot_6() => SelectActionSlot(5);
 
     public void CheckEquippedItem()
     {
-        if ( m_Slots[m_SelectedSlotIndex] == null || m_Slots[m_SelectedSlotIndex].quantity <= 0 )
+        if (m_Slots[m_SelectedSlotIndex] == null || m_Slots[m_SelectedSlotIndex].quantity <= 0)
         {
-            if ( m_CurrEquippedItem == null ) return;
+            if (m_CurrEquippedItem == null) return;
             m_CurrEquippedItem = null;
             m_Slots[m_SelectedSlotIndex] = null;
-            m_HandModel.SetActive( true );
+            m_HandModel.SetActive(true);
             DestroyAllItemsInHand();
         }
         else
         {
-            if ( m_CurrEquippedItem == null )
+            if (m_CurrEquippedItem == null)
             {
-                m_CurrEquippedItem = InstantiateItemToHand( m_Slots[m_SelectedSlotIndex] );
+                m_CurrEquippedItem = InstantiateItemToHand(m_Slots[m_SelectedSlotIndex]);
             }
             else
             {
-                if ( m_CurrEquippedItem.Data.id != m_Slots[m_SelectedSlotIndex].data.id )
+                if (m_CurrEquippedItem.Data.ID != m_Slots[m_SelectedSlotIndex].data.ID)
                 {
                     DestroyAllItemsInHand();
-                    m_CurrEquippedItem = InstantiateItemToHand( m_Slots[m_SelectedSlotIndex] );
+                    m_CurrEquippedItem = InstantiateItemToHand(m_Slots[m_SelectedSlotIndex]);
                 }
             }
-            m_HandModel.SetActive( false );
+            m_HandModel.SetActive(false);
         }
 
     }

@@ -273,7 +273,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4438802239866372737}
-  - component: {fileID: 1915676863558394332}
   - component: {fileID: 4232832403412701064}
   m_Layer: 0
   m_Name: Seed_Cabbage
@@ -299,24 +298,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1915676863558394332
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3950250274840500283}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c5b88203c98c5684c8ed05585c23cd31, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Data: {fileID: 11400000, guid: 3412a541c4175da448c20a8ebf175f28, type: 2}
-  m_TileManager: {fileID: 0}
-  m_seedData: {fileID: 11400000, guid: 605ee50088356a8479fd3e5fc542af81, type: 2}
-  m_DecreseableEvent: {fileID: 11400000, guid: 45b5ab5fff5be0b4e9c4366e438f6d25, type: 2}
-  plantedMaterial: {fileID: 2100000, guid: 8195b661a96bde943aa2a4e920dd8205, type: 2}
-  m_SFXTf: {fileID: 2057515507287312548, guid: 10d4af0d3ec0f4547b0bb358ee65c3bc, type: 3}
 --- !u!54 &4232832403412701064
 Rigidbody:
   m_ObjectHideFlags: 0

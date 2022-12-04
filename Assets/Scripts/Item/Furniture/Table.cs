@@ -14,14 +14,14 @@ public class Table : Furniture
 
     private void Start()
     {
-        m_FoodPlaces = transform.GetChild( 1 );
+        m_FoodPlaces = transform.GetChild(1);
     }
 
-    public Transform GetFoodPlace( Seat seat )
+    public Transform GetFoodPlace(Seat seat)
     {
-        foreach ( Transform child in m_FoodPlaces )
+        foreach (Transform child in m_FoodPlaces)
         {
-            if ( child.forward == seat.transform.forward )
+            if (child.forward == seat.transform.forward)
             {
                 return child;
             }
@@ -29,36 +29,36 @@ public class Table : Furniture
 
         return null;
     }
-    public override void MainAction()
+
+
+    protected override void OnInstantiate()
     {
-        if ( !gameObject.activeInHierarchy || !m_IsInstantiable ) return;
-        base.MainAction();
+
         m_InstantiatedTable = m_InstantiatedGO.GetComponent<Table>();
-        m_Restaurant.Tables.Add( m_InstantiatedGO.GetComponent<Table>() );
-        CheckSeat();
+        m_Restaurant.Tables.Add(m_InstantiatedGO.GetComponent<Table>());
+        CheckSeat(m_InstantiatedTable);
     }
 
-    private void CheckSeat()
+    public void CheckSeat(Table table)
     {
         //Ray in 4 dir
         Ray[] rays = new Ray[4]
         {
-            new Ray(m_InstantiatedGO.transform.position, -m_InstantiatedGO.transform.forward),
-            new Ray(m_InstantiatedGO.transform.position, m_InstantiatedGO.transform.forward),
-            new Ray(m_InstantiatedGO.transform.position, m_InstantiatedGO.transform.right),
-            new Ray(m_InstantiatedGO.transform.position, -m_InstantiatedGO.transform.right),
+            new Ray(table.transform.position, -table.transform.forward),
+            new Ray(table.transform.position, table.transform.forward),
+            new Ray(table.transform.position, table.transform.right),
+            new Ray(table.transform.position, -table.transform.right),
         };
 
-        foreach ( Ray ray in rays )
+        foreach (Ray ray in rays)
         {
-            RaycastHit[] hits = Physics.BoxCastAll( m_InstantiatedGO.transform.position, Vector3.one / 2, ray.direction, Quaternion.identity, 1 );
-            foreach ( var hitInfo in hits )
+            RaycastHit[] hits = Physics.BoxCastAll(table.transform.position, Vector3.one / 2, ray.direction, Quaternion.identity, 1);
+            foreach (var hitInfo in hits)
             {
-                if ( hitInfo.collider != null && hitInfo.collider.TryGetComponent( out Seat seat ) )
+                if (hitInfo.collider != null && hitInfo.collider.TryGetComponent(out Seat seat))
                 {
-                    seat.Table = m_InstantiatedTable;
-                    m_Seats.Add( seat );
-                    m_Restaurant.UnoccupiedSeats.Add( seat );
+                    seat.Table = table;
+                    m_Seats.Add(seat);
                 }
             }
         }
@@ -66,9 +66,10 @@ public class Table : Furniture
     private new void OnDestroy()
     {
         base.OnDestroy();
-        if ( !m_IsInstantiated ) return;
+        if (!m_IsInstantiated) return;
         m_Restaurant = RestaurantManager.Instance;
-        m_Restaurant.Tables.Remove( this );
+        m_Restaurant.Tables.Remove(this);
     }
+
 
 }

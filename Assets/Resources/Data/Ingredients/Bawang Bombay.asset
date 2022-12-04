@@ -12,11 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 16953c1cafaef70408622683ecd2f288, type: 3}
   m_Name: Bawang Bombay
   m_EditorClassIdentifier: 
-  id: Bawang Bombay
+  ID: bombay
   prefab: {fileID: 1556306513280786, guid: a56a9ff0410540141a4b57353191a959, type: 3}
   icon: {fileID: 755971026, guid: 4f730c0fb86b14b41a023e4dd9759715, type: 3}
-  type: 1
-  droppable: 1
+  buyPrice: 0
+  sellPrice: 0
+  decreaseable: 1
   deskripsiKandungan: Vit A, thiamin, riboflavin, besi, fosfor, kalium, Vit C, folat,
     magnesium, mangan
   deskripsiNutrisi: Per 100 gram, memiliki 47 kalori, 50 gram lemak total, 0 gram

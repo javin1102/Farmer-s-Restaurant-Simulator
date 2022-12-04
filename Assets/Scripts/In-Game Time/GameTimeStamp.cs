@@ -1,16 +1,24 @@
 using System.Collections;
 using System.Collections.Generic;
+using SimpleJSON;
 using UnityEngine;
 
 [System.Serializable]
-public class GameTimeStamp
+public class GameTimeStamp : ISerializable
 {
 
     public int day;
     public int hour;
     public int minute;
 
-    public GameTimeStamp(int day,int hour,int minute)
+    public GameTimeStamp(JSONNode jsonNode)
+    {
+        this.day = jsonNode["day"];
+        this.hour = jsonNode["hour"];
+        this.minute = jsonNode["minute"];
+
+    }
+    public GameTimeStamp(int day, int hour, int minute)
     {
         this.day = day;
         this.hour = hour;
@@ -22,6 +30,10 @@ public class GameTimeStamp
         this.day = timeStamp.day;
         this.hour = timeStamp.hour;
         this.minute = timeStamp.minute;
+    }
+
+    public GameTimeStamp()
+    {
     }
 
     public void UpdateClock()
@@ -36,13 +48,13 @@ public class GameTimeStamp
         }
 
         // 1 day is 24 hour
-        if(hour >= 24)
+        if (hour >= 24)
         {
             hour = 0;
             day++;
         }
 
-        if(day >= 30)
+        if (day >= 30)
         {
             day = 1;
         }
@@ -58,7 +70,7 @@ public class GameTimeStamp
         return days * 24;
     }
 
-    public static int CompareTimeStamps(GameTimeStamp timeStamp1 , GameTimeStamp timeStamp2)
+    public static int CompareTimeStamps(GameTimeStamp timeStamp1, GameTimeStamp timeStamp2)
     {
         int timeStamp1Hour = DayToHour(timeStamp1.day) + timeStamp1.hour;
         int timeStamp2Hour = DayToHour(timeStamp2.day) + timeStamp2.hour;
@@ -66,6 +78,13 @@ public class GameTimeStamp
         return Mathf.Abs(timeStamp2Hour - timeStamp1Hour);
     }
 
-
+    public JSONObject Serialize()
+    {
+        JSONObject jsonObject = new();
+        jsonObject.Add("minute", minute);
+        jsonObject.Add("hour", hour);
+        jsonObject.Add("day", day);
+        return jsonObject;
+    }
 }
 

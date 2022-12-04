@@ -16,35 +16,39 @@ public class ResourcesLoader : MonoBehaviour
 
     private List<ItemData> m_EquipmentsData, m_CropsData, m_StarterPackData;
     private List<SeedData> m_SeedsData;
-    private List<FurnitureData> m_FurnituresData;
+    [SerializeField] private List<FurnitureData> m_FurnituresData;
     private List<IngredientData> m_IngredientsData;
     private List<FoodData> m_FoodsData;
-    [SerializeField] private List<GameObject> m_FarmObjects;
+    private List<GameObject> m_FarmObjects;
     private static ResourcesLoader m_Instance;
     private void Awake()
     {
-        if ( m_Instance == null ) m_Instance = this;
-        else Destroy( gameObject );
-        DontDestroyOnLoad( this );
+        if (m_Instance == null) m_Instance = this;
+        else Destroy(gameObject);
+        DontDestroyOnLoad(this);
 
-        m_EquipmentsData = Resources.LoadAll<ItemData>( "Data/Equipments" ).ToList();
-        m_CropsData = Resources.LoadAll<ItemData>( "Data/Crops" ).ToList();
-        m_StarterPackData = Resources.LoadAll<ItemData>( "Data/StarterPack" ).ToList();
-        m_SeedsData = Resources.LoadAll<SeedData>( "Data/Seeds" ).ToList();
-        m_IngredientsData = Resources.LoadAll<IngredientData>( "Data/Ingredients" ).ToList();
-        m_FurnituresData = Resources.LoadAll<FurnitureData>( "Data/Furnitures" ).ToList();
-        m_FoodsData = Resources.LoadAll<FoodData>( "Data/Recipes" ).ToList();
-        m_FarmObjects = Resources.LoadAll<GameObject>( "Prefabs/FarmObjects" ).ToList();
+        m_EquipmentsData = Resources.LoadAll<ItemData>("Data/Equipments").ToList();
+        m_CropsData = Resources.LoadAll<ItemData>("Data/Crops").ToList();
+        m_StarterPackData = Resources.LoadAll<ItemData>("Data/StarterPack").ToList();
+        m_SeedsData = Resources.LoadAll<SeedData>("Data/Seeds").ToList();
+        m_IngredientsData = Resources.LoadAll<IngredientData>("Data/Ingredients").ToList();
+        m_FurnituresData = Resources.LoadAll<FurnitureData>("Data/Furnitures").ToList();
+        m_FoodsData = Resources.LoadAll<FoodData>("Data/Recipes").ToList();
+        m_FarmObjects = Resources.LoadAll<GameObject>("Prefabs/FarmObjects").ToList();
+
     }
 
-    public void GetFarmObjectIndex<T>( out int index )
+    public GameObject GetPlantTileObject() => m_FarmObjects[GetFarmObjectIndex<Tree>()];
+    public int GetFarmObjectIndex<T>() => FarmObjects.Select(GetFarmResourcesIndexByType<T>).Where(index => index != -1).First();
+    public IngredientData GetIngredientDataByID(string id) => m_IngredientsData.Where(data => data.ID == id).First();
+    public FoodData GetFoodDataByID(string id) => m_FoodsData.Where(data => data.ID == id).First();
+    public FurnitureData GetFurnitureDataByID(string id) => m_FurnituresData.Where(data => data.ID == id).First();
+    public SeedData GetSeedDataByID(string id) => m_SeedsData.Where(data => data.ID == id).First();
+    public ItemData GetEquipmentDataByID(string id) => m_EquipmentsData.Where(data => data.ID == id).First();
+    public ItemData GetCropDataByID(string id) => m_CropsData.Where(data => data.ID == id).First();
+    private int GetFarmResourcesIndexByType<T>(GameObject obj, int index)
     {
-        index = FarmObjects.Select( GetFarmObjectIndex<T> ).Where( index => index != -1 ).First();
-    }
-
-    private int GetFarmObjectIndex<T>( GameObject obj, int index )
-    {
-        if ( obj.TryGetComponent( out T _ ) )
+        if (obj.TryGetComponent(out T _))
         {
             return index;
         }

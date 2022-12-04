@@ -3,11 +3,11 @@ using UnityEngine.Events;
 using System.Collections;
 using System.Linq;
 
-[RequireComponent( typeof( FarmObject ) )]
+[RequireComponent( typeof( BaseFarmObject ) )]
 public class Shovel : Item, IRaycastAction
 {
     private static Transform tileParent;
-    [SerializeField]private int m_TileResourcesIndex;
+    [SerializeField] private int m_TileResourcesIndex;
     private GameObject m_TileGO;
     [SerializeField][Readonly] private GameObject m_PreviewTile;
     [SerializeField] private bool m_IsFarmGroundTag;
@@ -25,7 +25,7 @@ public class Shovel : Item, IRaycastAction
         base.Awake();
         m_ResourceLoader = ResourcesLoader.Instance;
         m_FarmGround = FarmGround.Instance;
-        m_ResourceLoader.GetFarmObjectIndex<Tile>( out m_TileResourcesIndex );
+        m_TileResourcesIndex = m_ResourceLoader.GetFarmObjectIndex<PlantTile>();
         m_TileGO = m_ResourceLoader.FarmObjects[m_TileResourcesIndex];
         previewTileMaterialChanger = m_TileGO.GetComponent<MaterialChanger>();
     }
@@ -62,12 +62,12 @@ public class Shovel : Item, IRaycastAction
         boxCollider.isTrigger = true;
 
         tileCopyGO.layer = 9;
-        tileCopyGO.GetComponent<Tile>().SwitchStatus( Tile.TileStatus.HOED );
+        tileCopyGO.GetComponent<PlantTile>().SwitchStatus( PlantTile.TileStatus.HOED );
 
         int tileIndex = m_FarmGround.GetUniqueIdx( tileCopyGO.transform.position );
-        FarmObject farmObject = tileCopyGO.GetComponent<FarmObject>();
-        farmObject.Set( m_TileResourcesIndex, tileIndex );
-        m_FarmGround.FarmObjects.Add( tileIndex, farmObject );
+        PlantTile tile = tileCopyGO.GetComponent<PlantTile>();
+        tile.Set( m_TileResourcesIndex, tileIndex );
+        m_FarmGround.FarmObjects.Add( tileIndex, tile );
 
         // play Hoe sound effect
         // nanti harusnya pake animation event buat active deactive sfx

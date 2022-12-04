@@ -38,13 +38,13 @@ public class Sickle : Item,IRaycastAction
     {
         if (selectedCrop!=null)
         {
-            m_SeedData = selectedCrop.GetComponentInParent<PlantGrowHandler>().m_SeedData;
+            m_SeedData = selectedCrop.GetComponentInParent<PlantGrowHandler>().SeedData;
 
             float rand = Random.Range(1f, 10f);
             if (rand <= m_SeedData.dropChance) AddSeedToInventory(m_SeedData);
 
             AddCropToInventory(m_SeedData.harverstedCropData);
-            selectedCrop.GetComponentInParent<Tile>().IsUsed = false;
+            selectedCrop.GetComponentInParent<PlantTile>().IsUsed = false;
             Destroy(selectedCrop.transform.parent.gameObject);
 
             // play sickle sound effect

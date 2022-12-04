@@ -4,10 +4,10 @@ using UnityEngine;
 
 public enum FurnitureType
 {
-    TABLE, CHAIR, STOVE
+    TABLE, SEAT, STOVE
 }
-[CreateAssetMenu( fileName = "Furniture", menuName = "Custom Data/New Furniture" )]
+[CreateAssetMenu(fileName = "Furniture", menuName = "Custom Data/New Furniture")]
 public class FurnitureData : ItemData
 {
-    public FurnitureType type;
+    public FurnitureType furnitureType;
 }

@@ -1,3 +1,5 @@
+using SimpleJSON;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -15,6 +17,7 @@ public class TimeManager : MonoBehaviour
 
     public List<ITimeTracker> m_Listener = new List<ITimeTracker>();
 
+    private SaveManager m_SaveManager;
     private void Awake()
     {
         if (Instance != null && Instance != this)
@@ -30,15 +33,36 @@ public class TimeManager : MonoBehaviour
 
     private void Start()
     {
-        // initialize GameTimeStamp day1, 6 : 00 AM
-        m_CurrentTimeStamp = new GameTimeStamp(1,6,0);
-        
+        m_SaveManager = SaveManager.Instance;
+
+        if (m_SaveManager.LoadData(Utils.GAME_TIME_FILENAME, out JSONNode gameTimeNode))
+        {
+            m_CurrentTimeStamp = new(gameTimeNode);
+        }
+        else
+        {
+            // initialize GameTimeStamp day1, 6 : 00 AM
+            m_CurrentTimeStamp = new GameTimeStamp(1, 6, 0);
+        }
+
+
         // initialize Cubemap Transition to 0 
         skybox.SetFloat("_CubemapTransition", 0);
 
         // start update time 
         StartCoroutine(TimeUpdate());
 
+        m_SaveManager.OnSave += SaveGameTime;
+    }
+    private void OnDestroy()
+    {
+        m_SaveManager.OnSave -= SaveGameTime;
+    }
+
+    private async void SaveGameTime()
+    {
+        JSONObject timeObj = m_CurrentTimeStamp.Serialize();
+        await m_SaveManager.SaveData(timeObj.ToString(), Utils.GAME_TIME_FILENAME);
     }
 
     IEnumerator TimeUpdate()
@@ -55,17 +79,17 @@ public class TimeManager : MonoBehaviour
     {
 
         // check time for plus or minus
-        if(m_CurrentTimeStamp.hour > 6)
+        if (m_CurrentTimeStamp.hour > 6)
         {
             if (m_CurrentTimeStamp.minute >= 59)
             {
                 if (skybox.GetFloat("_CubemapTransition") >= 1f) skybox.SetFloat("_CubemapTransition", 1f);
-                else skybox.SetFloat("_CubemapTransition", (skybox.GetFloat("_CubemapTransition") + 0.065f) );
+                else skybox.SetFloat("_CubemapTransition", (skybox.GetFloat("_CubemapTransition") + 0.065f));
             }
         }
         else
         {
-            if(m_CurrentTimeStamp.minute >= 59)
+            if (m_CurrentTimeStamp.minute >= 59)
             {
                 if (skybox.GetFloat("_CubemapTransition") <= 0f) skybox.SetFloat("_CubemapTransition", 0f);
                 else skybox.SetFloat("_CubemapTransition", (skybox.GetFloat("_CubemapTransition") - .19f));

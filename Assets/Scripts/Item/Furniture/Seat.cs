@@ -13,61 +13,39 @@ public class Seat : Furniture
     private Seat m_InstantiatedSeat;
     [SerializeField] private bool m_IsOccupied;
     [SerializeField] private Citizen m_Citizen;
-    public override void MainAction()
+
+    protected override void OnInstantiate()
     {
-        if ( !gameObject.activeInHierarchy || !m_IsInstantiable ) return;
-        base.MainAction();
         m_InstantiatedSeat = m_InstantiatedGO.GetComponent<Seat>();
-        CheckForTable();
+        m_Restaurant.Seats.Add(m_InstantiatedSeat);
+        CheckForTable(m_InstantiatedSeat);
     }
 
-    //Seat just get instantiated
-    private void CheckForTable()
+    public void CheckForTable(Seat seat)
     {
-        Ray ray = new( m_InstantiatedGO.transform.position, m_InstantiatedGO.transform.forward );
-        RaycastHit[] hits = Physics.BoxCastAll( m_InstantiatedGO.transform.position, Vector3.one / 3, ray.direction, Quaternion.identity, 1 );
-        foreach ( var hitInfo in hits )
+        Ray ray = new(seat.transform.position, seat.transform.forward);
+        RaycastHit[] hits = Physics.BoxCastAll(seat.transform.position, Vector3.one / 3, ray.direction, Quaternion.identity, 1);
+        foreach (var hitInfo in hits)
         {
-            if ( hitInfo.collider != null && hitInfo.collider.TryGetComponent( out Table table ) )
+            if (hitInfo.collider != null && hitInfo.collider.TryGetComponent(out Table table))
             {
-                if ( !table.HasMaxSeats )
+                if (!table.HasMaxSeats)
                 {
-                    table.Seats.Add( m_InstantiatedSeat );
-                    m_InstantiatedSeat.m_Table = table;
-                    m_Restaurant.UnoccupiedSeats.Add( m_InstantiatedSeat );
+                    table.Seats.Add(seat);
+                    seat.m_Table = table;
                 }
 
             }
         }
     }
-
-    //Seat has been placed before
-    public void CheckTable_Instantiated()
-    {
-        Ray ray = new( transform.position, transform.forward );
-        RaycastHit[] hits = Physics.BoxCastAll( transform.position, Vector3.one / 2, ray.direction, Quaternion.identity, 1 );
-        foreach ( var hitInfo in hits )
-        {
-            if ( hitInfo.collider != null && hitInfo.collider.TryGetComponent( out Table table ) )
-            {
-                if ( !table.HasMaxSeats )
-                {
-                    table.Seats.Add( this );
-                    m_Table = table;
-                    m_Restaurant.UnoccupiedSeats.Add( this );
-                }
-
-            }
-        }
-
-    }
-
     private new void OnDestroy()
     {
         base.OnDestroy();
-        if ( !m_IsInstantiated ) return;
-        if ( m_Table != null ) m_Table.Seats.Remove( this );
+        if (!m_IsInstantiated) return;
+        if (m_Table != null) m_Table.Seats.Remove(this);
         m_Restaurant = RestaurantManager.Instance;
-        m_Restaurant.UnoccupiedSeats.Remove( this );
+        m_Restaurant.Seats.Remove(this);
     }
+
+
 }

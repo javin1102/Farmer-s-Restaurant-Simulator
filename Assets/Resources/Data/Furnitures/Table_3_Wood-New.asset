@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d8fa40ac345182c4f8e32667d43246e4, type: 3}
   m_Name: Table_3_Wood-New
   m_EditorClassIdentifier: 
-  id: Meja Kayu Bagus
+  ID: Table_Wood-New
   prefab: {fileID: 9090517317673899200, guid: 96ca8f004bc4bac4a856451ef02f4989, type: 3}
   icon: {fileID: 21300000, guid: da6e165543ca01041a30513e66368b1e, type: 3}
   buyPrice: 100

@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: Gado-gado
   m_EditorClassIdentifier: 
   foodPrefab: {fileID: 8735650615285411582, guid: 24a0bd44bc5567844a6264c4a3a96630, type: 3}
+  ID: Gado-gado
   dishPrice: 3
   unlockPrice: 125
   cookDuration: 5

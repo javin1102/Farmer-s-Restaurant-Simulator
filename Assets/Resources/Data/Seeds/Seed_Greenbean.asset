@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2a54363710fad7244940268cb148ef5a, type: 3}
   m_Name: Seed_Greenbean
   m_EditorClassIdentifier: 
-  id: Seed_Greenbean
+  ID: Seed_Greenbean
   prefab: {fileID: 3950250274840500283, guid: 3aa27a584fbd3c143ae02508ec3e68da, type: 3}
   icon: {fileID: 21300000, guid: 98dae33094c3e7449a97cd2b8d72268b, type: 3}
   buyPrice: 0

@@ -22,7 +22,7 @@ public class WateringCan : Item,IRaycastAction
         if (selectedTile != null && !selectedTile.CompareTag(Utils.TILE_WET_TAG))
         {
             Debug.Log("WATER SCRIPT : WATERED");
-            selectedTile.GetComponent<Tile>().SwitchStatus(Tile.TileStatus.WATERED);
+            selectedTile.GetComponent<PlantTile>().SwitchStatus(PlantTile.TileStatus.WATERED);
 
             // play water can sound effect
             StartCoroutine(PlaySFX());
