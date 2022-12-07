@@ -30,27 +30,45 @@ public class FoodsController : MonoBehaviour
     {
         m_ResourcesLoader = ResourcesLoader.Instance;
         m_SaveManager = SaveManager.Instance;
+
         StoreAllFoodData();
 
-
-        if (m_SaveManager.LoadData(Utils.FOODS_FILENAME, out JSONNode jsonNode))
-        {
-            LoadData(jsonNode);
-        }
-        else
-        {
-            StockIngredient garlicStock = new(garlic, 100);
-            StockIngredient onionStock = new(onion, 100);
-            //StockIngredient carrotStock = new( carrot, 100 );
-            m_StockIngredients.Add(garlic.ID, garlicStock);
-            m_StockIngredients.Add(onion.ID, onionStock);
-            //m_StockIngredients.Add( carrot.id, carrotStock );
-            m_AllFoods[m_ResourcesLoader.GetFoodDataByID("Pecel")].IsUnlock = true;
-
-        }
+        m_SaveManager.LoadData(Utils.FOODS_FILENAME, OnLoadSucceded, OnLoadFailed);
         m_SaveManager.OnSave += SaveData;
 
     }
+
+    private void OnLoadFailed()
+    {
+        StockIngredient garlicStock = new(garlic, 100);
+        StockIngredient onionStock = new(onion, 100);
+        //StockIngredient carrotStock = new( carrot, 100 );
+        m_StockIngredients.Add(garlic.ID, garlicStock);
+        m_StockIngredients.Add(onion.ID, onionStock);
+        //m_StockIngredients.Add( carrot.id, carrotStock );
+        m_AllFoods[m_ResourcesLoader.GetFoodDataByID("Pecel")].IsUnlock = true;
+    }
+
+    private void OnLoadSucceded(JSONNode jsonNode)
+    {
+        JSONArray foodsArr = (JSONArray)jsonNode["foods"];
+        JSONArray stocksArr = (JSONArray)jsonNode["stocks"];
+        foreach (var food in foodsArr)
+        {
+            SerializableRecipeData data = new(food.Value);
+            FoodData foodData = m_ResourcesLoader.GetFoodDataByID(data.ID);
+            m_AllFoods[foodData].IsSelling = data.isSelling;
+            m_AllFoods[foodData].IsUnlock = data.isUnlock;
+        }
+
+        foreach (var stock in stocksArr)
+        {
+            SerializableStockIngredientData data = new(stock.Value);
+            StockIngredient stockIngredient = new(m_ResourcesLoader.GetIngredientDataByID(data.ID), data.quantity);
+            m_StockIngredients.Add(data.ID, stockIngredient);
+        }
+    }
+
 
     private void StoreAllFoodData()
     {
@@ -73,9 +91,12 @@ public class FoodsController : MonoBehaviour
 
     public void DecreaseStock(FoodData food) => food.ingredients.ForEach(i =>
     {
-        StockIngredient ingredient = m_StockIngredients[i.ingredient.ID];
-        ingredient.quantity -= i.quantity;
-        if (ingredient.quantity <= 0) m_StockIngredients.Remove(ingredient.data.ID);
+        if (m_StockIngredients.TryGetValue(i.ingredient.ID, out StockIngredient ingredient))
+        {
+            ingredient.quantity -= i.quantity;
+            if (ingredient.quantity <= 0) m_StockIngredients.Remove(ingredient.data.ID);
+        }
+
     });
 
     private async void SaveData()
@@ -102,26 +123,5 @@ public class FoodsController : MonoBehaviour
         await m_SaveManager.SaveData(rootObject.ToString(), Utils.FOODS_FILENAME);
     }
 
-    private void LoadData(JSONNode jsonNode)
-    {
-        JSONArray foodsArr = (JSONArray)jsonNode["foods"];
-        JSONArray stocksArr = (JSONArray)jsonNode["stocks"];
-        foreach (var food in foodsArr)
-        {
-            SerializableRecipeData data = new(food.Value);
-            FoodData foodData = m_ResourcesLoader.GetFoodDataByID(data.ID);
-            m_AllFoods[foodData].IsSelling = data.isSelling;
-            m_AllFoods[foodData].IsUnlock = data.isUnlock;
-        }
-
-        foreach (var stock in stocksArr)
-        {
-            SerializableStockIngredientData data = new(stock.Value);
-            StockIngredient stockIngredient = new(m_ResourcesLoader.GetIngredientDataByID(data.ID), data.quantity);
-            m_StockIngredients.Add(data.ID, stockIngredient);
-        }
-
-
-    }
 
 }

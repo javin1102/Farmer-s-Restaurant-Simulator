@@ -6,7 +6,6 @@ public class ItemData : ScriptableObject
     public string ID;
     public GameObject prefab;
     public Sprite icon;
-    //public ItemType type;
     public int buyPrice;
     public int sellPrice;
     public bool decreaseable;

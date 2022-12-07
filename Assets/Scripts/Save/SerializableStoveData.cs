@@ -8,6 +8,11 @@ public class SerializableStoveData : SerializableFurnitureData
     {
         this.hasChef = furniture.Chef;
     }
+
+    public SerializableStoveData(JSONNode jsonNode) : base(jsonNode)
+    {
+        this.hasChef = jsonNode["hasChef"];
+    }
     public override JSONObject Serialize()
     {
         JSONObject jsonObject = base.Serialize();

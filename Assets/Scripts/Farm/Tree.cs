@@ -21,6 +21,7 @@ public class Tree : BaseFarmObject, IActionTime
     public void OnHoldMainAction(PlayerAction playerAction)
     {
         m_PlayerAction = playerAction;
+        Debug.Log(m_PlayerAction);
         float multiplier = 1;
         if (playerAction.CurrEquippedItem != null && playerAction.CurrEquippedItem.Data.ID.Equals("Axe")) multiplier = 3;
         ActionTime -= Time.deltaTime * multiplier;
@@ -52,8 +53,5 @@ public class Tree : BaseFarmObject, IActionTime
     {
         base.OnDestroy();
         m_Hoverable.OnHoverExit -= OnHoverExit;
-        if (m_PlayerAction == null) return;
-        m_PlayerAction.DefaultActionTime = 0;
-        m_PlayerAction.ActionTime = 0;
     }
 }

@@ -54,6 +54,15 @@ public class Stove : Furniture, IInteractable
         m_Chef.ChangeState(new GoToStoveState());
     }
 
+    public void SetChef_Warp()
+    {
+        m_Restaurant = RestaurantManager.Instance;
+        if (!m_Restaurant.FindNoStoveChef(out m_Chef)) return;
+        m_Chef.Stove = this;
+        m_Chef.Agent.Warp(m_ChefStandTf.position);
+        m_Chef.transform.forward = m_ChefStandTf.transform.forward;
+    }
+
     private void UnsetChef()
     {
         m_Chef.Stove = null;

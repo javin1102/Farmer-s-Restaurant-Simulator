@@ -50,11 +50,6 @@ public class FarmGround : MonoBehaviour
         return uniqueIdx;
     }
 
-    public bool TryLoadFarmObjectData(out JSONNode farmObjectsData)
-    {
-        return m_SaveManager.LoadData(Utils.FARM_OBJECTS_FILENAME, out farmObjectsData);
-    }
-
 
     private async void SaveFarmObjectData()
     {

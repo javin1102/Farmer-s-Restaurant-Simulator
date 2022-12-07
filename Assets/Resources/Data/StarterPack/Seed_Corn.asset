@@ -18,6 +18,7 @@ MonoBehaviour:
   buyPrice: 40
   sellPrice: 29
   decreaseable: 1
+  itemType: 3
   cropPrefab: {fileID: 3358945435167939137, guid: d1ae78caf98acf94c9426b72f68e36a2, type: 3}
   dropChance: 1
   daytoGrow: 1

@@ -70,5 +70,6 @@ public class Utils
     public const string GAME_TIME_FILENAME = "gametime.json";
     public const string RESTAURANT_OBJECTS_FILENAME = "restaurantobject.json";
     public const string FOODS_FILENAME = "recipe.json";
-    public const string ITEMDATABASE_FILENAME = "itemdatabase.json";
+    public const string FARM_GENERATOR_TIME_FILENAME = "farmgeneratortime.json";
+    public const string PLAYERDATA_FILENAME = "playerdata.json";
 }

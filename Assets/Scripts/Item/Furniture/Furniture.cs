@@ -94,7 +94,7 @@ public abstract class Furniture : Item, IRaycastAction
         m_UIManager.ShowActionHelperPrimary("Left", "Simpan");
     }
 
-    public void SpawnFurniture(Vector3 position, Quaternion rotation, Vector3 localScale)
+    public Furniture SpawnFurniture(Vector3 position, Quaternion rotation, Vector3 localScale)
     {
         m_UIManager = UIManager.Instance;
         m_Restaurant = RestaurantManager.Instance;
@@ -110,8 +110,9 @@ public abstract class Furniture : Item, IRaycastAction
         furniture.m_ObjRotationInputRef.action.performed -= furniture.RotateObj;
         furniture.m_Hoverable.OnHoverEnter += ShowHelper;
         OnInstantiate();
+        return furniture;
     }
-    public void SpawnFurniture(Vector3 position, Vector3 eulerAngles, Vector3 localScale) =>
+    public Furniture SpawnFurniture(Vector3 position, Vector3 eulerAngles, Vector3 localScale) =>
     SpawnFurniture(position, Quaternion.Euler(eulerAngles), localScale);
 
     protected abstract void OnInstantiate();

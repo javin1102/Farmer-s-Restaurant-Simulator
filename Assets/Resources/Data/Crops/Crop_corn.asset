@@ -18,3 +18,4 @@ MonoBehaviour:
   buyPrice: 30
   sellPrice: 60
   decreaseable: 1
+  itemType: 4

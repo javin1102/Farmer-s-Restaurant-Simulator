@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
@@ -16,7 +17,6 @@ public class ItemDatabase : MonoBehaviour
     private InventorySlotsController m_InventorySlots;
     private int MaxSize { get => m_ActionSlots.SlotSize + m_InventorySlots.SlotSize; }
     private ResourcesLoader m_ResourcesLoader;
-    private SaveManager m_SaveManager;
     public enum SET_SLOT_TYPE
     {
         AUTO,
@@ -31,20 +31,9 @@ public class ItemDatabase : MonoBehaviour
         m_InventorySlots = GetComponent<InventorySlotsController>();
         m_ActionSlots.DBRemoveAction += RemoveFromDB;
         m_ResourcesLoader = ResourcesLoader.Instance;
-
-        m_SaveManager = SaveManager.Instance;
-        m_SaveManager.OnSave += SaveItemDatabaseData;
-
-        if (m_SaveManager.LoadData(Utils.ITEMDATABASE_FILENAME, out JSONNode node))
-        {
-            LoadItemDatabase(node);
-        }
-        else
-        {
-            m_ResourcesLoader.StarterPackData.ForEach(item => Store(item, 5));
-        }
-
     }
+
+
     private void OnDestroy()
     {
         m_ActionSlots.DBRemoveAction -= RemoveFromDB;
@@ -108,6 +97,7 @@ public class ItemDatabase : MonoBehaviour
                 Drop(itemData, quantity);
                 break;
             case ItemDatabaseAction.SELL:
+                PlayerAction.Coins += itemData.sellPrice;
                 break;
             default:
                 break;
@@ -120,10 +110,10 @@ public class ItemDatabase : MonoBehaviour
         droppedItem.DropState(quantity);
     }
 
-    private async void SaveItemDatabaseData()
+    public (JSONArray, JSONArray) ToJSON()
     {
-        JSONObject rootObject = new();
-        JSONArray inventoryJsonArray = new(), actionSlotsJsonArray = new();
+        JSONArray inventoryJsonArray = new();
+        JSONArray actionSlotsJsonArray = new();
 
         for (int i = 0; i < m_InventorySlots.SlotSize; i++)
         {
@@ -139,12 +129,10 @@ public class ItemDatabase : MonoBehaviour
             actionSlotsJsonArray.Add(new SerializableItemSlotData(slot, i).Serialize());
         }
 
-        rootObject.Add("inventory", inventoryJsonArray);
-        rootObject.Add("actionSlots", actionSlotsJsonArray);
-        await m_SaveManager.SaveData(rootObject.ToString(), Utils.ITEMDATABASE_FILENAME);
+        return (inventoryJsonArray, actionSlotsJsonArray);
     }
 
-    private void LoadItemDatabase(JSONNode jsonNode)
+    public void OnLoadSucceded(JSONNode jsonNode)
     {
         JSONNode inventoryNode = jsonNode["inventory"];
         JSONNode actionSlotsNode = jsonNode["actionSlots"];
@@ -159,6 +147,11 @@ public class ItemDatabase : MonoBehaviour
             SerializableItemSlotData serializableItemSlotData = new(node);
             StoreItemFromSaveData(serializableItemSlotData, SET_SLOT_TYPE.ACTION_SLOTS);
         }
+    }
+
+    public void OnLoadFailed()
+    {
+        m_ResourcesLoader.StarterPackData.ForEach(item => Store(item, 5));
     }
 
     private void StoreItemFromSaveData(SerializableItemSlotData serializableItemSlotData, SET_SLOT_TYPE setSlotType)

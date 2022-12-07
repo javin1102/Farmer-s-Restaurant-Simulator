@@ -4,15 +4,19 @@ using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
 
-public class UIManager : MonoBehaviour,ITimeTracker
+public class UIManager : MonoBehaviour, ITimeTracker
 {
     public static UIManager Instance { get; set; }
+    public UILoading LoadingUI { get => m_LoadingUI; }
+
     [Header("=== CLOCK UI ===")]
     [SerializeField] private TMP_Text m_clockText;
+    [SerializeField] private TMP_Text m_DayText;
 
     [Header("=== Action Helper UI ===")]
     [SerializeField] private GameObject m_ActionHelperPrimaryGO;
     [SerializeField] private GameObject m_ActionHelperSecondaryGO;
+    [SerializeField] private UILoading m_LoadingUI;
     [SerializeField] private Image m_PrimaryActionImage;
     [SerializeField] private TMP_Text m_PrimaryActionText;
     [SerializeField] private Image m_SecondaryActionImage;
@@ -22,11 +26,11 @@ public class UIManager : MonoBehaviour,ITimeTracker
     private TimeManager m_TimeManager;
     private void Awake()
     {
-        if ( Instance == null ) Instance = this;
-        else Destroy( gameObject );
-        DontDestroyOnLoad( this );
+        if (Instance == null) Instance = this;
+        else Destroy(gameObject);
+        DontDestroyOnLoad(this);
     }
-    
+
     private void Start()
     {
         // add listener
@@ -45,11 +49,12 @@ public class UIManager : MonoBehaviour,ITimeTracker
     public void ClockUpdate(GameTimeStamp timeStamp)
     {
         m_clockText.text = timeStamp.hour.ToString("00") + " : " + timeStamp.minute.ToString("00");
+        m_DayText.text = $"Day {timeStamp.day}";
     }
 
     public void ShowActionHelperPrimary(string imageName, string actionText)
     {
-        if ( m_PrimaryActionImage == null || m_PrimaryActionText.text == null ) return;
+        if (m_PrimaryActionImage == null || m_PrimaryActionText.text == null) return;
         // active action helper container
         m_ActionHelperPrimaryGO.SetActive(true);
 
@@ -60,14 +65,14 @@ public class UIManager : MonoBehaviour,ITimeTracker
         m_PrimaryActionText.text = actionText;
     }
 
-    public void ShowActionHelperSecondary( string imageName, string actionText )
+    public void ShowActionHelperSecondary(string imageName, string actionText)
     {
-        if ( m_PrimaryActionImage == null || m_PrimaryActionText.text == null ) return;
+        if (m_PrimaryActionImage == null || m_PrimaryActionText.text == null) return;
         // active action helper container
-        m_ActionHelperSecondaryGO.SetActive( true );
+        m_ActionHelperSecondaryGO.SetActive(true);
 
         // load sprite for action helper
-        m_SecondaryActionImage.sprite = Resources.Load<Sprite>( "ActionHelper/" + imageName );
+        m_SecondaryActionImage.sprite = Resources.Load<Sprite>("ActionHelper/" + imageName);
 
         // set action helper text
         m_SecondaryActionText.text = actionText;
@@ -76,7 +81,7 @@ public class UIManager : MonoBehaviour,ITimeTracker
     public void HideActionHelper()
     {
         m_ActionHelperPrimaryGO.SetActive(false);
-        m_ActionHelperSecondaryGO.SetActive( false );
+        m_ActionHelperSecondaryGO.SetActive(false);
     }
 
 }

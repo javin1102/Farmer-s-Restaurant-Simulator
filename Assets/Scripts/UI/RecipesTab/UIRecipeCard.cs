@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
@@ -20,16 +21,23 @@ public class UIRecipeCard : MonoBehaviour
 
     private void Start()
     {
-        foreach ( var ingredient in m_Food.Key.ingredients )
+        foreach (var ingredient in m_Food.Key.ingredients)
         {
-            UIRecipeIngredient uiIngredient = Instantiate( m_IngredientPrefab, m_IngredientContent.transform ).GetComponent<UIRecipeIngredient>();
+            UIRecipeIngredient uiIngredient = Instantiate(m_IngredientPrefab, m_IngredientContent.transform).GetComponent<UIRecipeIngredient>();
             uiIngredient.FoodIngredient = ingredient;
         }
-        m_RedColor = new( 0.772549f, 0.2588235f, 0.2980392f );
-        m_GreenColor = new( 0.4941176f, 0.8039216f, 0.4862745f );
+        m_RedColor = new(0.772549f, 0.2588235f, 0.2980392f);
+        m_GreenColor = new(0.4941176f, 0.8039216f, 0.4862745f);
         m_SellButtonText = m_SellButton.transform.GetChild(0).GetComponent<TMP_Text>();
         m_SellButtonImage = m_SellButton.GetComponent<Image>();
-        m_SellButton.onClick.AddListener( SellHandler );
+        m_SellButton.onClick.AddListener(SellHandler);
+        m_UnlockedButton.onClick.AddListener(UnlockFoodHandler);
+    }
+
+    private void UnlockFoodHandler()
+    {
+        //TODO::check gold
+        m_Food.Value.IsUnlock = true;
     }
 
     private void SellHandler()
@@ -51,13 +59,21 @@ public class UIRecipeCard : MonoBehaviour
 
     private void UpdateOverlayUI()
     {
-        if ( m_Food.Value.IsUnlock ) m_LockedOverlay.SetActive( false );
-        else m_LockedOverlay.SetActive( true );
+        if (m_Food.Value.IsUnlock) m_LockedOverlay.SetActive(false);
+        else m_LockedOverlay.SetActive(true);
     }
 
     private void UpdateSellButtonUI()
     {
-        if ( m_Food.Value.IsSelling )
+        if (!m_Food.Value.IsUnlock)
+        {
+            m_SellButton.gameObject.SetActive(false);
+            return;
+        }
+
+        m_SellButton.gameObject.SetActive(true);
+
+        if (m_Food.Value.IsSelling)
         {
             m_SellButtonImage.color = m_RedColor;
             m_SellButtonText.text = "Batal";

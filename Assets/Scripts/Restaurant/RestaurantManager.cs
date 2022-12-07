@@ -61,12 +61,8 @@ public class RestaurantManager : MonoBehaviour
         m_FoodsController = FoodsController.Instance;
         m_SaveManager = SaveManager.Instance;
         m_ResourcesLoader = ResourcesLoader.Instance;
-        m_SaveManager.OnSave += SaveFurnituresData;
-
-        if (m_SaveManager.LoadData(Utils.RESTAURANT_OBJECTS_FILENAME, out JSONNode node))
-        {
-            OnSuccessLoadFurnitureData(node);
-        }
+        m_SaveManager.OnSave += SaveRestaurantObjectsData;
+        m_SaveManager.LoadData(Utils.RESTAURANT_OBJECTS_FILENAME, OnRestaurantObjectsLoadSucceeded, null);
     }
 
     private void OnEnable()
@@ -77,7 +73,7 @@ public class RestaurantManager : MonoBehaviour
     private void OnDisable()
     {
         m_RestaurantUpgradesChannel.AddChef -= AddChef;
-        m_SaveManager.OnSave -= SaveFurnituresData;
+        m_SaveManager.OnSave -= SaveRestaurantObjectsData;
     }
     public bool FindUnoccupiedSeat(out Seat seat)
     {
@@ -129,7 +125,7 @@ public class RestaurantManager : MonoBehaviour
         chef.Agent.Warp(GetGroundRandPos());
     }
 
-    private async void SaveFurnituresData()
+    private async void SaveRestaurantObjectsData()
     {
         JSONObject rootObject = new();
         JSONArray tableJsonArray = new(), seatJsonArray = new(), stoveJsonArray = new();
@@ -142,7 +138,7 @@ public class RestaurantManager : MonoBehaviour
         await m_SaveManager.SaveData(rootObject.ToString(), Utils.RESTAURANT_OBJECTS_FILENAME);
     }
 
-    private void OnSuccessLoadFurnitureData(JSONNode jsonNode)
+    private void OnRestaurantObjectsLoadSucceeded(JSONNode jsonNode)
     {
         JSONNode tableNode = jsonNode["tables"];
         JSONNode seatNode = jsonNode["seats"];
@@ -159,14 +155,15 @@ public class RestaurantManager : MonoBehaviour
             {
                 SerializableFurnitureData jsonData = new(node);
                 FurnitureData furnitureData = m_ResourcesLoader.GetFurnitureDataByID(jsonData.ID);
-                Furniture furniture = furnitureData.prefab.GetComponent<Furniture>();
-                furniture.SpawnFurniture(jsonData.transform.position, jsonData.transform.eulerAngles, jsonData.transform.localScale);
+                Furniture furniturePrefab = furnitureData.prefab.GetComponent<Furniture>();
+                Furniture spawnedFurniture = furniturePrefab.SpawnFurniture(jsonData.transform.position, jsonData.transform.eulerAngles, jsonData.transform.localScale);
+                if (furnitureData.furnitureType == FurnitureType.STOVE)
+                {
+                    Stove stove = (Stove)spawnedFurniture;
+                    SerializableStoveData stoveJsonData = new(node);
+                    if (stoveJsonData.hasChef) stove.SetChef_Warp();
+                }
             }
         }
-    }
-
-    private void OnFailedLoadData()
-    {
-
     }
 }

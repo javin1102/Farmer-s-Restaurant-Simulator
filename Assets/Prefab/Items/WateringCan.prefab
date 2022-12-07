@@ -98,7 +98,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 21c280b7d6b5c3340adf77df0b460542, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Data: {fileID: 11400000, guid: 26458a084aae21a439108d3db177e9bb, type: 2}
+  m_Data: {fileID: 11400000, guid: 0a2359ac638a880499a069b4de2c1af7, type: 2}
+  m_HandPosOffset: {x: 0, y: 0, z: 0}
+  m_HandEulerAngles: {x: 0, y: 0, z: 0}
+  m_HandScale: {x: 0.3, y: 0.3, z: 0.3}
+  m_TileManager: {fileID: 0}
   selectedTile: {fileID: 0}
 --- !u!54 &4901527099482690554
 Rigidbody:

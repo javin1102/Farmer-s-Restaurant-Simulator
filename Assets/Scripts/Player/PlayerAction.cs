@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.Events;
-
+using SimpleJSON;
 public class PlayerAction : MonoBehaviour
 {
     public event UnityAction OnPerformItemMainAction;
@@ -17,6 +17,8 @@ public class PlayerAction : MonoBehaviour
     public float ActionTime { get => m_ActionTimeRemaining; set => m_ActionTimeRemaining = value; }
     public float DefaultActionTime { get => m_DefaultActionTime; set => m_DefaultActionTime = value; }
     public Item CurrEquippedItem { get => m_ActionSlotsController.CurrEquippedItem; }
+    public static int Coins { get => m_Coins; set => m_Coins = value; }
+
     //Event Listener
     private event UnityAction m_OnEnableUI;
     private event UnityAction m_OnDisableUI;
@@ -50,6 +52,8 @@ public class PlayerAction : MonoBehaviour
     private UIManager m_UIManager;
     private float m_ActionTimeRemaining; //time passed for certain action to be done (ex: chopping tree)
     private float m_DefaultActionTime; //time needed for certain action to be done (ex: chopping tree)
+    private static int m_Coins;
+    private SaveManager m_SaveManager;
 
     private void Awake()
     {
@@ -60,10 +64,14 @@ public class PlayerAction : MonoBehaviour
         m_ItemDatabase = GetComponent<ItemDatabase>();
         m_InventorySlotsController = GetComponent<InventorySlotsController>();
     }
+
     private void Start()
     {
         m_UIManager = UIManager.Instance;
-        m_ActionSlotsController.SelectActionSlot( 0 );
+        m_SaveManager = SaveManager.Instance;
+        m_SaveManager.OnSave += SavePlayerData;
+        m_SaveManager.LoadData(Utils.PLAYERDATA_FILENAME, OnLoadSucceeded, OnLoadFailed);
+        m_ActionSlotsController.SelectActionSlot(0);
         LockCursor();
     }
 
@@ -100,83 +108,115 @@ public class PlayerAction : MonoBehaviour
 
     private void Update()
     {
-        Ray ray = m_Cam.ViewportPointToRay( new Vector3( 0.5f, 0.5f, 0f ) );
-        Physics.Raycast( ray, out RaycastHit hitInfo, m_RaycastDistance, ~Utils.PlayerMask );
-        if ( hitInfo.collider != null )
+        Ray ray = m_Cam.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0f));
+        Physics.Raycast(ray, out RaycastHit hitInfo, m_RaycastDistance, ~Utils.PlayerMask);
+        if (hitInfo.collider != null)
         {
-            if ( m_ActionSlotsController.CurrEquippedItem != null )
+            if (m_ActionSlotsController.CurrEquippedItem != null)
             {
-                TryPerformSelectedItemRaycastAction( hitInfo );
+                TryPerformSelectedItemRaycastAction(hitInfo);
             }
 
-            if ( hitInfo.collider.TryGetComponent( out IActionTime actionTime ) )
+            if (hitInfo.collider.TryGetComponent(out IActionTime actionTime))
             {
-                if ( m_MainInputAction.IsPressed() ) actionTime.OnHoldMainAction( this );
-                else actionTime.OnReleaseMainAction( this );
+                if (m_MainInputAction.IsPressed()) actionTime.OnHoldMainAction(this);
+                else actionTime.OnReleaseMainAction(this);
             }
             else
             {
                 m_ActionTimeRemaining = 0;
                 m_DefaultActionTime = 0;
             }
-            if ( hitInfo.collider.TryGetComponent( out Hoverable hover ) )
+            if (hitInfo.collider.TryGetComponent(out Hoverable hover))
             {
                 //if ( m_Hovered == hover ) return;
-                if ( m_Hovered != null && m_Hovered != hover ) m_Hovered.HoverExit();
+                if (m_Hovered != null && m_Hovered != hover)
+                {
+                    m_Hovered.HoverExit();
+                    m_ActionTimeRemaining = 0;
+                    m_DefaultActionTime = 0;
+                }
                 m_Hovered = hover;
                 m_Hovered.HoverEnter();
             }
             else
             {
-                if ( m_Hovered != null )
+                if (m_Hovered != null)
                 {
                     m_Hovered.HoverExit();
+                    m_ActionTimeRemaining = 0;
+                    m_DefaultActionTime = 0;
                     m_Hovered = null;
                 }
             }
-            if ( m_MainInputAction.triggered && hitInfo.collider.TryGetComponent( out IInteractable hit ) ) hit.Interact( this );
-            if ( m_StoreInputAction.triggered && hitInfo.collider.TryGetComponent( out Item raycastedItem ) )
+            if (m_MainInputAction.triggered && hitInfo.collider.TryGetComponent(out IInteractable hit)) hit.Interact(this);
+            if (m_StoreInputAction.triggered && hitInfo.collider.TryGetComponent(out Item raycastedItem))
             {
-                if ( Store( raycastedItem ) )
+                if (Store(raycastedItem))
                 {
 
                 }
                 else
                 {
                     //TODO::Handle Inventory is full
-                    Debug.Log( "Inventory is full" );
+                    Debug.Log("Inventory is full");
                 }
             }
         }
         else
         {
             m_UIManager.HideActionHelper();
-            if ( m_Hovered == null ) return;
-            m_Hovered.HoverExit();
-            m_Hovered = null;
             m_ActionTimeRemaining = 0;
             m_DefaultActionTime = 0;
+            if (m_Hovered == null) return;
+            m_Hovered.HoverExit();
+            m_Hovered = null;
+
         }
 
-        if ( ActionTime <= 0 ) ActionTime = 0;
-
+        if (ActionTime <= 0) ActionTime = 0;
     }
 
-    public bool Store( Item item, int quantity = 1 )
+
+    private async void SavePlayerData()
     {
-        if ( m_ItemDatabase.Store( item.Data, quantity ) )
+        JSONObject rootObject = new();
+        (JSONArray inventory, JSONArray actionSlots) arrs = m_ItemDatabase.ToJSON();
+        rootObject.Add("inventory", arrs.inventory);
+        rootObject.Add("actionSlots", arrs.actionSlots);
+        rootObject.Add("coins", m_Coins);
+        await m_SaveManager.SaveData(rootObject.ToString(), Utils.PLAYERDATA_FILENAME);
+    }
+
+    private void OnLoadSucceeded(JSONNode jsonNode)
+    {
+        m_ItemDatabase.OnLoadSucceded(jsonNode);
+        m_Coins = jsonNode["coins"];
+    }
+
+    private void OnLoadFailed()
+    {
+        m_ItemDatabase.OnLoadFailed();
+        m_Coins = 100;
+    }
+
+
+
+    public bool Store(Item item, int quantity = 1)
+    {
+        if (m_ItemDatabase.Store(item.Data, quantity))
         {
-            Destroy( item.gameObject );
+            Destroy(item.gameObject);
             return true;
         }
         return false;
     }
     public void InvokeToggleInventoryUI() => m_ToggleInventoryUI?.Invoke();
     public void InvokeToggleMiscUI() => m_ToggleMiscUI?.Invoke();
-    private void DropItem( InputAction.CallbackContext obj )
+    private void DropItem(InputAction.CallbackContext obj)
     {
-        if ( m_ActionSlotsController.CurrEquippedItem == null ) return;
-        m_ItemDatabase.Decrease( m_ActionSlotsController.CurrEquippedItem.Data, 1, ItemDatabaseAction.DROP );
+        if (m_ActionSlotsController.CurrEquippedItem == null) return;
+        m_ItemDatabase.Decrease(m_ActionSlotsController.CurrEquippedItem.Data, 1, ItemDatabaseAction.DROP);
     }
     private void InitializeInputAction()
     {
@@ -190,23 +230,22 @@ public class PlayerAction : MonoBehaviour
         m_AltAction = m_PlayerInput.actions[Utils.ALT_ACTION];
         m_OpenMiscUIAction = m_PlayerInput.actions[Utils.OPENUI_ACTION];
 
-        for ( int i = 0; i < 6; i++ )
+        for (int i = 0; i < 6; i++)
             m_SelectSlotInputAction[i] = m_PlayerInput.actions[Utils.SELECT_SLOT_ACTION[i]];
         InitializeSelectSlotAction();
     }
-    private void PerformEquippedItemMainAction( InputAction.CallbackContext context )
+    private void PerformEquippedItemMainAction(InputAction.CallbackContext context)
     {
-        if ( m_ActionSlotsController.CurrEquippedItem != null )
+        if (m_ActionSlotsController.CurrEquippedItem != null)
         {
             m_ActionSlotsController.CurrEquippedItem.MainAction();
             OnPerformItemMainAction?.Invoke();
         }
     }
-    private void TryPerformSelectedItemRaycastAction( RaycastHit hitInfo )
+    private void TryPerformSelectedItemRaycastAction(RaycastHit hitInfo)
     {
-        m_ActionSlotsController.CurrEquippedItem.ItemRaycastAction?.PerformRaycastAction( hitInfo );
+        m_ActionSlotsController.CurrEquippedItem.ItemRaycastAction?.PerformRaycastAction(hitInfo);
     }
-
     private void InitializeSelectSlotAction()
     {
         m_SelectSlotInputAction[0].performed += SelectActionSlot_1;
@@ -280,20 +319,20 @@ public class PlayerAction : MonoBehaviour
     }
     private void ExitCursorMode()
     {
-        if ( m_IsOtherUIOpen ) return;
+        if (m_IsOtherUIOpen) return;
         LockCursor();
         EnablePlayerInput();
     }
-    private void InvokeToggleInventoryUI( InputAction.CallbackContext obj ) => m_ToggleInventoryUI?.Invoke();
-    private void InvokeToggleMiscUI( InputAction.CallbackContext obj ) => m_ToggleMiscUI?.Invoke();
-    private void ExitCursorMode( InputAction.CallbackContext obj ) => ExitCursorMode();
-    private void EnterCursorMode( InputAction.CallbackContext obj ) => EnterCursorMode();
-    private void SelectActionSlot_1( InputAction.CallbackContext obj ) => m_ActionSlotsController.SelectActionSlot_1();
-    private void SelectActionSlot_2( InputAction.CallbackContext obj ) => m_ActionSlotsController.SelectActionSlot_2();
-    private void SelectActionSlot_3( InputAction.CallbackContext obj ) => m_ActionSlotsController.SelectActionSlot_3();
-    private void SelectActionSlot_4( InputAction.CallbackContext obj ) => m_ActionSlotsController.SelectActionSlot_4();
-    private void SelectActionSlot_5( InputAction.CallbackContext obj ) => m_ActionSlotsController.SelectActionSlot_5();
-    private void SelectActionSlot_6( InputAction.CallbackContext obj ) => m_ActionSlotsController.SelectActionSlot_6();
+    private void InvokeToggleInventoryUI(InputAction.CallbackContext obj) => m_ToggleInventoryUI?.Invoke();
+    private void InvokeToggleMiscUI(InputAction.CallbackContext obj) => m_ToggleMiscUI?.Invoke();
+    private void ExitCursorMode(InputAction.CallbackContext obj) => ExitCursorMode();
+    private void EnterCursorMode(InputAction.CallbackContext obj) => EnterCursorMode();
+    private void SelectActionSlot_1(InputAction.CallbackContext obj) => m_ActionSlotsController.SelectActionSlot_1();
+    private void SelectActionSlot_2(InputAction.CallbackContext obj) => m_ActionSlotsController.SelectActionSlot_2();
+    private void SelectActionSlot_3(InputAction.CallbackContext obj) => m_ActionSlotsController.SelectActionSlot_3();
+    private void SelectActionSlot_4(InputAction.CallbackContext obj) => m_ActionSlotsController.SelectActionSlot_4();
+    private void SelectActionSlot_5(InputAction.CallbackContext obj) => m_ActionSlotsController.SelectActionSlot_5();
+    private void SelectActionSlot_6(InputAction.CallbackContext obj) => m_ActionSlotsController.SelectActionSlot_6();
 }
 
 

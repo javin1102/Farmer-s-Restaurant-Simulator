@@ -18,6 +18,7 @@ MonoBehaviour:
   buyPrice: 0
   sellPrice: 0
   decreaseable: 1
+  itemType: 1
   deskripsiKandungan: rewqrqwe
   deskripsiNutrisi: ytreyrtey
   deskripsiManfaat: wertwert

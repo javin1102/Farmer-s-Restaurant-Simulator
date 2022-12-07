@@ -18,4 +18,5 @@ MonoBehaviour:
   buyPrice: 100
   sellPrice: 35
   decreaseable: 1
-  type: 1
+  itemType: 2
+  furnitureType: 1

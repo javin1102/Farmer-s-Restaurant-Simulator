@@ -54,7 +54,4 @@ public class ResourcesLoader : MonoBehaviour
         }
         return -1;
     }
-
-
-
 }

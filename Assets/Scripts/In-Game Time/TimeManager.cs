@@ -1,5 +1,4 @@
 using SimpleJSON;
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -7,11 +6,12 @@ using UnityEngine;
 public class TimeManager : MonoBehaviour
 {
     public static TimeManager Instance { get; private set; }
+    public GameTimeStamp CurrentTimeStamp { get => m_CurrentTimeStamp; set => m_CurrentTimeStamp = value; }
 
     [SerializeField]
     GameTimeStamp m_CurrentTimeStamp;
 
-    public float m_timeScale = 1f;
+    public float TimeScale = 1f;
 
     public Material skybox;
 
@@ -34,16 +34,7 @@ public class TimeManager : MonoBehaviour
     private void Start()
     {
         m_SaveManager = SaveManager.Instance;
-
-        if (m_SaveManager.LoadData(Utils.GAME_TIME_FILENAME, out JSONNode gameTimeNode))
-        {
-            m_CurrentTimeStamp = new(gameTimeNode);
-        }
-        else
-        {
-            // initialize GameTimeStamp day1, 6 : 00 AM
-            m_CurrentTimeStamp = new GameTimeStamp(1, 6, 0);
-        }
+        m_SaveManager.LoadData(Utils.GAME_TIME_FILENAME, OnLoadSucceeded, OnLoadFailed);
 
 
         // initialize Cubemap Transition to 0 
@@ -71,7 +62,7 @@ public class TimeManager : MonoBehaviour
         {
             // m_timeScale to define how fast the in game time
             Tick();
-            yield return new WaitForSeconds(1 / m_timeScale);
+            yield return new WaitForSeconds(1 / TimeScale);
         }
     }
 
@@ -121,4 +112,8 @@ public class TimeManager : MonoBehaviour
         m_Listener.Remove(listner);
     }
 
+
+    private void OnLoadSucceeded(JSONNode jsonNode) => m_CurrentTimeStamp = new(jsonNode);
+
+    private void OnLoadFailed() => m_CurrentTimeStamp = new GameTimeStamp(1, 6, 0);
 }

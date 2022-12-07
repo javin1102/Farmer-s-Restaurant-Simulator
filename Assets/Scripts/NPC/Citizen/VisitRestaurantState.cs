@@ -39,9 +39,9 @@ namespace NPC.Citizen
                 //m_Restaurant.Seats.Add( m_Seat );
             }
 
-            //TODO::HAS Served food -> ADD PLAYER MONEY FROM SERVED FOOD
             if (m_Citizen.ServedFood != null)
             {
+                PlayerAction.Coins += m_Citizen.ServedFood.Data.dishPrice;
                 GameObject.Destroy(m_Citizen.ServedFood.gameObject);
             }
 

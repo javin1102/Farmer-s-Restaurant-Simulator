@@ -11,6 +11,8 @@ public class UIFurnitureItem : UIStoreItem
 
     protected override void BuyItem()
     {
-        m_StoreController.SpawnItem( m_ItemData );
+        if (PlayerAction.Coins < m_ItemData.buyPrice) return;
+        PlayerAction.Coins -= m_ItemData.buyPrice;
+        m_StoreController.SpawnItem(m_ItemData);
     }
 }

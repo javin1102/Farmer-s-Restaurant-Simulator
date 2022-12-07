@@ -24,14 +24,13 @@ public class SceneLoader : MonoBehaviour
     public event UnityAction OnFinishLoading;
     [SerializeField] private PlayerAction m_PlayerAction;
     [SerializeField] private PlayerSpawnPosData m_SpawnPosData;
-    [SerializeField] private GameObject m_LoadingUI;
-
     [SerializeField] private Volume m_PostProcessingVolume;
     [SerializeField] private VolumeProfile m_CityProfile, m_HouseProfile;
     [SerializeField] private SPAWN_TYPE m_SpawnType = SPAWN_TYPE.HOUSE_BED;
     [SerializeField] private CinemachineVirtualCamera m_VCam;
     private FirstPersonMovement m_FirstPersonMovement;
     private Camera m_MainCam;
+    private UIManager m_UIManager;
     private void Awake()
     {
         if (m_Instance == null) m_Instance = this;
@@ -43,6 +42,7 @@ public class SceneLoader : MonoBehaviour
 
     private void Start()
     {
+        m_UIManager = UIManager.Instance;
         m_FirstPersonMovement = m_PlayerAction.GetComponent<FirstPersonMovement>();
         StartCoroutine(InitializeScene());
     }
@@ -64,14 +64,14 @@ public class SceneLoader : MonoBehaviour
     private IEnumerator UnloadSceneAsync_Coroutine(string scene)
     {
         OnStartLoading?.Invoke();
-        m_LoadingUI.SetActive(true);
+        m_UIManager.LoadingUI.Activate(0);
         m_PlayerAction.OnEnableMiscUI?.Invoke();
         AsyncOperation operation = SceneManager.UnloadSceneAsync(scene);
         while (!operation.isDone)
         {
             yield return null;
         }
-        m_LoadingUI.SetActive(false);
+        m_UIManager.LoadingUI.Deactivate();
         m_PlayerAction.OnDisableMiscUI?.Invoke();
         OnFinishLoading?.Invoke();
     }
@@ -80,7 +80,7 @@ public class SceneLoader : MonoBehaviour
     {
         m_SpawnType = spawnType;
         m_PlayerAction.OnEnableMiscUI?.Invoke();
-        m_LoadingUI.SetActive(true);
+
         OnStartLoading?.Invoke();
 
         for (int i = 0; i < SceneManager.sceneCount; i++)
@@ -88,7 +88,7 @@ public class SceneLoader : MonoBehaviour
             Scene s = SceneManager.GetSceneAt(i);
             if (s == SceneManager.GetSceneByName(scene))
             {
-                m_LoadingUI.SetActive(false);
+                m_UIManager.LoadingUI.Deactivate();
                 m_PlayerAction.OnDisableMiscUI?.Invoke();
                 OnFinishLoading?.Invoke();
                 DeterminePlayerSpawnPos();
@@ -103,7 +103,7 @@ public class SceneLoader : MonoBehaviour
         {
             yield return null;
         }
-        m_LoadingUI.SetActive(false);
+
         m_PlayerAction.OnDisableMiscUI?.Invoke();
         OnFinishLoading?.Invoke();
         SceneManager.SetActiveScene(SceneManager.GetSceneByName(scene));
@@ -116,10 +116,10 @@ public class SceneLoader : MonoBehaviour
         m_SpawnType = spawnType;
         string scene = DetermineScene(spawnType);
         m_PlayerAction.OnEnableMiscUI?.Invoke();
-        m_LoadingUI.SetActive(true);
+        m_UIManager.LoadingUI.Activate();
         OnStartLoading?.Invoke();
-        yield return new WaitForSeconds(.5f);
-        m_LoadingUI.SetActive(false);
+        yield return new WaitForSeconds(1 / TimeManager.Instance.TimeScale);
+        m_UIManager.LoadingUI.Deactivate();
         m_PlayerAction.OnDisableMiscUI?.Invoke();
         OnFinishLoading?.Invoke();
         DeterminePlayerSpawnPos();
@@ -188,8 +188,10 @@ public class SceneLoader : MonoBehaviour
 
     private IEnumerator InitializeScene()
     {
+        m_UIManager.LoadingUI.Activate(0);
         yield return StartCoroutine(LoadSceneAsync_Coroutine(Utils.SCENE_CITY, LoadSceneMode.Additive, SPAWN_TYPE.CITY_DOOR));
         yield return StartCoroutine(LoadSceneAsync_Coroutine(Utils.SCENE_HOUSE, LoadSceneMode.Additive, SPAWN_TYPE.HOUSE_BED));
         yield return StartCoroutine(LoadSceneAsync_Coroutine(Utils.SCENE_FARM, LoadSceneMode.Additive, SPAWN_TYPE.CITY_FARM));
+        m_UIManager.LoadingUI.Deactivate();
     }
 }

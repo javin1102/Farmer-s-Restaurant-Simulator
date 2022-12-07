@@ -45,19 +45,18 @@ public class SaveManager : MonoBehaviour
     }
 
 
-    public bool LoadData(string filename, out JSONNode node)
+    public void LoadData(string filename, UnityAction<JSONNode> OnLoadSucceeded, UnityAction OnLoadFailed)
     {
         string localPath = Application.dataPath + Path.AltDirectorySeparatorChar + filename;
         if (!File.Exists(localPath))
         {
-            node = null;
-            return false;
+            OnLoadFailed?.Invoke();
         }
         else
         {
             string jsonString = File.ReadAllText(localPath);
-            node = JSONNode.Parse(jsonString);
-            return true;
+            JSONNode node = JSONNode.Parse(jsonString);
+            OnLoadSucceeded?.Invoke(node);
         }
     }
 }
