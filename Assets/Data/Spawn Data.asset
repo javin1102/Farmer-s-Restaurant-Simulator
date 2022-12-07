@@ -15,20 +15,20 @@ MonoBehaviour:
   cityDoorSpawnTf:
     position: {x: -1.5150001, y: 1.2, z: -83.394}
     eulerAngles: {x: 0, y: 0, z: 0}
-    scale: {x: 1, y: 1, z: 1}
-  cityFarmSpawnTf:
-    position: {x: 0, y: 0, z: 0}
+    localScale: {x: 0, y: 0, z: 0}
+  farmCitySpawnTf:
+    position: {x: -47.45, y: 0.399, z: 46.1}
     eulerAngles: {x: 0, y: 0, z: 0}
-    scale: {x: 0, y: 0, z: 0}
-  farmSpawnTf:
-    position: {x: 498.979, y: 1, z: -179.58}
-    eulerAngles: {x: 0, y: 90, z: 0}
-    scale: {x: 0, y: 0, z: 0}
+    localScale: {x: 0, y: 0, z: 0}
+  cityFarmSpawnTf:
+    position: {x: 499.67, y: 0.44, z: -173.04}
+    eulerAngles: {x: 0, y: 92.072, z: 0}
+    localScale: {x: 0, y: 0, z: 0}
   houseDoorSpawnTf:
     position: {x: 23.638, y: 1, z: 174.377}
     eulerAngles: {x: 0, y: 0, z: 0}
-    scale: {x: 1, y: 1, z: 1}
+    localScale: {x: 0, y: 0, z: 0}
   houseBedSpawnTf:
     position: {x: 10.201, y: 1, z: 169.45999}
     eulerAngles: {x: 0, y: 0, z: 0}
-    scale: {x: 1, y: 1, z: 1}
+    localScale: {x: 0, y: 0, z: 0}

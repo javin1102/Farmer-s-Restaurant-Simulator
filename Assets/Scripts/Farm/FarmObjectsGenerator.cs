@@ -51,6 +51,7 @@ public class FarmObjectsGenerator : MonoBehaviour, ITimeTracker
             if (treeGO != null)
             {
                 treeGO.tag = Utils.TREE_OBSTACLE_TAG;
+                treeGO.layer = 9;
             }
         }
     }
@@ -106,6 +107,7 @@ public class FarmObjectsGenerator : MonoBehaviour, ITimeTracker
             else
             {
                 obj.tag = Utils.TREE_OBSTACLE_TAG;
+                obj.layer = 9;
             }
         }
     }

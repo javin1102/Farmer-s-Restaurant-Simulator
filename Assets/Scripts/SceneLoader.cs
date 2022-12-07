@@ -170,11 +170,18 @@ public class SceneLoader : MonoBehaviour
                 m_MainCam.cullingMask = Utils.CityMask;
                 break;
             case SPAWN_TYPE.CITY_FARM:
-                m_PlayerAction.transform.position = m_SpawnPosData.farmSpawnTf.position;
-                m_VCam.ForceCameraPosition(m_SpawnPosData.farmSpawnTf.position, Quaternion.Euler(m_SpawnPosData.farmSpawnTf.eulerAngles));
+                m_PlayerAction.transform.position = m_SpawnPosData.cityFarmSpawnTf.position;
+                m_VCam.ForceCameraPosition(m_SpawnPosData.cityFarmSpawnTf.position, Quaternion.Euler(m_SpawnPosData.cityFarmSpawnTf.eulerAngles));
                 m_PostProcessingVolume.profile = m_CityProfile;
                 m_MainCam.cullingMask = Utils.FarmMask;
                 break;
+            case SPAWN_TYPE.FARM_CITY:
+                m_PlayerAction.transform.position = m_SpawnPosData.farmCitySpawnTf.position;
+                m_VCam.ForceCameraPosition(m_SpawnPosData.cityFarmSpawnTf.position, Quaternion.Euler(m_SpawnPosData.farmCitySpawnTf.eulerAngles));
+                m_PostProcessingVolume.profile = m_CityProfile;
+                m_MainCam.cullingMask = Utils.CityMask;
+                break;
+
         }
 
         m_FirstPersonMovement.enabled = true;

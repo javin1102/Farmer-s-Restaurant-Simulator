@@ -3,8 +3,8 @@ using UnityEngine;
 public class PlayerSpawnPosData : ScriptableObject
 {
     public CustomTransform cityDoorSpawnTf;
+    public CustomTransform farmCitySpawnTf;
     public CustomTransform cityFarmSpawnTf;
-    public CustomTransform farmSpawnTf;
     public CustomTransform houseDoorSpawnTf;
     public CustomTransform houseBedSpawnTf;
 }

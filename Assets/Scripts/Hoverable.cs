@@ -11,26 +11,26 @@ public class Hoverable : MonoBehaviour
     public event UnityAction OnHoverExit;
     private void Awake()
     {
-        m_Layer = Utils.RaycastableLayer;
         m_IsHoverable = true;
     }
     private void Start()
     {
+        m_Layer = gameObject.layer;
         m_UIManager = UIManager.Instance;
     }
 
 
     public void HoverEnter()
     {
-        if ( !m_IsHoverable ) return;
+        if (!m_IsHoverable) return;
         gameObject.layer = Utils.OutlineLayer;
-        transform.SetLayer( Utils.OutlineLayer );
+        transform.SetLayer(Utils.OutlineLayer);
         OnHoverEnter?.Invoke();
     }
     public void HoverExit()
     {
         gameObject.layer = m_Layer;
-        transform.SetLayer( m_Layer );
+        transform.SetLayer(m_Layer);
         m_UIManager.HideActionHelper();
         OnHoverExit?.Invoke();
     }
