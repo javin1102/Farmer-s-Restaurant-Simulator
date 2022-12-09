@@ -68,23 +68,26 @@ public class TimeManager : MonoBehaviour
 
     public void Tick()
     {
-
-        // check time for plus or minus
-        if (m_CurrentTimeStamp.hour > 6)
+        float currentTimeHour = m_CurrentTimeStamp.hour + m_CurrentTimeStamp.minute / 60;
+        //time between 14:30 -> 19:30
+        if (currentTimeHour <= 19.5f && currentTimeHour >= 14.5f)
         {
-            if (m_CurrentTimeStamp.minute >= 59)
-            {
-                if (skybox.GetFloat("_CubemapTransition") >= 1f) skybox.SetFloat("_CubemapTransition", 1f);
-                else skybox.SetFloat("_CubemapTransition", (skybox.GetFloat("_CubemapTransition") + 0.065f));
-            }
+            skybox.SetFloat("_CubemapTransition", Mathf.InverseLerp(14.5f, 19.5f, currentTimeHour));
         }
-        else
+        //time between 03:00 -> 11:59
+        else if (currentTimeHour >= 3f && currentTimeHour < 12f)
         {
-            if (m_CurrentTimeStamp.minute >= 59)
-            {
-                if (skybox.GetFloat("_CubemapTransition") <= 0f) skybox.SetFloat("_CubemapTransition", 0f);
-                else skybox.SetFloat("_CubemapTransition", (skybox.GetFloat("_CubemapTransition") - .19f));
-            }
+            skybox.SetFloat("_CubemapTransition", 1 - Mathf.InverseLerp(3, 12f, currentTimeHour));
+        }
+        //time between 19:30 -> 02:59
+        else if ((currentTimeHour > 19.5f && currentTimeHour < 23.59f) || (currentTimeHour < 3f))
+        {
+            skybox.SetFloat("_CubemapTransition", 1);
+        }
+        //time between 12:00 -> 14:29
+        else if (currentTimeHour >= 12f && currentTimeHour < 14.5f)
+        {
+            skybox.SetFloat("_CubemapTransition", 0);
         }
 
         // update clock

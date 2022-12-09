@@ -93,15 +93,21 @@ public class FarmObjectsGenerator : MonoBehaviour, ITimeTracker
             {
                 SerializablePlantTileData plantTileData = new(node.Value);
                 PlantTile plantTile = obj.GetComponent<PlantTile>();
-                plantTile.Time = plantTileData.time;
+                plantTile.tag = plantTileData.isWet ? Utils.TILE_WET_TAG : Utils.TILE_TAG;
                 if (!string.IsNullOrEmpty(plantTileData.seedID))
                 {
                     SeedData resourcesSeedData = m_ResourcesLoader.GetSeedDataByID(plantTileData.seedID);
                     plantTile.SpawnCrop(resourcesSeedData.cropPrefab);
-                    plantTile.tag = plantTileData.isWet ? Utils.TILE_WET_TAG : Utils.TILE_TAG;
                     plantTile.SwitchStatus((PlantTile.TileStatus)plantTileData.plantStatus);
                     plantTile.PlantGrowHandler.SeedData = resourcesSeedData;
+                    plantTile.PlantGrowHandler.statePlant = plantTileData.statePlant;
+                    plantTile.PlantGrowHandler.SetPlant();
                 }
+                else
+                {
+                    plantTile.SwitchStatus((PlantTile.TileStatus)plantTileData.plantStatus);
+                }
+                plantTile.Time = plantTileData.time;
             }
 
             else

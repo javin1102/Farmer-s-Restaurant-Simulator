@@ -148,6 +148,15 @@
                     "processors": "",
                     "interactions": "Hold",
                     "initialStateCheck": true
+                },
+                {
+                    "name": "Pause",
+                    "type": "Button",
+                    "id": "8a844dee-a827-4187-8593-abf8f0866363",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -379,6 +388,17 @@
                     "processors": "",
                     "groups": "",
                     "action": "Alt",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "dd52ba54-52d2-44a8-9e9e-811afce71904",
+                    "path": "<Keyboard>/escape",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Pause",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

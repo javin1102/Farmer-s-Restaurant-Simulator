@@ -2,11 +2,13 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.Events;
 using SimpleJSON;
+using System;
+
 public class PlayerAction : MonoBehaviour
 {
     public event UnityAction OnPerformItemMainAction;
-    public UnityAction OnEnableMiscUI { get => m_OnEnableUI; set => m_OnEnableUI = value; }
-    public UnityAction OnDisableMiscUI { get => m_OnDisableUI; set => m_OnDisableUI = value; }
+    public UnityAction OnEnableOtherUI { get => m_OnEnableUI; set => m_OnEnableUI = value; }
+    public UnityAction OnDisableOtherUI { get => m_OnDisableUI; set => m_OnDisableUI = value; }
     public UnityAction ToggleInventoryUI { get => m_ToggleInventoryUI; set => m_ToggleInventoryUI = value; }
     public UnityAction ToggleMiscUI { get => m_ToggleMiscUI; set => m_ToggleMiscUI = value; }
     public UnityAction<Transform> ToggleFurnitureStoreUI { get => m_ToggleFurnitureStoreUI; set => m_ToggleFurnitureStoreUI = value; }
@@ -14,6 +16,7 @@ public class PlayerAction : MonoBehaviour
     public UnityAction OnDecreaseItemDatabase { get => m_OnDropInventory; set => m_OnDropInventory = value; }
     public bool IsOtherUIOpen { get => m_IsOtherUIOpen; set => m_IsOtherUIOpen = value; }
     public InputAction InventoryAction { get => m_InventoryAction; }
+    public UnityAction TogglePause { get => m_TogglePause; set => m_TogglePause = value; }
     public float ActionTime { get => m_ActionTimeRemaining; set => m_ActionTimeRemaining = value; }
     public float DefaultActionTime { get => m_DefaultActionTime; set => m_DefaultActionTime = value; }
     public Item CurrEquippedItem { get => m_ActionSlotsController.CurrEquippedItem; }
@@ -27,6 +30,8 @@ public class PlayerAction : MonoBehaviour
     private UnityAction<Transform> m_ToggleFurnitureStoreUI;
     private UnityAction<Transform> m_ToggleSeedStoreUI;
     private UnityAction m_OnDropInventory;
+    private UnityAction m_TogglePause;
+
 
     //Player Input Action
     private PlayerInput m_PlayerInput;
@@ -39,6 +44,7 @@ public class PlayerAction : MonoBehaviour
     private InputAction m_RotationAction;
     private InputAction m_AltAction;
     private InputAction m_OpenMiscUIAction;
+    private InputAction m_PauseAction;
     private readonly InputAction[] m_SelectSlotInputAction = new InputAction[6];
 
 
@@ -78,8 +84,8 @@ public class PlayerAction : MonoBehaviour
     private void OnEnable()
     {
         InitializeInputAction();
-        OnEnableMiscUI += EnterCursorMode;
-        OnDisableMiscUI += ExitCursorMode;
+        OnEnableOtherUI += EnterCursorMode;
+        OnDisableOtherUI += ExitCursorMode;
         m_MainInputAction.performed += PerformEquippedItemMainAction;
         m_DropInputAction.performed += DropItem;
         m_InventoryAction.performed += InvokeToggleInventoryUI;
@@ -87,22 +93,23 @@ public class PlayerAction : MonoBehaviour
         m_AltAction.started += EnterCursorMode;
         m_AltAction.canceled += ExitCursorMode;
         m_OnDropInventory += m_InventorySlotsController.CheckItem;
+        m_PauseAction.performed += InvokeTogglePauseUI;
     }
-
 
 
     private void OnDisable()
     {
         UnitializeSelectSlotAction();
         m_OnDropInventory -= m_InventorySlotsController.CheckItem;
-        OnEnableMiscUI -= EnterCursorMode;
-        OnDisableMiscUI -= ExitCursorMode;
+        OnEnableOtherUI -= EnterCursorMode;
+        OnDisableOtherUI -= ExitCursorMode;
         m_InventoryAction.performed -= InvokeToggleInventoryUI;
         m_OpenMiscUIAction.performed -= InvokeToggleMiscUI;
         m_MainInputAction.performed -= PerformEquippedItemMainAction;
         m_DropInputAction.performed -= DropItem;
         m_AltAction.started -= EnterCursorMode;
         m_AltAction.canceled -= ExitCursorMode;
+        m_PauseAction.performed -= InvokeTogglePauseUI;
     }
 
 
@@ -229,6 +236,7 @@ public class PlayerAction : MonoBehaviour
         m_RotationAction = m_PlayerInput.actions[Utils.PLAYER_ROTATION_ACTION];
         m_AltAction = m_PlayerInput.actions[Utils.ALT_ACTION];
         m_OpenMiscUIAction = m_PlayerInput.actions[Utils.OPENUI_ACTION];
+        m_PauseAction = m_PlayerInput.actions[Utils.PAUSE_ACTION];
 
         for (int i = 0; i < 6; i++)
             m_SelectSlotInputAction[i] = m_PlayerInput.actions[Utils.SELECT_SLOT_ACTION[i]];
@@ -312,12 +320,12 @@ public class PlayerAction : MonoBehaviour
         m_SelectSlotInputAction[4].Disable();
         m_SelectSlotInputAction[5].Disable();
     }
-    private void EnterCursorMode()
+    public void EnterCursorMode()
     {
         UnlockCursor();
         DisablePlayerInput();
     }
-    private void ExitCursorMode()
+    public void ExitCursorMode()
     {
         if (m_IsOtherUIOpen) return;
         LockCursor();
@@ -325,6 +333,8 @@ public class PlayerAction : MonoBehaviour
     }
     private void InvokeToggleInventoryUI(InputAction.CallbackContext obj) => m_ToggleInventoryUI?.Invoke();
     private void InvokeToggleMiscUI(InputAction.CallbackContext obj) => m_ToggleMiscUI?.Invoke();
+    private void InvokeTogglePauseUI(InputAction.CallbackContext obj) => m_TogglePause?.Invoke();
+
     private void ExitCursorMode(InputAction.CallbackContext obj) => ExitCursorMode();
     private void EnterCursorMode(InputAction.CallbackContext obj) => EnterCursorMode();
     private void SelectActionSlot_1(InputAction.CallbackContext obj) => m_ActionSlotsController.SelectActionSlot_1();

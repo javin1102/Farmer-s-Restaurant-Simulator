@@ -25,14 +25,14 @@ public class UIGameController : MonoBehaviour
     }
     private void OnEnable()
     {
-        m_PlayerAction.OnEnableMiscUI += DisableChilds;
-        m_PlayerAction.OnDisableMiscUI += EnableChilds;
+        m_PlayerAction.OnEnableOtherUI += DisableChilds;
+        m_PlayerAction.OnDisableOtherUI += EnableChilds;
     }
 
     private void OnDisable()
     {
-        m_PlayerAction.OnEnableMiscUI -= DisableChilds;
-        m_PlayerAction.OnDisableMiscUI -= EnableChilds;
+        m_PlayerAction.OnEnableOtherUI -= DisableChilds;
+        m_PlayerAction.OnDisableOtherUI -= EnableChilds;
     }
 
 

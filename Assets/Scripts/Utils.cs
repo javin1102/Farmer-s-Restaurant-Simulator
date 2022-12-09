@@ -38,7 +38,7 @@ public class Utils
     public const string INVENTORY_ACTION = "Inventory";
     public const string OPENUI_ACTION = "OpenUI";
     public const string ALT_ACTION = "Alt";
-
+    public const string PAUSE_ACTION = "Pause";
     //TAGS
     public const string FARM_GROUND_TAG = "Farm Ground";
     public const string RESTAURANT_GROUND_TAG = "Restaurant Ground";
@@ -59,6 +59,7 @@ public class Utils
     public static int NPC_SIT_ANIM_PARAM = Animator.StringToHash("Sit");
     public static int NPC_SPEED_ANIM_PARAM = Animator.StringToHash("Speed");
     public static int NPC_COOKING_ANIM_PARAM = Animator.StringToHash("Cooking");
+
 
     //Scenes
     public const string SCENE_HOUSE = "House";

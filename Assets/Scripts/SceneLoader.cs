@@ -65,21 +65,21 @@ public class SceneLoader : MonoBehaviour
     {
         OnStartLoading?.Invoke();
         m_UIManager.LoadingUI.Activate(0);
-        m_PlayerAction.OnEnableMiscUI?.Invoke();
+        m_PlayerAction.OnEnableOtherUI?.Invoke();
         AsyncOperation operation = SceneManager.UnloadSceneAsync(scene);
         while (!operation.isDone)
         {
             yield return null;
         }
         m_UIManager.LoadingUI.Deactivate();
-        m_PlayerAction.OnDisableMiscUI?.Invoke();
+        m_PlayerAction.OnDisableOtherUI?.Invoke();
         OnFinishLoading?.Invoke();
     }
 
     private IEnumerator LoadSceneAsync_Coroutine(string scene, LoadSceneMode loadSceneMode, SPAWN_TYPE spawnType)
     {
         m_SpawnType = spawnType;
-        m_PlayerAction.OnEnableMiscUI?.Invoke();
+        m_PlayerAction.OnEnableOtherUI?.Invoke();
 
         OnStartLoading?.Invoke();
 
@@ -89,7 +89,7 @@ public class SceneLoader : MonoBehaviour
             if (s == SceneManager.GetSceneByName(scene))
             {
                 m_UIManager.LoadingUI.Deactivate();
-                m_PlayerAction.OnDisableMiscUI?.Invoke();
+                m_PlayerAction.OnDisableOtherUI?.Invoke();
                 OnFinishLoading?.Invoke();
                 DeterminePlayerSpawnPos();
                 SceneManager.SetActiveScene(SceneManager.GetSceneByName(scene));
@@ -104,7 +104,7 @@ public class SceneLoader : MonoBehaviour
             yield return null;
         }
 
-        m_PlayerAction.OnDisableMiscUI?.Invoke();
+        m_PlayerAction.OnDisableOtherUI?.Invoke();
         OnFinishLoading?.Invoke();
         SceneManager.SetActiveScene(SceneManager.GetSceneByName(scene));
         DeterminePlayerSpawnPos();
@@ -115,12 +115,12 @@ public class SceneLoader : MonoBehaviour
         if (m_MinTimeSpawnCooldown > 0) yield break;
         m_SpawnType = spawnType;
         string scene = DetermineScene(spawnType);
-        m_PlayerAction.OnEnableMiscUI?.Invoke();
+        m_PlayerAction.OnEnableOtherUI?.Invoke();
         m_UIManager.LoadingUI.Activate();
         OnStartLoading?.Invoke();
         yield return new WaitForSeconds(1 / TimeManager.Instance.TimeScale);
         m_UIManager.LoadingUI.Deactivate();
-        m_PlayerAction.OnDisableMiscUI?.Invoke();
+        m_PlayerAction.OnDisableOtherUI?.Invoke();
         OnFinishLoading?.Invoke();
         DeterminePlayerSpawnPos();
         SceneManager.SetActiveScene(SceneManager.GetSceneByName(scene));

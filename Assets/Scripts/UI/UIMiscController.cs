@@ -13,10 +13,10 @@ public class UIMiscController : MonoBehaviour
     [SerializeField] private UITab[] m_Tabs;
     private static int m_TabIndex = 1;
     private PlayerAction m_PlayerAction;
-    private  void Awake()
+    private void Awake()
     {
         m_PlayerAction = transform.root.GetComponent<PlayerAction>();
-        m_CloseButton.onClick.AddListener( CloseUI );
+        m_CloseButton.onClick.AddListener(CloseUI);
     }
 
     private void OnEnable()
@@ -26,7 +26,7 @@ public class UIMiscController : MonoBehaviour
         m_InventoryMenu.SelectAction += SelectInventoryTab;
         m_IngredientsStockMenu.SelectAction += SelectIngredientsTab;
         m_UpgradesMenu.SelectAction += SelectUpgradesTab;
-        m_PlayerAction.OnDisableMiscUI += SelectDefaultTab;
+        m_PlayerAction.OnDisableOtherUI += SelectDefaultTab;
     }
 
     private void OnDisable()
@@ -35,19 +35,19 @@ public class UIMiscController : MonoBehaviour
         m_InventoryMenu.SelectAction -= SelectInventoryTab;
         m_IngredientsStockMenu.SelectAction -= SelectIngredientsTab;
         m_UpgradesMenu.SelectAction -= SelectUpgradesTab;
-        m_PlayerAction.OnDisableMiscUI -= SelectDefaultTab;
+        m_PlayerAction.OnDisableOtherUI -= SelectDefaultTab;
     }
 
-    private void SelectTab( string name, float dur = 0.25f )
+    private void SelectTab(string name, float dur = 0.25f)
     {
-        foreach ( UITab tab in m_Tabs )
+        foreach (UITab tab in m_Tabs)
         {
-            tab.gameObject.SetActive( false );
-            if ( tab.Name.Equals( name ) )
+            tab.gameObject.SetActive(false);
+            if (tab.Name.Equals(name))
             {
-                tab.gameObject.SetActive( true );
+                tab.gameObject.SetActive(true);
                 m_TabIndex = tab.transform.GetSiblingIndex();
-                m_Marker.TweenTo( tab.Menu.transform.localPosition.x, dur );
+                m_Marker.TweenTo(tab.Menu.transform.localPosition.x, dur);
             }
         }
 
@@ -56,38 +56,38 @@ public class UIMiscController : MonoBehaviour
     public void ToggleInventoryUI()
     {
         ToggleUI();
-        if ( !gameObject.activeInHierarchy ) return;
-        SelectTab( "Inventory", 0 );
+        if (!gameObject.activeInHierarchy) return;
+        SelectTab("Inventory", 0);
     }
 
     public void ToggleUI()
     {
-        gameObject.SetActive( !gameObject.activeInHierarchy );
+        gameObject.SetActive(!gameObject.activeInHierarchy);
         m_PlayerAction.IsOtherUIOpen = gameObject.activeInHierarchy;
-        if ( gameObject.activeInHierarchy )
+        if (gameObject.activeInHierarchy)
         {
-            m_PlayerAction.OnEnableMiscUI?.Invoke();
+            m_PlayerAction.OnEnableOtherUI?.Invoke();
         }
         else
         {
-            m_PlayerAction.OnDisableMiscUI?.Invoke();
+            m_PlayerAction.OnDisableOtherUI?.Invoke();
         }
 
     }
 
     public void CloseUI()
     {
-        gameObject.SetActive( false );
+        gameObject.SetActive(false);
         m_PlayerAction.IsOtherUIOpen = false;
-        m_PlayerAction.OnDisableMiscUI?.Invoke();
+        m_PlayerAction.OnDisableOtherUI?.Invoke();
     }
 
 
-    private void SelectDefaultTab() => SelectTab( "Recipes", 0 );
-    private void SelectRecipesTab() => SelectTab( "Recipes" );
-    private void SelectInventoryTab() => SelectTab( "Inventory" );
-    private void SelectUpgradesTab() => SelectTab( "Upgrades" );
-    private void SelectIngredientsTab() => SelectTab( "Ingredients" );
+    private void SelectDefaultTab() => SelectTab("Recipes", 0);
+    private void SelectRecipesTab() => SelectTab("Recipes");
+    private void SelectInventoryTab() => SelectTab("Inventory");
+    private void SelectUpgradesTab() => SelectTab("Upgrades");
+    private void SelectIngredientsTab() => SelectTab("Ingredients");
 
 }
 
