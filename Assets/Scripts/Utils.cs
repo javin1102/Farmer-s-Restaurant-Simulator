@@ -65,6 +65,7 @@ public class Utils
     public const string SCENE_HOUSE = "House";
     public const string SCENE_CITY = "City";
     public const string SCENE_FARM = "Farm";
+    public const string SCENE_MAINMENU = "MainMenu";
 
     //Save
     public const string FARM_OBJECTS_FILENAME = "farmobjects.json";
@@ -73,4 +74,6 @@ public class Utils
     public const string FOODS_FILENAME = "recipe.json";
     public const string FARM_GENERATOR_TIME_FILENAME = "farmgeneratortime.json";
     public const string PLAYERDATA_FILENAME = "playerdata.json";
+
+
 }

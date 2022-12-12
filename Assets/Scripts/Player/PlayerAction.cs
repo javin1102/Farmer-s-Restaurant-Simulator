@@ -21,6 +21,9 @@ public class PlayerAction : MonoBehaviour
     public float DefaultActionTime { get => m_DefaultActionTime; set => m_DefaultActionTime = value; }
     public Item CurrEquippedItem { get => m_ActionSlotsController.CurrEquippedItem; }
     public static int Coins { get => m_Coins; set => m_Coins = value; }
+    public static PlayerAction Instance { get => m_Instance; }
+    public PlayerUpgrades PlayerUpgrades { get => m_PlayerUpgrades; }
+    public UnityAction OnLoadSucceeded { get => m_OnLoadSucceeded; set => m_OnLoadSucceeded = value; } //Make sure subscribed script is on the same scene
 
     //Event Listener
     private event UnityAction m_OnEnableUI;
@@ -31,6 +34,7 @@ public class PlayerAction : MonoBehaviour
     private UnityAction<Transform> m_ToggleSeedStoreUI;
     private UnityAction m_OnDropInventory;
     private UnityAction m_TogglePause;
+    private UnityAction m_OnLoadSucceeded;
 
 
     //Player Input Action
@@ -60,15 +64,21 @@ public class PlayerAction : MonoBehaviour
     private float m_DefaultActionTime; //time needed for certain action to be done (ex: chopping tree)
     private static int m_Coins;
     private SaveManager m_SaveManager;
+    private PlayerUpgrades m_PlayerUpgrades;
+    private static PlayerAction m_Instance;
 
     private void Awake()
     {
         //LockCursor();
+        if (m_Instance == null) m_Instance = this;
+        else Destroy(gameObject);
+        DontDestroyOnLoad(gameObject);
         m_Cam = Camera.main;
         m_PlayerInput = GetComponent<PlayerInput>();
         m_ActionSlotsController = GetComponent<ActionSlotsController>();
         m_ItemDatabase = GetComponent<ItemDatabase>();
         m_InventorySlotsController = GetComponent<InventorySlotsController>();
+        m_PlayerUpgrades = GetComponent<PlayerUpgrades>();
     }
 
     private void Start()
@@ -76,7 +86,7 @@ public class PlayerAction : MonoBehaviour
         m_UIManager = UIManager.Instance;
         m_SaveManager = SaveManager.Instance;
         m_SaveManager.OnSave += SavePlayerData;
-        m_SaveManager.LoadData(Utils.PLAYERDATA_FILENAME, OnLoadSucceeded, OnLoadFailed);
+        m_SaveManager.LoadData(Utils.PLAYERDATA_FILENAME, LoadSucceeded, LoadFailed);
         m_ActionSlotsController.SelectActionSlot(0);
         LockCursor();
     }
@@ -192,19 +202,24 @@ public class PlayerAction : MonoBehaviour
         rootObject.Add("inventory", arrs.inventory);
         rootObject.Add("actionSlots", arrs.actionSlots);
         rootObject.Add("coins", m_Coins);
+        rootObject.Add("upgrades", new SerializablePlayerUpgradesData(m_PlayerUpgrades).Serialize());
         await m_SaveManager.SaveData(rootObject.ToString(), Utils.PLAYERDATA_FILENAME);
     }
 
-    private void OnLoadSucceeded(JSONNode jsonNode)
+    private void LoadSucceeded(JSONNode jsonNode)
     {
         m_ItemDatabase.OnLoadSucceded(jsonNode);
         m_Coins = jsonNode["coins"];
+        SerializablePlayerUpgradesData upgradesData = new(jsonNode["upgrades"]);
+        m_PlayerUpgrades.Set(upgradesData.chefQuantityLevel, upgradesData.restaurantExpandLevel, upgradesData.inventoryLevel);
+        // OnLoadSucceeded?.Invoke();
     }
 
-    private void OnLoadFailed()
+    private void LoadFailed()
     {
         m_ItemDatabase.OnLoadFailed();
         m_Coins = 100;
+        m_PlayerUpgrades.Reset();
     }
 
 
@@ -344,5 +359,4 @@ public class PlayerAction : MonoBehaviour
     private void SelectActionSlot_5(InputAction.CallbackContext obj) => m_ActionSlotsController.SelectActionSlot_5();
     private void SelectActionSlot_6(InputAction.CallbackContext obj) => m_ActionSlotsController.SelectActionSlot_6();
 }
-
 

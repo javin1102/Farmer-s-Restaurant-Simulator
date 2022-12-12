@@ -14,7 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ID: Axe
   prefab: {fileID: 3573735643255035216, guid: bd4bde6305b6719498cee362ed2ecfac, type: 3}
-  icon: {fileID: 21300000, guid: be340a165cb9c8d4cb50f1deeb51d4ea, type: 3}
+  icon: {fileID: 21300000, guid: 6f88165b2be8fa94eafdc41f21087a80, type: 3}
   buyPrice: 0
   sellPrice: 0
   decreaseable: 0
+  itemType: 0

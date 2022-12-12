@@ -8,33 +8,30 @@ namespace Upgrades
     {
         private InventorySlotsController m_InventorySlotsController;
         [SerializeField] private GameObject m_UIInventoryLayout;
-        private new void Start()
-        {
-            base.Start();
-            m_InventorySlotsController = transform.root.GetComponent<InventorySlotsController>();
-        }
 
+        protected override int m_CurrentLevel { get => m_PlayerUpgrades.InventoryLevel; set => m_PlayerUpgrades.InventoryLevel = value; }
+        private void Start()
+        {
+            m_InventorySlotsController = transform.root.GetComponent<InventorySlotsController>();
+            UpgradeFeature();
+        }
+        private int GetSlotSize()
+        {
+            float tValue = Mathf.InverseLerp(1, m_MaxLevel, m_PlayerUpgrades.InventoryLevel);
+            int slotSize = Mathf.RoundToInt(Mathf.Lerp(20, 42, tValue));
+            return slotSize;
+        }
 
         protected override void UpgradeFeature()
         {
-            int initSize = m_InventorySlotsController.SlotSize;
-            if ( m_CurrentLevel != m_MaxLevel ) m_InventorySlotsController.SlotSize += 7;
-            else m_InventorySlotsController.SlotSize += 8;
-
-            for ( int i = initSize; i < m_InventorySlotsController.SlotSize; i++ )
-            {
-                m_UIInventoryLayout.transform.GetChild( i ).gameObject.SetActive( true );
-            }
+            int slotSize = GetSlotSize();
+            m_InventorySlotsController.SlotSize = slotSize;
+            for (int i = 0; i < slotSize; i++) m_UIInventoryLayout.transform.GetChild(i).gameObject.SetActive(true);
         }
 
         protected override void SetMaxLevel()
         {
-            m_MaxLevel = 3;
-        }
-
-        protected override void SetCurrentLevel()
-        {
-            m_CurrentLevel = 1;
+            m_MaxLevel = 4;
         }
     }
 }

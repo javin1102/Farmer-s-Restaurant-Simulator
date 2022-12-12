@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -11,26 +12,37 @@ namespace Upgrades
         [SerializeField] protected int m_Cost;
         [SerializeField] protected Button m_Button;
         [SerializeField] protected TMP_Text m_LevelText, m_CostText;
-        protected int m_CurrentLevel;
+        abstract protected int m_CurrentLevel { get; set; }
         protected int m_MaxLevel;
-        protected void Start()
+        protected PlayerUpgrades m_PlayerUpgrades;
+        void Awake()
         {
-            m_Button.onClick.AddListener( DoUpgrade );
+            m_PlayerUpgrades = transform.root.GetComponent<PlayerUpgrades>();
+            m_Button.onClick.AddListener(DoUpgrade);
             SetMaxLevel();
-            SetCurrentLevel();
         }
-        protected void DoUpgrade()
+        void OnEnable()
         {
-            if ( m_CurrentLevel >= m_MaxLevel ) return;
-            UpgradeFeature();
-            m_CurrentLevel += 1;
+            UpdateUI();
+        }
+
+        private void UpdateUI()
+        {
             m_LevelText.text = $"{m_CurrentLevel}/{m_MaxLevel}";
             m_CostText.text = $"Cost: <sprite index=0>{m_Cost}";
         }
 
+
+        protected void DoUpgrade()
+        {
+            if (m_CurrentLevel >= m_MaxLevel) return;
+            m_CurrentLevel += 1;
+            UpgradeFeature();
+            UpdateUI();
+        }
+
         protected abstract void UpgradeFeature();
         protected abstract void SetMaxLevel();
-        protected abstract void SetCurrentLevel();
     }
 
 }

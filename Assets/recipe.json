@@ -1,1 +1,1 @@
-{"foods":[{"ID":"Gado-gado","isUnlock":false,"isSelling":false},{"ID":"Karedok","isUnlock":true,"isSelling":true},{"ID":"Pecel","isUnlock":true,"isSelling":false}],"stocks":[{"ID":"bawang putih","quantity":50}]}
+{"foods":[{"ID":"Gado-gado","isUnlock":false,"isSelling":false},{"ID":"Karedok","isUnlock":false,"isSelling":false},{"ID":"Pecel","isUnlock":true,"isSelling":false}],"stocks":[{"ID":"bawang putih","quantity":100},{"ID":"bombay","quantity":100}]}

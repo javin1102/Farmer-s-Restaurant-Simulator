@@ -6,10 +6,7 @@ namespace Upgrades
 {
     public class ExpandRestaurant : Upgrade
     {
-        protected override void SetCurrentLevel()
-        {
-            m_CurrentLevel = 1;
-        }
+        protected override int m_CurrentLevel { get => m_PlayerUpgrades.RestaurantExpandLevel; set => m_PlayerUpgrades.RestaurantExpandLevel = value; }
 
         protected override void SetMaxLevel()
         {

@@ -8,6 +8,7 @@ namespace Upgrades
     {
         [SerializeField] private RestaurantUpgradesChannel m_RestaurantUpgradesChannel;
 
+        protected override int m_CurrentLevel { get => m_PlayerUpgrades.ChefQuantityLevel; set => m_PlayerUpgrades.ChefQuantityLevel = value; }
 
         protected override void UpgradeFeature()
         {
@@ -19,10 +20,6 @@ namespace Upgrades
             m_MaxLevel = 3;
         }
 
-        protected override void SetCurrentLevel()
-        {
-            m_CurrentLevel = 1;
-        }
     }
 
 }

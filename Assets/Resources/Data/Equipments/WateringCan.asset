@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: WateringCan
   m_EditorClassIdentifier: 
   ID: Watering_Can
-  prefab: {fileID: 7680515037815010289, guid: a629c2bfeee8ad04caf8b6c230c16cfd, type: 3}
-  icon: {fileID: 21300000, guid: ddf2e76e8a1f88f46ae1e42277850b48, type: 3}
+  prefab: {fileID: 119069976342126693, guid: a629c2bfeee8ad04caf8b6c230c16cfd, type: 3}
+  icon: {fileID: 21300000, guid: c92608dda11575741a45f745c0275413, type: 3}
   buyPrice: 0
   sellPrice: 0
   decreaseable: 0

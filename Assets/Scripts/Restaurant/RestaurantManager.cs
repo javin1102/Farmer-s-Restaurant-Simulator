@@ -61,8 +61,14 @@ public class RestaurantManager : MonoBehaviour
         m_FoodsController = FoodsController.Instance;
         m_SaveManager = SaveManager.Instance;
         m_ResourcesLoader = ResourcesLoader.Instance;
+        AddChefsFromUpgradeData(PlayerAction.Instance.PlayerUpgrades.ChefQuantityLevel);
         m_SaveManager.OnSave += SaveRestaurantObjectsData;
         m_SaveManager.LoadData(Utils.RESTAURANT_OBJECTS_FILENAME, OnRestaurantObjectsLoadSucceeded, null);
+    }
+
+    private void AddChefsFromUpgradeData(int quantity)
+    {
+        for (int i = 0; i < quantity; i++) AddChef();
     }
 
     private void OnEnable()
@@ -122,6 +128,7 @@ public class RestaurantManager : MonoBehaviour
     private void AddChef()
     {
         Chef chef = Instantiate(m_ChefPrefab, transform).GetComponent<Chef>();
+        m_Chefs.Add(chef);
         chef.Agent.Warp(GetGroundRandPos());
     }
 

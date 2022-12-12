@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.070500046, g: 0.35370678, b: 0.97079957, a: 1}
+  m_IndirectSpecularColor: {r: 0.07332242, g: 0.2832046, b: 0.78468084, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -2786,6 +2786,7 @@ GameObject:
   - component: {fileID: 145241760}
   - component: {fileID: 145241770}
   - component: {fileID: 145241759}
+  - component: {fileID: 145241771}
   m_Layer: 7
   m_Name: Player
   m_TagString: Player
@@ -3069,6 +3070,18 @@ MonoBehaviour:
   garlic: {fileID: 11400000, guid: 253935849d38af04ea8233ad5d6e5ef3, type: 2}
   onion: {fileID: 11400000, guid: d9be9c26c1e8b274899163dff0d8046d, type: 2}
   carrot: {fileID: 11400000, guid: e893fd2c6883e2147b04b14df1460bf1, type: 2}
+--- !u!114 &145241771
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 145241758}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bb6a52faf9084d34a9d3a9026f6120bf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &154720620
 GameObject:
   m_ObjectHideFlags: 0
@@ -3797,7 +3810,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 15
+  m_RootOrder: 14
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &173308374
 GameObject:
@@ -4565,11 +4578,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8c8ddbccae5a11e4bad96efa6478f33d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Cost: 0
-  m_Button: {fileID: 1816094023}
-  m_LevelText: {fileID: 664932421}
-  m_CostText: {fileID: 137641399}
-  m_RestaurantUpgradesChannel: {fileID: 11400000, guid: e31e2903102884444b72627fc5f92105, type: 2}
 --- !u!1 &216716644
 GameObject:
   m_ObjectHideFlags: 0
@@ -7460,11 +7468,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 77233dd4640900941ba4d975d582e2c5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Cost: 0
-  m_Button: {fileID: 1050486833}
-  m_LevelText: {fileID: 818594514}
-  m_CostText: {fileID: 660496314}
-  m_RestaurantUpgrades: {fileID: 11400000, guid: e31e2903102884444b72627fc5f92105, type: 2}
 --- !u!1 &409342050 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 6877791696953318574, guid: 1813132642192fe42a4b11cf718b5ec3, type: 3}
@@ -24696,7 +24699,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 14
+  m_RootOrder: 13
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1547659463
 PrefabInstance:
@@ -32299,7 +32302,7 @@ Canvas:
   m_OverrideSorting: 1
   m_OverridePixelPerfect: 0
   m_SortingBucketNormalizedSize: 0
-  m_AdditionalShaderChannelsFlag: 0
+  m_AdditionalShaderChannelsFlag: 25
   m_SortingLayerID: 0
   m_SortingOrder: 10
   m_TargetDisplay: 0
@@ -32611,7 +32614,7 @@ RectTransform:
   m_Children:
   - {fileID: 27393824}
   m_Father: {fileID: 0}
-  m_RootOrder: 16
+  m_RootOrder: 15
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -34317,81 +34320,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ea6fe712cc8629c4dbe956d512e1e23d, type: 3}
---- !u!23 &3565426450359581506
-MeshRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4071907110901759406}
-  m_Enabled: 1
-  m_CastShadows: 1
-  m_ReceiveShadows: 1
-  m_DynamicOccludee: 1
-  m_StaticShadowCaster: 0
-  m_MotionVectors: 1
-  m_LightProbeUsage: 1
-  m_ReflectionProbeUsage: 1
-  m_RayTracingMode: 2
-  m_RayTraceProcedural: 0
-  m_RenderingLayerMask: 1
-  m_RendererPriority: 0
-  m_Materials:
-  - {fileID: 2100000, guid: dd0dde99b82790c47ae285a712ce6e73, type: 2}
-  m_StaticBatchInfo:
-    firstSubMesh: 0
-    subMeshCount: 0
-  m_StaticBatchRoot: {fileID: 0}
-  m_ProbeAnchor: {fileID: 0}
-  m_LightProbeVolumeOverride: {fileID: 0}
-  m_ScaleInLightmap: 1
-  m_ReceiveGI: 1
-  m_PreserveUVs: 0
-  m_IgnoreNormalsForChartDetection: 0
-  m_ImportantGI: 0
-  m_StitchLightmapSeams: 1
-  m_SelectedEditorRenderState: 3
-  m_MinimumChartSize: 4
-  m_AutoUVMaxDistance: 0.5
-  m_AutoUVMaxAngle: 89
-  m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
-  m_SortingOrder: 0
-  m_AdditionalVertexStreams: {fileID: 0}
---- !u!1 &4071907110901759406
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 5360759284732068017}
-  - component: {fileID: 7423430102884482892}
-  - component: {fileID: 3565426450359581506}
-  m_Layer: 0
-  m_Name: StonePickAxe
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 0
---- !u!4 &5360759284732068017
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4071907110901759406}
-  m_LocalRotation: {x: -0.7071068, y: -0, z: -0, w: 0.7071067}
-  m_LocalPosition: {x: 0, y: 0, z: -0.099999994}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 13
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &6877791697126420920
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -34489,11 +34417,3 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 1813132642192fe42a4b11cf718b5ec3, type: 3}
---- !u!33 &7423430102884482892
-MeshFilter:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4071907110901759406}
-  m_Mesh: {fileID: -5499723921733512467, guid: 08142cc0006a4304f9f8094011ae8444, type: 3}
