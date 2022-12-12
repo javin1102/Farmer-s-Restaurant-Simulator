@@ -164,7 +164,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ac333ee36a7a5db4bbe40e86ae75e975, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Data: {fileID: 11400000, guid: eb3788bdc19fe944da796cd9c04765ea, type: 2}
+  m_Data: {fileID: 11400000, guid: 0b7597aaf4cbab34d85a75a332cf7299, type: 2}
   m_HandPosOffset: {x: -0.35, y: -0.15, z: -0.55}
   m_HandEulerAngles: {x: 0, y: 180, z: 0}
   m_HandScale: {x: 0.2, y: 0.2, z: 0.2}
@@ -229,6 +229,10 @@ PrefabInstance:
     - target: {fileID: 2910805850573045649, guid: 7e9d457e27600ea4186e6f61cc136adb, type: 3}
       propertyPath: m_Name
       value: Canvas
+      objectReference: {fileID: 0}
+    - target: {fileID: 2910805850573045649, guid: 7e9d457e27600ea4186e6f61cc136adb, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8596567492224220048, guid: 7e9d457e27600ea4186e6f61cc136adb, type: 3}
       propertyPath: m_Pivot.x

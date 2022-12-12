@@ -17,24 +17,24 @@ public abstract class UIExtraController : MonoBehaviour
         m_ItemDatabase = transform.root.GetComponent<ItemDatabase>();
         m_PlayerAction = transform.root.GetComponent<PlayerAction>();
         m_UIInventoryController = transform.parent.GetComponent<UIInventoryController>();
-        m_IncreaseButton.onClick.AddListener( IncreaseQuantity );
-        m_DecreaseButton.onClick.AddListener( DecreaseQuantity );
-        m_InputField.onValueChanged.AddListener( ConvertText );
-        m_InputField.onEndEdit.AddListener( Validate );
-        m_ActionButton.onClick.AddListener( DoAction );
+        m_IncreaseButton.onClick.AddListener(IncreaseQuantity);
+        m_DecreaseButton.onClick.AddListener(DecreaseQuantity);
+        m_InputField.onValueChanged.AddListener(ConvertText);
+        m_InputField.onEndEdit.AddListener(Validate);
+        m_ActionButton.onClick.AddListener(DoAction);
     }
 
-    protected virtual void Validate( string arg0 )
+    protected virtual void Validate(string arg0)
     {
-        if ( m_UIInventoryController.SelectedSlot == null ) return;
-        if ( m_Quantity >= m_UIInventoryController.SelectedSlot.Slot.quantity )
+        if (m_UIInventoryController.SelectedSlot == null) return;
+        if (m_Quantity >= m_UIInventoryController.SelectedSlot.Slot.quantity)
         {
             m_Quantity = m_UIInventoryController.SelectedSlot.Slot.quantity;
             m_InputField.text = m_Quantity.ToString();
             return;
         }
 
-        if ( m_Quantity <= 0 )
+        if (m_Quantity <= 0)
         {
             m_Quantity = 0;
             m_InputField.text = m_Quantity.ToString();
@@ -42,11 +42,14 @@ public abstract class UIExtraController : MonoBehaviour
     }
     protected void Update()
     {
-        if ( m_UIInventoryController.SelectedSlot == null ) {
-            gameObject.SetActive( false );
+        if (m_UIInventoryController.SelectedSlot == null || !m_UIInventoryController.SelectedSlot.Slot.data.decreaseable)
+        {
+            gameObject.SetActive(false);
             return;
-        } 
+        }
     }
+
+
     protected void OnDisable()
     {
         m_InputField.text = "";
@@ -56,27 +59,27 @@ public abstract class UIExtraController : MonoBehaviour
     protected void DoAction()
     {
         ButtonAction();
-        if ( m_UIInventoryController.SelectedSlot.Slot.quantity <= 0 )
+        if (m_UIInventoryController.SelectedSlot.Slot.quantity <= 0)
         {
             m_UIInventoryController.SelectedSlot.ResetSprite();
             m_UIInventoryController.SelectedSlot = null;
-          
+
         }
         m_PlayerAction.OnDecreaseItemDatabase?.Invoke();
     }
 
     protected abstract void ButtonAction();
-    
 
-    private void ConvertText( string arg0 )
+
+    private void ConvertText(string arg0)
     {
 
-        Int32.TryParse( arg0, out m_Quantity );
+        Int32.TryParse(arg0, out m_Quantity);
     }
 
     private void IncreaseQuantity()
     {
-        if ( m_Quantity >= m_UIInventoryController.SelectedSlot.Slot.quantity )
+        if (m_Quantity >= m_UIInventoryController.SelectedSlot.Slot.quantity)
         {
             m_Quantity = m_UIInventoryController.SelectedSlot.Slot.quantity;
             m_InputField.text = m_Quantity.ToString();
@@ -89,7 +92,7 @@ public abstract class UIExtraController : MonoBehaviour
 
     private void DecreaseQuantity()
     {
-        if ( m_Quantity <= 0 ) return;
+        if (m_Quantity <= 0) return;
         m_Quantity -= 1;
         m_InputField.text = m_Quantity.ToString();
     }

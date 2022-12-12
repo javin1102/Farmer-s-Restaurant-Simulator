@@ -108,7 +108,7 @@ public class PlantTile : BaseFarmObject, ITimeTracker
         }
         if (this.Status == TileStatus.PLANTED)
         {
-            if (timeElapsed > m_plantGrowHandler.SeedData.hourToGrow && this.CompareTag(Utils.TILE_WET_TAG))
+            if (timeElapsed >= m_plantGrowHandler.SeedData.hourToGrow && this.CompareTag(Utils.TILE_WET_TAG))
             {
                 this.m_plantGrowHandler.GrowProgression();
                 this.SwitchStatus(TileStatus.HOED);

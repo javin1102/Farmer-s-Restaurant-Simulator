@@ -17,6 +17,7 @@ public class UIGameController : MonoBehaviour
     private void Start()
     {
         m_UIButton.onClick.AddListener(m_PlayerAction.InvokeToggleMiscUI);
+        m_UIButton.onClick.AddListener(() => m_PlayerAction.PlayAudio(Utils.BUTTON_SFX));
     }
 
     void Update()

@@ -242,7 +242,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 99e727b5f52028942a9d4dac67f42420, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Data: {fileID: 11400000, guid: 04eac4a22291e604a92485d59711fe5e, type: 2}
+  m_Data: {fileID: 11400000, guid: 1db87eb2f1b03c84ab288de0db5323e8, type: 2}
   m_HandPosOffset: {x: -0.35, y: -0.2, z: -0.55}
   m_HandEulerAngles: {x: 0, y: 180, z: 0}
   m_HandScale: {x: 0.2, y: 0.2, z: 0.2}

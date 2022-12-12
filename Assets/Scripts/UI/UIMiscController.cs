@@ -48,6 +48,7 @@ public class UIMiscController : MonoBehaviour
                 tab.gameObject.SetActive(true);
                 m_TabIndex = tab.transform.GetSiblingIndex();
                 m_Marker.TweenTo(tab.Menu.transform.localPosition.x, dur);
+                m_PlayerAction.PlayAudio(Utils.BUTTON_SFX);
             }
         }
 
@@ -80,6 +81,7 @@ public class UIMiscController : MonoBehaviour
         gameObject.SetActive(false);
         m_PlayerAction.IsOtherUIOpen = false;
         m_PlayerAction.OnDisableOtherUI?.Invoke();
+        m_PlayerAction.PlayAudio(Utils.BUTTON_SFX);
     }
 
 

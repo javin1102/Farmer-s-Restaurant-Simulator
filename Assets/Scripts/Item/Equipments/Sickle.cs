@@ -1,18 +1,14 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEditor;
 
-public class Sickle : Item,IRaycastAction
+public class Sickle : Item, IRaycastAction
 {
     public GameObject selectedCrop;
     private ItemDatabase m_ItemDatabase;
-    //private ActionSlotsController m_ActionSlotsController;
-    //private InventoryController m_InventoryController;
 
     public ItemData harvestCropData;
 
-    private SeedData m_SeedData; 
+    private SeedData m_SeedData;
 
     private float dropChance;
     private bool IsDrop = false;
@@ -20,23 +16,17 @@ public class Sickle : Item,IRaycastAction
     private Matrix4x4 m_TileMatrix;
     private Mesh m_PreviewTileMesh;
     private MaterialChanger previewTileMaterialChanger;
-    //private new void OnEnable()
-    //{
-    //    base.OnEnable();
-    //}
-
+    private AudioSource m_HarvestAudioSource;
     private new void Awake()
     {
         base.Awake();
         m_ItemDatabase = transform.root.GetComponent<ItemDatabase>();
-        //m_TileManager = TileManager.instance;
-        //m_ActionSlotsController = GetComponentInParent<ActionSlotsController>();
-        //m_InventoryController = GetComponentInParent<InventoryController>();
+        m_HarvestAudioSource = GetComponent<AudioSource>();
     }
 
     public override void MainAction()
     {
-        if (selectedCrop!=null)
+        if (selectedCrop != null)
         {
             m_SeedData = selectedCrop.GetComponentInParent<PlantGrowHandler>().SeedData;
 
@@ -54,47 +44,41 @@ public class Sickle : Item,IRaycastAction
 
     public void PerformRaycastAction(RaycastHit hitInfo)
     {
-        // if (hitInfo.collider != null && hitInfo.collider.TryGetComponent(out PlantGrowHandler plantGrowHandler))
         if (hitInfo.collider.CompareTag(Utils.CROP_TAG))
         {
+            if (selectedCrop != null && selectedCrop != hitInfo.transform.gameObject)
+            {
+                selectedCrop.layer = 9;
+            }
             selectedCrop = hitInfo.transform.gameObject;
-
-            previewTileMaterialChanger = selectedCrop.transform.parent.GetComponentInParent<MaterialChanger>();
-            m_PreviewTileMesh = selectedCrop.transform.parent.GetComponentInParent<MeshFilter>().sharedMesh;
-
-            Vector3 tilePos = m_TileManager.WorldToTilePos( hitInfo.point ) + Vector3.up * .1f;
-            Quaternion tileRot = Quaternion.Euler(90f, 0, 0);
-
-            m_TileMatrix = Matrix4x4.TRS(tilePos, tileRot, Vector3.one);
-            previewTileMaterialChanger.ChangePreviewMaterialColor(true);
-            Graphics.DrawMesh(m_PreviewTileMesh, m_TileMatrix, previewTileMaterialChanger.PreviewMaterial, 0);
+            selectedCrop.layer = 13;
             UIManager.Instance.ShowActionHelperPrimary("Left", "To Use Sickle...");
             return;
         }
-        if( previewTileMaterialChanger != null )previewTileMaterialChanger.ChangePreviewMaterialColor(false);
+        if (selectedCrop != null)
+        {
+            selectedCrop.layer = 9;
+        }
+        selectedCrop = null;
         UIManager.Instance.HideActionHelper();
         return;
     }
 
-    public void AddSeedToInventory(SeedData seed)
+    private void AddSeedToInventory(SeedData seed)
     {
-        Debug.Log("seedinventory");
-        m_ItemDatabase.Store( seed );
-        //if (m_ActionSlotsController.Store(seed)) return;
-        //if (m_InventoryController.Store(seed)) return;
+        m_ItemDatabase.Store(seed);
     }
 
-    public void AddCropToInventory(ItemData item)
+    private void AddCropToInventory(ItemData item)
     {
-        m_ItemDatabase.Store( item );
-        //if (m_ActionSlotsController.StoreHarvestedCrop(item)) return;
-        //if (m_InventoryController.Store(item)) return;
+        m_ItemDatabase.Store(item);
     }
 
     IEnumerator PlaySFX()
     {
-        transform.GetChild(0).gameObject.SetActive(true);
+        StopAllCoroutines();
+        m_HarvestAudioSource.Play();
         yield return new WaitForSeconds(0.4f);
-        transform.GetChild(0).gameObject.SetActive(false);
+        m_HarvestAudioSource.Stop();
     }
 }

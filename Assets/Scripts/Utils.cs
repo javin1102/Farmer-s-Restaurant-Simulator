@@ -40,8 +40,9 @@ public class Utils
     public const string ALT_ACTION = "Alt";
     public const string PAUSE_ACTION = "Pause";
     //TAGS
-    public const string FARM_GROUND_TAG = "Farm Ground";
+    public const string GROUND_TAG = "Ground";
     public const string RESTAURANT_GROUND_TAG = "Restaurant Ground";
+    public const string FARM_GROUND_TAG = "Farm Ground";
     public const string TILE_TAG = "Tile";
     public const string PROP_TAG = "Props";
     public const string TILE_PARENT_TAG = "Tile Parent";
@@ -74,6 +75,8 @@ public class Utils
     public const string FOODS_FILENAME = "recipe.json";
     public const string FARM_GENERATOR_TIME_FILENAME = "farmgeneratortime.json";
     public const string PLAYERDATA_FILENAME = "playerdata.json";
+
+    public const string BUTTON_SFX = "button_sfx";
 
 
 }

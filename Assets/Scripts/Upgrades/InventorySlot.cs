@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace Upgrades
@@ -15,17 +13,10 @@ namespace Upgrades
             m_InventorySlotsController = transform.root.GetComponent<InventorySlotsController>();
             UpgradeFeature();
         }
-        private int GetSlotSize()
-        {
-            float tValue = Mathf.InverseLerp(1, m_MaxLevel, m_PlayerUpgrades.InventoryLevel);
-            int slotSize = Mathf.RoundToInt(Mathf.Lerp(20, 42, tValue));
-            return slotSize;
-        }
 
         protected override void UpgradeFeature()
         {
-            int slotSize = GetSlotSize();
-            m_InventorySlotsController.SlotSize = slotSize;
+            int slotSize = m_PlayerUpgrades.GetSlotSize();
             for (int i = 0; i < slotSize; i++) m_UIInventoryLayout.transform.GetChild(i).gameObject.SetActive(true);
         }
 

@@ -1,22 +1,18 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-
-/// <summary>
-/// 
-/// SCRIPT BUAT HANDLE ITEM WATER CAN
-/// 
-/// COMPARETAG TILE -> SIMPAN SELECTEDOBJECT -> SIMPAN RENDERER UTK UBAH MATERIAL -> KALO DIKLIK UBAH TAG SAMA MATERIAL
-/// 
-/// </summary>
-
-public class WateringCan : Item,IRaycastAction
+public class WateringCan : Item, IRaycastAction
 {
 
     public GameObject selectedTile;
     private Matrix4x4 m_TileMatrix;
     private Mesh m_PreviewTileMesh;
     private MaterialChanger previewTileMaterialChanger;
+    private AudioSource m_WateringAudioSource;
+    private new void Awake()
+    {
+        base.Awake();
+        m_WateringAudioSource = GetComponent<AudioSource>();
+    }
     public override void MainAction()
     {
         if (selectedTile != null && !selectedTile.CompareTag(Utils.TILE_WET_TAG))
@@ -45,18 +41,19 @@ public class WateringCan : Item,IRaycastAction
             m_TileMatrix = Matrix4x4.TRS(tilePos, tileRot, Vector3.one);
             previewTileMaterialChanger.ChangePreviewMaterialColor(true);
             Graphics.DrawMesh(m_PreviewTileMesh, m_TileMatrix, previewTileMaterialChanger.PreviewMaterial, 0);
-            UIManager.Instance.ShowActionHelperPrimary("Left" , "To Use Water Can...");
+            UIManager.Instance.ShowActionHelperPrimary("Left", "To Use Water Can...");
             return;
         }
-        if( previewTileMaterialChanger != null) previewTileMaterialChanger.ChangePreviewMaterialColor(false);
+        if (previewTileMaterialChanger != null) previewTileMaterialChanger.ChangePreviewMaterialColor(false);
         UIManager.Instance.HideActionHelper();
         return;
     }
 
     IEnumerator PlaySFX()
     {
-        transform.GetChild(0).gameObject.SetActive(true);
-        yield return new WaitForSeconds(0.5f);
-        transform.GetChild(0).gameObject.SetActive(false);
+        StopAllCoroutines();
+        m_WateringAudioSource.Play();
+        yield return new WaitForSeconds(0.4f);
+        m_WateringAudioSource.Stop();
     }
 }

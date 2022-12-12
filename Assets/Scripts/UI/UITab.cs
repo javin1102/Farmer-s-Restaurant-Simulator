@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
 public class UITab : MonoBehaviour
@@ -13,21 +11,21 @@ public class UITab : MonoBehaviour
 
     private void OnEnable()
     {
-        if ( UIMiscController.TabIndex == transform.GetSiblingIndex() )
+        if (UIMiscController.TabIndex == transform.GetSiblingIndex())
         {
             transform.localPosition = Vector3.zero;
         }
 
-        else if ( UIMiscController.TabIndex > transform.GetSiblingIndex() )
+        else if (UIMiscController.TabIndex > transform.GetSiblingIndex())
         {
             transform.localPosition = Vector3.left * 1000f;
-            transform.DOLocalMoveX( 0, .5f );
+            transform.DOLocalMoveX(0, .5f);
         }
 
-        else if( UIMiscController.TabIndex < transform.GetSiblingIndex() )
+        else if (UIMiscController.TabIndex < transform.GetSiblingIndex())
         {
             transform.localPosition = Vector3.right * 1000f;
-            transform.DOLocalMoveX( 0, .5f );
+            transform.DOLocalMoveX(0, .5f);
         }
 
         UIMiscController.TabIndex = transform.GetSiblingIndex();

@@ -9,7 +9,6 @@ public class RestaurantManager : MonoBehaviour
     public List<Table> Tables { get => m_Tables; }
     public List<Seat> Seats { get => m_Seats; }
     public List<Stove> Stoves { get => m_Stoves; }
-    public Transform FoodPlace { get => m_FoodPlace; }
     public List<Chef> Chefs => m_Chefs;
     public Queue<KeyValuePair<Seat, FoodData>> OrderQueue => m_OrderQueue;
     public Queue<Food> FoodsToServe => m_FoodsToServe;
@@ -34,14 +33,12 @@ public class RestaurantManager : MonoBehaviour
     private static RestaurantManager m_Instance;
     [SerializeField] private Transform m_RestaurantGround;
     [SerializeField] private Transform m_RestaurantGround2;
-    [SerializeField] private Transform m_FoodPlace;
     private bool m_FirstLoad = true;
     private BoxCollider m_GroundCollider;
     private BoxCollider m_GroundCollider2;
 
     //Upgrades
     [SerializeField] private GameObject m_ChefPrefab;
-    [SerializeField] private GameObject m_WaiterPrefab;
     [SerializeField] private RestaurantUpgradesChannel m_RestaurantUpgradesChannel;
 
     private FoodsController m_FoodsController;

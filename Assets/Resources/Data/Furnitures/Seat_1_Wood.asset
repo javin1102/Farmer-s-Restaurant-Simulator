@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d8fa40ac345182c4f8e32667d43246e4, type: 3}
   m_Name: Seat_1_Wood
   m_EditorClassIdentifier: 
-  ID: Seat_Wood
+  ID: Kursi Kayu
   prefab: {fileID: 6232863821200892145, guid: d8ce643f9b1051143aad01ce86ab084a, type: 3}
   icon: {fileID: 21300000, guid: e14ab93d32b5be84d865c1252383d523, type: 3}
   buyPrice: 100

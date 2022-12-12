@@ -22,7 +22,7 @@ public class SaveManager : MonoBehaviour
         m_AutoSaveTime = m_DefaultAutoSaveTime;
     }
 
-    private void Update() => AutoSave_Seconds(m_DefaultAutoSaveTime);
+    // private void Update() => AutoSave_Seconds(m_DefaultAutoSaveTime);
 
     public async Task SaveData(string jsonText, string filename)
     {

@@ -10,8 +10,6 @@ GameObject:
   m_Component:
   - component: {fileID: 3358945435167939136}
   - component: {fileID: 3358945435167939151}
-  - component: {fileID: 4022771280473758962}
-  - component: {fileID: 2159278455131921454}
   m_Layer: 9
   m_Name: Plant_Potato
   m_TagString: Untagged
@@ -28,7 +26,7 @@ Transform:
   m_GameObject: {fileID: 3358945435167939137}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.5, y: 1, z: 0.5}
+  m_LocalScale: {x: 1.25, y: 4, z: 1.25}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 8831083980407284703}
@@ -50,64 +48,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   statePlant: 0
-  growTime: 2
-  m_SeedData: {fileID: 11400000, guid: 00f4dd943bb94fd418beb4afba3f7fbb, type: 2}
---- !u!64 &4022771280473758962
-MeshCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3358945435167939137}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 4
-  m_Convex: 0
-  m_CookingOptions: 30
-  m_Mesh: {fileID: 0}
---- !u!23 &2159278455131921454
-MeshRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3358945435167939137}
-  m_Enabled: 1
-  m_CastShadows: 1
-  m_ReceiveShadows: 1
-  m_DynamicOccludee: 1
-  m_StaticShadowCaster: 0
-  m_MotionVectors: 1
-  m_LightProbeUsage: 1
-  m_ReflectionProbeUsage: 1
-  m_RayTracingMode: 2
-  m_RayTraceProcedural: 0
-  m_RenderingLayerMask: 1
-  m_RendererPriority: 0
-  m_Materials:
-  - {fileID: 0}
-  m_StaticBatchInfo:
-    firstSubMesh: 0
-    subMeshCount: 0
-  m_StaticBatchRoot: {fileID: 0}
-  m_ProbeAnchor: {fileID: 0}
-  m_LightProbeVolumeOverride: {fileID: 0}
-  m_ScaleInLightmap: 1
-  m_ReceiveGI: 1
-  m_PreserveUVs: 0
-  m_IgnoreNormalsForChartDetection: 0
-  m_ImportantGI: 0
-  m_StitchLightmapSeams: 1
-  m_SelectedEditorRenderState: 3
-  m_MinimumChartSize: 4
-  m_AutoUVMaxDistance: 0.5
-  m_AutoUVMaxAngle: 89
-  m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
-  m_SortingOrder: 0
-  m_AdditionalVertexStreams: {fileID: 0}
+  SeedData: {fileID: 11400000, guid: 6307e58903a989d4282ee67b12956da1, type: 2}
 --- !u!1001 &5138407778991233385
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -159,6 +100,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -7511558181221131132, guid: 015dd8fa65fe9ff4a870b0cba3499eec, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 8c73b302b49b8ac49851d6201be89ee1, type: 2}
+    - target: {fileID: -7511558181221131132, guid: 015dd8fa65fe9ff4a870b0cba3499eec, type: 3}
+      propertyPath: m_Materials.Array.data[1]
+      value: 
+      objectReference: {fileID: 2100000, guid: dbbb4e6f06d0f9947ac2be57c3eed6e2, type: 2}
     - target: {fileID: 919132149155446097, guid: 015dd8fa65fe9ff4a870b0cba3499eec, type: 3}
       propertyPath: m_Name
       value: Potato2
@@ -203,23 +152,23 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 92d1497297248fc4c822a11a94e5a6a0, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.40250516
+      value: 0.7071068
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 92d1497297248fc4c822a11a94e5a6a0, type: 3}
       propertyPath: m_LocalRotation.x
-      value: -0.4025051
+      value: -0.7071068
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 92d1497297248fc4c822a11a94e5a6a0, type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.58136874
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 92d1497297248fc4c822a11a94e5a6a0, type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0.5813688
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 92d1497297248fc4c822a11a94e5a6a0, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
+      value: -90
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 92d1497297248fc4c822a11a94e5a6a0, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
@@ -229,6 +178,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -7511558181221131132, guid: 92d1497297248fc4c822a11a94e5a6a0, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 8c73b302b49b8ac49851d6201be89ee1, type: 2}
+    - target: {fileID: -7511558181221131132, guid: 92d1497297248fc4c822a11a94e5a6a0, type: 3}
+      propertyPath: m_Materials.Array.data[1]
+      value: 
+      objectReference: {fileID: 2100000, guid: dbbb4e6f06d0f9947ac2be57c3eed6e2, type: 2}
     - target: {fileID: 919132149155446097, guid: 92d1497297248fc4c822a11a94e5a6a0, type: 3}
       propertyPath: m_Name
       value: Potato3
@@ -241,6 +198,10 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 92d1497297248fc4c822a11a94e5a6a0, type: 3}
+      propertyPath: m_TagString
+      value: Crop
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 92d1497297248fc4c822a11a94e5a6a0, type: 3}
 --- !u!4 &6088593999676631619 stripped
@@ -248,6 +209,24 @@ Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 92d1497297248fc4c822a11a94e5a6a0, type: 3}
   m_PrefabInstance: {fileID: 6049951159776546216}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &6860344903184724217 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 92d1497297248fc4c822a11a94e5a6a0, type: 3}
+  m_PrefabInstance: {fileID: 6049951159776546216}
+  m_PrefabAsset: {fileID: 0}
+--- !u!65 &6633742754210985882
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6860344903184724217}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.0063595506, y: 0.0072288997, z: 0.0017713538}
+  m_Center: {x: -0.000026579639, y: -0.000070686925, z: 0.00080245436}
 --- !u!1001 &9008581796919297076
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -261,15 +240,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: a086447cf0e749b4384418172e368ffd, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -0
+      value: 0.05
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: a086447cf0e749b4384418172e368ffd, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: 0.0503
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: a086447cf0e749b4384418172e368ffd, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0
+      value: 0.02
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: a086447cf0e749b4384418172e368ffd, type: 3}
       propertyPath: m_LocalRotation.w
@@ -299,6 +278,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -7511558181221131132, guid: a086447cf0e749b4384418172e368ffd, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 8c73b302b49b8ac49851d6201be89ee1, type: 2}
+    - target: {fileID: -7511558181221131132, guid: a086447cf0e749b4384418172e368ffd, type: 3}
+      propertyPath: m_Materials.Array.data[1]
+      value: 
+      objectReference: {fileID: 2100000, guid: dbbb4e6f06d0f9947ac2be57c3eed6e2, type: 2}
     - target: {fileID: 919132149155446097, guid: a086447cf0e749b4384418172e368ffd, type: 3}
       propertyPath: m_Name
       value: Potato1

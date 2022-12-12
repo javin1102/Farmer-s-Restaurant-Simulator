@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.Events;
@@ -29,6 +30,7 @@ public abstract class Item : MonoBehaviour
     private static readonly int m_ShaderFloatProperty = Shader.PropertyToID("_Float");
     private MaterialPropertyBlock m_Mpb;
     private int m_DropQuantity;
+    private bool m_CanBeStored;
     public UnityAction OnDrop { get; set; }
     protected void Awake()
     {
@@ -40,10 +42,9 @@ public abstract class Item : MonoBehaviour
         m_UIManager = UIManager.Instance;
         m_Rigidbody = GetComponent<Rigidbody>();
         m_Collider = GetComponent<Collider>();
-        m_MeshRenderer = GetComponent<MeshRenderer>();
-        m_Rigidbody.isKinematic = true;
         m_Mpb.SetFloat(m_ShaderFloatProperty, 0);
-        m_MeshRenderer.SetPropertyBlock(m_Mpb);
+        if (TryGetComponent(out m_MeshRenderer)) m_MeshRenderer.SetPropertyBlock(m_Mpb);
+        m_Rigidbody.isKinematic = true;
         m_TileManager = TileManager.instance;
     }
     public abstract void MainAction();
@@ -57,6 +58,7 @@ public abstract class Item : MonoBehaviour
             m_Rigidbody.isKinematic = true;
             m_Rigidbody.useGravity = false;
             m_Collider.enabled = true;
+            m_Collider.isTrigger = true;
             m_MeshRenderer.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off;
             return;
         }
@@ -65,7 +67,7 @@ public abstract class Item : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (m_IsGrounded && other.TryGetComponent(out PlayerAction playerAction))
+        if (m_CanBeStored && m_IsGrounded && other.TryGetComponent(out PlayerAction playerAction))
         {
             playerAction.Store(this, m_DropQuantity);
         }
@@ -73,11 +75,14 @@ public abstract class Item : MonoBehaviour
 
     public void DropState(int dropQuantity = 1)
     {
+        StartCoroutine(StoreCooldown());
         if (m_Collider.GetType() == typeof(MeshCollider))
         {
             MeshCollider meshCollider = (MeshCollider)m_Collider;
-            meshCollider.convex = true;
+            Destroy(meshCollider);
+            m_Collider = gameObject.AddComponent<BoxCollider>();
         }
+
 
         if (transform.TryGetComponent(out Hoverable hoverable))
         {
@@ -86,19 +91,25 @@ public abstract class Item : MonoBehaviour
         m_DropQuantity = dropQuantity;
         m_Mpb.SetFloat(m_ShaderFloatProperty, 1);
         m_Collider.enabled = false;
-        m_Collider.isTrigger = true;
         m_Rigidbody.isKinematic = false;
-        m_MeshRenderer.SetPropertyBlock(m_Mpb);
+        m_Collider.isTrigger = false;
+        if (m_MeshRenderer) m_MeshRenderer.SetPropertyBlock(m_Mpb);
         m_IsDropState = true;
         transform.SetParent(null);
-        transform.forward = -transform.forward;
-
+        transform.localRotation = Quaternion.identity;
         transform.localScale = Vector3.one * .25f;
         m_Rigidbody.AddForce(10f * Camera.main.transform.forward, ForceMode.VelocityChange);
         OnDrop?.Invoke();
         Destroy(GetComponent<NavMeshObstacle>());
-
     }
+
+    private IEnumerator StoreCooldown()
+    {
+        m_CanBeStored = false;
+        yield return new WaitForSeconds(1);
+        m_CanBeStored = true;
+    }
+
     public virtual void SetHandTf()
     {
         transform.localPosition = m_HandPosOffset;
@@ -108,15 +119,7 @@ public abstract class Item : MonoBehaviour
     }
 
 
-    public virtual void OnHoldMainAction()
-    {
-        print("Hold");
-    }
+    private bool CheckGround() => Physics.Raycast(transform.position, Vector3.down, out RaycastHit hitInfo, .5f, ~Utils.PlayerMask);
 
-    public virtual void OnReleaseMainAction()
-    {
-        print("Release");
-    }
-    private bool CheckGround() => Physics.Raycast(transform.position, Vector3.down, .5f);
 }
 

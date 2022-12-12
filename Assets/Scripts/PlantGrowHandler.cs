@@ -23,23 +23,11 @@ public class PlantGrowHandler : MonoBehaviour
         if (statePlant >= 2) return;
         statePlant++;
         SetPlant();
-        // if ( statePlant != 3 )//3 = max growth
-        // {
-        //     gameObject.transform.GetChild( statePlant ).gameObject.SetActive( true );
-        // }
-        // if ( statePlant > 0 && statePlant < 3 )// set false -1 current state and set true to current state
-        // {
-        //     gameObject.transform.GetChild( statePlant - 1 ).gameObject.SetActive( false );
-        // }
-        // if ( statePlant < 3 )
-        // {
-
-        //     statePlant++;
-        // }
     }
 
     public void SetPlant()
     {
+        foreach (Transform child in transform) child.gameObject.SetActive(false);
         transform.GetChild(Mathf.Clamp(statePlant, 0, 2)).gameObject.SetActive(true);
     }
 }

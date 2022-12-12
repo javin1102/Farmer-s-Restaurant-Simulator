@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d8fa40ac345182c4f8e32667d43246e4, type: 3}
   m_Name: Seat_4_Red
   m_EditorClassIdentifier: 
-  ID: Seat_Red
+  ID: Kursi Bar
   prefab: {fileID: 4297716925853398324, guid: 4a5dbe3896591e8469b7763d7fb8c46d, type: 3}
   icon: {fileID: 21300000, guid: b58582707a3a50b4abe4fd76591f3197, type: 3}
   buyPrice: 100

@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d8fa40ac345182c4f8e32667d43246e4, type: 3}
   m_Name: Stove_1_Wood
   m_EditorClassIdentifier: 
-  ID: Stove_Wood
+  ID: Kompor Kayu
   prefab: {fileID: 6431722666800202831, guid: e3f2f11d22b0cb642804e5a39df18083, type: 3}
   icon: {fileID: 755971026, guid: 4f730c0fb86b14b41a023e4dd9759715, type: 3}
   buyPrice: 100

@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8c9c36c8f20505d47bfff2820a3a6d92, type: 3}
   m_Name: WateringCan
   m_EditorClassIdentifier: 
-  ID: Watering_Can
+  ID: Teko
   prefab: {fileID: 119069976342126693, guid: a629c2bfeee8ad04caf8b6c230c16cfd, type: 3}
   icon: {fileID: 21300000, guid: c92608dda11575741a45f745c0275413, type: 3}
   buyPrice: 0

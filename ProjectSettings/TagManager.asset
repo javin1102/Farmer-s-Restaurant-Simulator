@@ -15,6 +15,7 @@ TagManager:
   - Seat
   - Table
   - Tree Obstacle
+  - Ground
   layers:
   - Default
   - TransparentFX

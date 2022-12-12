@@ -65,7 +65,9 @@ public class PlayerAction : MonoBehaviour
     private static int m_Coins;
     private SaveManager m_SaveManager;
     private PlayerUpgrades m_PlayerUpgrades;
+    private AudioSource m_AudioSource;
     private static PlayerAction m_Instance;
+    private ResourcesLoader m_ResourcesLoader;
 
     private void Awake()
     {
@@ -79,12 +81,14 @@ public class PlayerAction : MonoBehaviour
         m_ItemDatabase = GetComponent<ItemDatabase>();
         m_InventorySlotsController = GetComponent<InventorySlotsController>();
         m_PlayerUpgrades = GetComponent<PlayerUpgrades>();
+        m_AudioSource = GetComponent<AudioSource>();
     }
 
     private void Start()
     {
         m_UIManager = UIManager.Instance;
         m_SaveManager = SaveManager.Instance;
+        m_ResourcesLoader = ResourcesLoader.Instance;
         m_SaveManager.OnSave += SavePlayerData;
         m_SaveManager.LoadData(Utils.PLAYERDATA_FILENAME, LoadSucceeded, LoadFailed);
         m_ActionSlotsController.SelectActionSlot(0);
@@ -345,6 +349,12 @@ public class PlayerAction : MonoBehaviour
         if (m_IsOtherUIOpen) return;
         LockCursor();
         EnablePlayerInput();
+    }
+
+    public void PlayAudio(string audioClipName)
+    {
+        m_AudioSource.clip = m_ResourcesLoader.AudioClips[audioClipName];
+        m_AudioSource.Play();
     }
     private void InvokeToggleInventoryUI(InputAction.CallbackContext obj) => m_ToggleInventoryUI?.Invoke();
     private void InvokeToggleMiscUI(InputAction.CallbackContext obj) => m_ToggleMiscUI?.Invoke();
