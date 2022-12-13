@@ -12,8 +12,13 @@ public class UIDropItem : MonoBehaviour
     {
         m_PlayerAction = PlayerAction.Instance;
         m_Item = transform.parent.GetComponent<Item>();
+        if (!m_Item.IsDropState)
+        {
+            gameObject.SetActive(false);
+            return;
+        }
         UpdateUI();
-        m_Item.OnDrop += UpdateUI;
+        // m_Item.OnDrop += UpdateUI;
     }
 
     void LateUpdate()

@@ -9,7 +9,7 @@ public abstract class Item : MonoBehaviour
     public IRaycastAction ItemRaycastAction { get => m_ItemRaycastAction; }
     public ItemData Data { get => m_Data; }
     public int DropQuantity { get => m_DropQuantity; set => m_DropQuantity = value; }
-
+    public bool IsDropState { get => m_IsDropState; set => m_IsDropState = value; }
     [SerializeField] protected ItemData m_Data;
     [Space(5)]
     [Header("Hand Orientation")]
@@ -19,7 +19,7 @@ public abstract class Item : MonoBehaviour
     protected IRaycastAction m_ItemRaycastAction;
     [Space(35)]
     [SerializeField] protected TileManager m_TileManager;
-    protected bool m_IsDropState;
+    private bool m_IsDropState;
     protected UIManager m_UIManager;
 
     //Drop Vars
@@ -32,6 +32,8 @@ public abstract class Item : MonoBehaviour
     private int m_DropQuantity;
     private bool m_CanBeStored;
     public UnityAction OnDrop { get; set; }
+
+
     protected void Awake()
     {
         m_Mpb = new();
@@ -99,7 +101,8 @@ public abstract class Item : MonoBehaviour
         transform.localRotation = Quaternion.identity;
         transform.localScale = Vector3.one * .25f;
         m_Rigidbody.AddForce(10f * Camera.main.transform.forward, ForceMode.VelocityChange);
-        OnDrop?.Invoke();
+        // OnDrop?.Invoke();
+        // transform.GetChild(0).gameObject.SetActive(true); //activate drop UI
         Destroy(GetComponent<NavMeshObstacle>());
     }
 

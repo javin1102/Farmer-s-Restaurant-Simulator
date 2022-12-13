@@ -99,9 +99,9 @@ public abstract class Furniture : Item, IRaycastAction
         m_UIManager = UIManager.Instance;
         m_Restaurant = RestaurantManager.Instance;
         m_InstantiatedGO = Instantiate(m_Data.prefab, position, rotation);
+        m_InstantiatedGO.layer = 8;
         m_InstantiatedGO.transform.localScale = localScale;
         m_InstantiatedGO.name = m_Data.ID;
-        m_InstantiatedGO.layer = 8;
         m_InstantiatedGO.SetActive(true);
         m_InstantiatedGO.transform.SetParent(null);
         m_InstantiatedGO.GetComponent<Collider>().enabled = true;

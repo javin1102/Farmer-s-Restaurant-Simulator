@@ -12,10 +12,11 @@ public class Hoverable : MonoBehaviour
     private void Awake()
     {
         m_IsHoverable = true;
+        m_Layer = gameObject.layer;
     }
     private void Start()
     {
-        m_Layer = gameObject.layer;
+
         m_UIManager = UIManager.Instance;
     }
 
