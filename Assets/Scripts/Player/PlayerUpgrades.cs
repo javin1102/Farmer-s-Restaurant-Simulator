@@ -6,6 +6,7 @@ public class PlayerUpgrades : MonoBehaviour
     public int RestaurantExpandLevel { get; set; }
     public int InventoryLevel { get; set; }
     public int INVENTORY_MAX_LEVEL { get => 3; }
+    public int RESTAURANT_EXPAND_MAX_LEVEL { get => 3; }
     private InventorySlotsController m_InventorySlotsController;
     void Start()
     {
@@ -32,5 +33,13 @@ public class PlayerUpgrades : MonoBehaviour
         return slotSize;
     }
 
+    public (float, float, float) SetRestaurantSize()
+    {
+        float t = Mathf.InverseLerp(1, RESTAURANT_EXPAND_MAX_LEVEL, RestaurantExpandLevel);
+        float posXGroundHelper = Mathf.Lerp(70.5f, 90, t);
+        float scaleXGroundHelper = Mathf.Lerp(17, 56, t);
+        float posXWall = Mathf.Lerp(80.125f, 120.125f, t);
+        return (posXGroundHelper, scaleXGroundHelper, posXWall);
+    }
 
 }

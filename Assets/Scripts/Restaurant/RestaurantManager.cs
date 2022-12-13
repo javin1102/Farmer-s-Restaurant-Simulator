@@ -3,6 +3,7 @@ using SimpleJSON;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.AI;
 public class RestaurantManager : MonoBehaviour
 {
     public static RestaurantManager Instance { get => m_Instance; }
@@ -33,17 +34,18 @@ public class RestaurantManager : MonoBehaviour
     private static RestaurantManager m_Instance;
     [SerializeField] private Transform m_RestaurantGround;
     [SerializeField] private Transform m_RestaurantGround2;
-    private bool m_FirstLoad = true;
+    [SerializeField] private Transform m_WallBoundary;
+
     private BoxCollider m_GroundCollider;
     private BoxCollider m_GroundCollider2;
 
     //Upgrades
     [SerializeField] private GameObject m_ChefPrefab;
-    [SerializeField] private RestaurantUpgradesChannel m_RestaurantUpgradesChannel;
 
     private FoodsController m_FoodsController;
     private SaveManager m_SaveManager;
     private ResourcesLoader m_ResourcesLoader;
+    private PlayerAction m_PlayerAction;
     private void Awake()
     {
         if (m_Instance == null) m_Instance = this;
@@ -58,9 +60,14 @@ public class RestaurantManager : MonoBehaviour
         m_FoodsController = FoodsController.Instance;
         m_SaveManager = SaveManager.Instance;
         m_ResourcesLoader = ResourcesLoader.Instance;
-        AddChefsFromUpgradeData(PlayerAction.Instance.PlayerUpgrades.ChefQuantityLevel);
+        m_PlayerAction = PlayerAction.Instance;
         m_SaveManager.OnSave += SaveRestaurantObjectsData;
-        m_SaveManager.LoadData(Utils.RESTAURANT_OBJECTS_FILENAME, OnRestaurantObjectsLoadSucceeded, null);
+        m_SaveManager.LoadData(Utils.RESTAURANT_OBJECTS_FILENAME, OnLoadSucceeded, OnLoadFailed);
+    }
+
+    private void OnLoadFailed()
+    {
+        AddChef();
     }
 
     private void AddChefsFromUpgradeData(int quantity)
@@ -68,16 +75,11 @@ public class RestaurantManager : MonoBehaviour
         for (int i = 0; i < quantity; i++) AddChef();
     }
 
-    private void OnEnable()
-    {
-        m_RestaurantUpgradesChannel.AddChef += AddChef;
-
-    }
     private void OnDisable()
     {
-        m_RestaurantUpgradesChannel.AddChef -= AddChef;
         m_SaveManager.OnSave -= SaveRestaurantObjectsData;
     }
+
     public bool FindUnoccupiedSeat(out Seat seat)
     {
         List<Seat> seats = m_Seats.Where(seat => !seat.IsOccupied).ToList();
@@ -117,16 +119,30 @@ public class RestaurantManager : MonoBehaviour
     public bool AnyChefHasStove() => m_Chefs.Any(chef => chef.Stove != null);
     public Vector3 GetGroundRandPos()
     {
-        float randX = Random.Range(GroundCollider.bounds.min.x, GroundCollider.bounds.max.x);
-        float randZ = Random.Range(GroundCollider.bounds.min.z, GroundCollider.bounds.max.z);
+        float randX = Random.Range(GroundCollider2.bounds.min.x, GroundCollider2.bounds.max.x);
+        float randZ = Random.Range(GroundCollider2.bounds.min.z, GroundCollider2.bounds.max.z);
         return new(randX, transform.position.y, randZ);
     }
 
-    private void AddChef()
+    public void AddChef()
     {
-        Chef chef = Instantiate(m_ChefPrefab, transform).GetComponent<Chef>();
+        Chef chef = Instantiate(m_ChefPrefab).GetComponent<Chef>();
         m_Chefs.Add(chef);
         chef.Agent.Warp(GetGroundRandPos());
+        chef.transform.SetParent(transform);
+    }
+
+    public void ExpandRestaurant()
+    {
+        (float posX, float scaleX, float wallXBoundary) = m_PlayerAction.PlayerUpgrades.SetRestaurantSize();
+        Vector3 helperGroundPos = m_RestaurantGround2.position;
+        Vector3 helperGroundScale = m_RestaurantGround2.lossyScale;
+        Vector3 wallBoundaryPos = m_WallBoundary.position;
+        m_RestaurantGround2.position = new(posX, helperGroundPos.y, helperGroundPos.z);
+        m_RestaurantGround2.localScale = new(scaleX, helperGroundScale.y, helperGroundScale.z);
+        m_WallBoundary.position = new(wallXBoundary, wallBoundaryPos.y, wallBoundaryPos.z);
+        if (m_PlayerAction.PlayerUpgrades.RestaurantExpandLevel == m_PlayerAction.PlayerUpgrades.RESTAURANT_EXPAND_MAX_LEVEL)
+            m_WallBoundary.gameObject.SetActive(false);
     }
 
     private async void SaveRestaurantObjectsData()
@@ -142,8 +158,10 @@ public class RestaurantManager : MonoBehaviour
         await m_SaveManager.SaveData(rootObject.ToString(), Utils.RESTAURANT_OBJECTS_FILENAME);
     }
 
-    private void OnRestaurantObjectsLoadSucceeded(JSONNode jsonNode)
+    private void OnLoadSucceeded(JSONNode jsonNode)
     {
+        AddChefsFromUpgradeData(m_PlayerAction.PlayerUpgrades.ChefQuantityLevel);
+
         JSONNode tableNode = jsonNode["tables"];
         JSONNode seatNode = jsonNode["seats"];
         JSONNode stoveNode = jsonNode["stoves"];

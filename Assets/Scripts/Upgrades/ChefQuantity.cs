@@ -1,24 +1,22 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
 namespace Upgrades
 {
     public class ChefQuantity : Upgrade
     {
-        [SerializeField] private RestaurantUpgradesChannel m_RestaurantUpgradesChannel;
+        // [SerializeField] private RestaurantUpgradesChannel m_RestaurantUpgradesChannel;
 
+        private RestaurantManager m_RestaurantManager;
         protected override int m_CurrentLevel { get => m_PlayerUpgrades.ChefQuantityLevel; set => m_PlayerUpgrades.ChefQuantityLevel = value; }
 
+        protected override int m_MaxLevel => 3;
+        private void Start()
+        {
+            m_RestaurantManager = RestaurantManager.Instance;
+        }
         protected override void UpgradeFeature()
         {
-            m_RestaurantUpgradesChannel.RaiseAddChefEvent();
+            m_RestaurantManager.AddChef();
         }
 
-        protected override void SetMaxLevel()
-        {
-            m_MaxLevel = 3;
-        }
 
     }
 

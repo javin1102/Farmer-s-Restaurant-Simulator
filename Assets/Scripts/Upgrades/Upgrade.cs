@@ -10,13 +10,12 @@ namespace Upgrades
         [SerializeField] protected Button m_Button;
         [SerializeField] protected TMP_Text m_LevelText, m_CostText;
         abstract protected int m_CurrentLevel { get; set; }
-        protected int m_MaxLevel;
+        abstract protected int m_MaxLevel { get; }
         protected PlayerUpgrades m_PlayerUpgrades;
         void Awake()
         {
             m_PlayerUpgrades = transform.root.GetComponent<PlayerUpgrades>();
             m_Button.onClick.AddListener(DoUpgrade);
-            SetMaxLevel();
         }
         void OnEnable()
         {
@@ -39,7 +38,6 @@ namespace Upgrades
         }
 
         protected abstract void UpgradeFeature();
-        protected abstract void SetMaxLevel();
     }
 
 }
