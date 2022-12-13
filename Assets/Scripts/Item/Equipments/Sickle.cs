@@ -8,7 +8,7 @@ public class Sickle : Item, IRaycastAction
 
     public ItemData harvestCropData;
 
-    private SeedData m_SeedData;
+    private SeedData seedData;
 
     private float dropChance;
     private bool IsDrop = false;
@@ -28,12 +28,17 @@ public class Sickle : Item, IRaycastAction
     {
         if (selectedCrop != null)
         {
-            m_SeedData = selectedCrop.GetComponentInParent<PlantGrowHandler>().SeedData;
+            seedData = selectedCrop.GetComponentInParent<PlantGrowHandler>().SeedData;
 
             float rand = Random.Range(1f, 10f);
-            if (rand <= m_SeedData.dropChance) AddSeedToInventory(m_SeedData);
+            if (rand <= seedData.dropChance)
+            {
+                int randSeedQuantity = Mathf.RoundToInt(Random.Range(seedData.minSeedDropQuantity, seedData.maxSeedDropQuanitty + 1));
+                AddSeedToInventory(seedData, randSeedQuantity);
+            }
 
-            AddCropToInventory(m_SeedData.harverstedCropData);
+            int randIngredientQuantity = Mathf.RoundToInt(Random.Range(seedData.minIngredientDropQuantity, seedData.maxIngredientDropQuantity + 1));
+            AddIngredientToInventory(seedData.harvestedIngredientData, randIngredientQuantity);
             selectedCrop.GetComponentInParent<PlantTile>().IsUsed = false;
             Destroy(selectedCrop.transform.parent.gameObject);
 
@@ -64,16 +69,24 @@ public class Sickle : Item, IRaycastAction
         return;
     }
 
-    private void AddSeedToInventory(SeedData seed)
+    private void AddSeedToInventory(SeedData seed, int quantity)
     {
-        m_ItemDatabase.Store(seed);
+        m_ItemDatabase.Store(seed, quantity);
     }
 
-    private void AddCropToInventory(ItemData item)
+    private void AddIngredientToInventory(ItemData item, int quantity)
     {
-        m_ItemDatabase.Store(item);
+        m_ItemDatabase.Store(item, quantity);
     }
-
+    private void OnDestroy()
+    {
+        if (selectedCrop != null)
+        {
+            selectedCrop.layer = 9;
+        }
+        selectedCrop = null;
+        UIManager.Instance.HideActionHelper();
+    }
     IEnumerator PlaySFX()
     {
         StopAllCoroutines();

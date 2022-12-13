@@ -35,6 +35,8 @@ public class Stove : Furniture, IInteractable
 
     public void Interact(PlayerAction playerAction)
     {
+        print("Set");
+        if (!m_IsInstantiated) return;
         if (m_Chef == null) SetChef();
         else UnsetChef();
         UpdateHelper();

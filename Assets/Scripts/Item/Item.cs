@@ -101,7 +101,6 @@ public abstract class Item : MonoBehaviour
         transform.localRotation = Quaternion.identity;
         transform.localScale = Vector3.one * .25f;
         m_Rigidbody.AddForce(10f * Camera.main.transform.forward, ForceMode.VelocityChange);
-        // OnDrop?.Invoke();
         // transform.GetChild(0).gameObject.SetActive(true); //activate drop UI
         Destroy(GetComponent<NavMeshObstacle>());
     }

@@ -13,8 +13,11 @@ public class UIFurnitureStoreController : UIStoreController
     private List<FurnitureData> m_TablesData;
     private List<FurnitureData> m_StovesData;
     private List<FurnitureData> m_FurnituresData;
+    protected static UIFurnitureStoreController m_Instance;
+    public static UIFurnitureStoreController Instance { get => m_Instance; }
     private new void Awake()
     {
+        if (m_Instance == null) m_Instance = this;
         base.Awake();
         m_FurnituresData = m_ResourcesLoader.FurnituresData;
         m_ChairsData = m_FurnituresData.Where(furniture => furniture.furnitureType == FurnitureType.SEAT).ToList();

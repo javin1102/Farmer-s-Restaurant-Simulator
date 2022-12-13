@@ -7,7 +7,10 @@ public class SeedData : ItemData
     public GameObject cropPrefab;
     public float dropChance;
     public int hourToGrow;
-
+    public int minSeedDropQuantity;
+    public int maxSeedDropQuanitty;
     [Header("--- HARVERSTED")]
-    public ItemData harverstedCropData;
+    public IngredientData harvestedIngredientData;
+    public int minIngredientDropQuantity;
+    public int maxIngredientDropQuantity;
 }

@@ -120,7 +120,7 @@ public class FarmObjectsGenerator : MonoBehaviour, ITimeTracker
 
     public void ClockUpdate(GameTimeStamp timeStamp)
     {
-        int timeElapse = GameTimeStamp.CompareTimeStamps(m_Time, timeStamp);
+        float timeElapse = GameTimeStamp.CompareTimeStamps(m_Time, timeStamp);
         if (timeElapse >= 48)
         {
             GenerateTreeRandom(10);

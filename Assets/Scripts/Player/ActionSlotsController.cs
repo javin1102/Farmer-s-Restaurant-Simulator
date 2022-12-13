@@ -109,6 +109,7 @@ public class ActionSlotsController : ItemSlotsController
 
     public void CheckEquippedItem()
     {
+        if (m_Slots[m_SelectedSlotIndex] == null) m_HandModel.SetActive(true);
         if (m_Slots[m_SelectedSlotIndex] != null && m_Slots[m_SelectedSlotIndex].data.itemType == ItemType.SEED) m_HandModel.SetActive(true);
         if (m_Slots[m_SelectedSlotIndex] == null || m_Slots[m_SelectedSlotIndex].quantity <= 0)
         {

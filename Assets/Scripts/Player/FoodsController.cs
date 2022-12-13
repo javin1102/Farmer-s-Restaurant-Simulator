@@ -15,10 +15,6 @@ public class FoodsController : MonoBehaviour
     private static FoodsController m_Instance;
     private ResourcesLoader m_ResourcesLoader;
     //Debug
-    [SerializeField] private IngredientData garlic;
-    [SerializeField] private IngredientData onion;
-    [SerializeField] private IngredientData carrot;
-
     private SaveManager m_SaveManager;
     private void Awake()
     {
@@ -40,12 +36,6 @@ public class FoodsController : MonoBehaviour
 
     private void OnLoadFailed()
     {
-        StockIngredient garlicStock = new(garlic, 100);
-        StockIngredient onionStock = new(onion, 100);
-        //StockIngredient carrotStock = new( carrot, 100 );
-        m_StockIngredients.Add(garlic.ID, garlicStock);
-        m_StockIngredients.Add(onion.ID, onionStock);
-        //m_StockIngredients.Add( carrot.id, carrotStock );
         m_AllFoods[m_ResourcesLoader.GetFoodDataByID("Pecel")].IsUnlock = true;
     }
 
@@ -76,15 +66,15 @@ public class FoodsController : MonoBehaviour
         foodData.ForEach(recipe => m_AllFoods.Add(recipe, new(false, false)));
     }
 
-    public void StoreIngredient(IngredientData ingredient)
+    public void StoreIngredient(IngredientData ingredient, int quantity = 1)
     {
         if (m_StockIngredients.TryGetValue(ingredient.ID, out StockIngredient stockIngredient))
         {
-            stockIngredient.quantity += 1;
+            stockIngredient.quantity += quantity;
         }
         else
         {
-            stockIngredient = new StockIngredient(ingredient);
+            stockIngredient = new StockIngredient(ingredient, quantity);
             m_StockIngredients.Add(ingredient.ID, stockIngredient);
         }
     }

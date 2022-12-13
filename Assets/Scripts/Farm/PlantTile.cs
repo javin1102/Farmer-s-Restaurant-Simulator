@@ -23,8 +23,6 @@ public class PlantTile : BaseFarmObject, ITimeTracker
 
     public enum TileStatus { NORMAL, WATERED, HOED, PLANTED };
     public TileStatus Status;
-
-    //public static Tile Instance { get; set; }
     private GameTimeStamp m_Time;
     private PlantGrowHandler m_plantGrowHandler;
     [SerializeField] private TimeManager m_TimeManager;
@@ -76,7 +74,7 @@ public class PlantTile : BaseFarmObject, ITimeTracker
 
     public void ClockUpdate(GameTimeStamp timeStamp)
     {
-        int timeElapsed = GameTimeStamp.CompareTimeStamps(m_Time, timeStamp);
+        float timeElapsed = GameTimeStamp.CompareTimeStamps(m_Time, timeStamp);
         if (this.Status == TileStatus.HOED)
         {
             if (this.transform.childCount > 0)

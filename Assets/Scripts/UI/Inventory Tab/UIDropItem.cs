@@ -12,19 +12,23 @@ public class UIDropItem : MonoBehaviour
     {
         m_PlayerAction = PlayerAction.Instance;
         m_Item = transform.parent.GetComponent<Item>();
+        UpdateUI();
+    }
+
+    void LateUpdate()
+    {
         if (!m_Item.IsDropState)
         {
             gameObject.SetActive(false);
             return;
         }
-        UpdateUI();
-        // m_Item.OnDrop += UpdateUI;
-    }
+        else
+        {
+            gameObject.SetActive(true);
+            Vector3 dir = (transform.position - m_PlayerAction.transform.position).normalized;
+            transform.rotation = Quaternion.LookRotation(dir, Vector3.up);
+        }
 
-    void LateUpdate()
-    {
-        Vector3 dir = (transform.position - m_PlayerAction.transform.position).normalized;
-        transform.rotation = Quaternion.LookRotation(dir, Vector3.up);
     }
 
     private void UpdateUI()

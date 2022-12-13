@@ -17,6 +17,7 @@ public class ItemDatabase : MonoBehaviour
     private InventorySlotsController m_InventorySlots;
     private int MaxSize { get => m_ActionSlots.SlotSize + m_InventorySlots.SlotSize; }
     private ResourcesLoader m_ResourcesLoader;
+    private UIManager m_UIManager;
     public enum SET_SLOT_TYPE
     {
         AUTO,
@@ -31,6 +32,7 @@ public class ItemDatabase : MonoBehaviour
         m_InventorySlots = GetComponent<InventorySlotsController>();
         m_ActionSlots.DBRemoveAction += RemoveFromDB;
         m_ResourcesLoader = ResourcesLoader.Instance;
+        m_UIManager = UIManager.Instance;
     }
 
 
@@ -48,6 +50,7 @@ public class ItemDatabase : MonoBehaviour
             if (!itemData.decreaseable) quantity = 0;
             slot.quantity += quantity;
             m_OnStoreItem?.Invoke(slot);
+            m_UIManager.NotificationQueue.Enqueue($"<color=yellow>+{quantity}</color> {itemData.ID}");
             return true;
         }
         else
@@ -69,6 +72,7 @@ public class ItemDatabase : MonoBehaviour
                     m_ActionSlots.Slots[slotIndex] = itemSlot;
                     break;
             }
+            m_UIManager.NotificationQueue.Enqueue($"<color=yellow>+{quantity}</color> {itemData.ID}");
             return true;
         }
     }

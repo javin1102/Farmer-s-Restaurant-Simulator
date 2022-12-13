@@ -5,23 +5,20 @@ public abstract class UIStoreController : MonoBehaviour
 {
     public Transform SpawnTf { get; set; }
     public BoxCollider SpawnCollider { get => m_SpawnCollider; set => m_SpawnCollider = value; }
-    public static UIStoreController Instance { get => m_Instance; }
 
-    protected static UIStoreController m_Instance;
+
     protected BoxCollider m_SpawnCollider;
-    [SerializeField] protected GameObject m_MainMenuGO, m_BuyMenuGO, m_SellMenuGO, m_QuizMenuGO;
+    [SerializeField] protected GameObject m_MainMenuGO, m_BuyMenuGO, m_SellMenuGO;
     [SerializeField] protected Button m_BuyMenuButton, m_SellMenuButton, m_QuizMenuButton, m_ExitMenuButton, m_BackButton;
     protected PlayerAction m_PlayerAction;
     protected ResourcesLoader m_ResourcesLoader;
     protected void Awake()
     {
-        if (m_Instance == null) m_Instance = this;
         m_PlayerAction = transform.root.GetComponent<PlayerAction>();
         m_ResourcesLoader = ResourcesLoader.Instance;
         m_BackButton.onClick.AddListener(OpenMainMenu);
         m_BuyMenuButton.onClick.AddListener(OpenBuyMenu);
         m_SellMenuButton.onClick.AddListener(OpenSellMenu);
-        m_QuizMenuButton.onClick.AddListener(OpenQuizMenu);
         m_ExitMenuButton.onClick.AddListener(CloseStoreMenu);
     }
 
@@ -48,7 +45,6 @@ public abstract class UIStoreController : MonoBehaviour
     {
         m_MainMenuGO.SetActive(false);
         m_BuyMenuGO.SetActive(false);
-        m_QuizMenuGO.SetActive(false);
         m_SellMenuGO.SetActive(false);
         menu.SetActive(true);
         if (menu != m_MainMenuGO) m_BackButton.gameObject.SetActive(true);
@@ -58,7 +54,6 @@ public abstract class UIStoreController : MonoBehaviour
     void OpenBuyMenu() => OpenMenu(m_BuyMenuGO);
     void OpenSellMenu() => OpenMenu(m_SellMenuGO);
     void OpenMainMenu() => OpenMenu(m_MainMenuGO);
-    void OpenQuizMenu() => OpenMenu(m_QuizMenuGO);
     void CloseStoreMenu()
     {
         gameObject.SetActive(false);

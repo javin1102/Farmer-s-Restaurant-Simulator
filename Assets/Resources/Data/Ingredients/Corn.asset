@@ -1,0 +1,42 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 16953c1cafaef70408622683ecd2f288, type: 3}
+  m_Name: Corn
+  m_EditorClassIdentifier: 
+  ID: Jagung
+  prefab: {fileID: 4851928877410794951, guid: 4cdf5e7d61a81c742b48bb1da85c3dc7, type: 3}
+  icon: {fileID: 755971026, guid: 4f730c0fb86b14b41a023e4dd9759715, type: 3}
+  buyPrice: 0
+  sellPrice: 0
+  decreaseable: 1
+  itemType: 1
+  deskripsiKandungan: Vit A, thiamin, riboflavin, besi, fosfor, kalium, Vit C, folat,
+    magnesium, mangan
+  deskripsiNutrisi: Per 100 gram, memiliki 47 kalori, 50 gram lemak total, 0 gram
+    kolesterol, 8 gram karbohidrat, 3 gram protein, 4mg natrium
+  deskripsiManfaat: '- <indent=5%>Menurunkan kadar gula darah </indent>
+
+    - <indent=5%>Meredakan
+    nyeri</indent>
+
+    - <indent=5%>Menjaga kesehatan kulit</indent>
+
+    - <indent=5%>Mencegah
+    radikal bebas dan menurunkan resiko kanker</indent>
+
+    - <indent=5%>Menjaga
+    kesehatan ibu hamil</indent>
+
+    - <indent=5%>Menurunkan resiko rematik</indent>
+
+    -
+    <indent=5%>Menambah darah</indent>'

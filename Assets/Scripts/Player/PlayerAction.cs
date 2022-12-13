@@ -133,6 +133,7 @@ public class PlayerAction : MonoBehaviour
         Physics.Raycast(ray, out RaycastHit hitInfo, m_RaycastDistance, ~Utils.PlayerMask);
         if (hitInfo.collider != null)
         {
+            if (m_MainInputAction.triggered && hitInfo.collider.TryGetComponent(out IInteractable hit)) hit.Interact(this);
             if (m_ActionSlotsController.CurrEquippedItem != null)
             {
                 TryPerformSelectedItemRaycastAction(hitInfo);
@@ -170,7 +171,7 @@ public class PlayerAction : MonoBehaviour
                     m_Hovered = null;
                 }
             }
-            if (m_MainInputAction.triggered && hitInfo.collider.TryGetComponent(out IInteractable hit)) hit.Interact(this);
+
             if (m_StoreInputAction.triggered && hitInfo.collider.TryGetComponent(out Item raycastedItem))
             {
                 if (Store(raycastedItem))

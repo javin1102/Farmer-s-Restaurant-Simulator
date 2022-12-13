@@ -65,15 +65,17 @@ public class GameTimeStamp : ISerializable
         return hour * 60;
     }
 
+    public static float MinutesToHour(int minute) => (float)minute / 60;
+
     public static int DayToHour(int days)
     {
         return days * 24;
     }
 
-    public static int CompareTimeStamps(GameTimeStamp timeStamp1, GameTimeStamp timeStamp2)
+    public static float CompareTimeStamps(GameTimeStamp timeStamp1, GameTimeStamp timeStamp2)
     {
-        int timeStamp1Hour = DayToHour(timeStamp1.day) + timeStamp1.hour;
-        int timeStamp2Hour = DayToHour(timeStamp2.day) + timeStamp2.hour;
+        float timeStamp1Hour = DayToHour(timeStamp1.day) + timeStamp1.hour + MinutesToHour(timeStamp1.minute);
+        float timeStamp2Hour = DayToHour(timeStamp2.day) + timeStamp2.hour + MinutesToHour(timeStamp2.minute);
 
         return Mathf.Abs(timeStamp2Hour - timeStamp1Hour);
     }

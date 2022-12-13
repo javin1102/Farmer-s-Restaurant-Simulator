@@ -17,16 +17,8 @@ public class UIIngredients : MonoBehaviour
         {
             UIIngredientSlot slot = Instantiate(m_SlotPrefab, m_MainContent.transform).GetComponent<UIIngredientSlot>();
             slot.IngredientData = ingredientData;
-            slot.OnHoverEnter += ShowTooltip;
             m_IngredientSlots.Add(slot);
         });
-    }
-
-    private void ShowTooltip(IngredientData ingredient, Vector3 pos)
-    {
-        m_Tooltip.gameObject.SetActive(true);
-        m_Tooltip.SetPos(pos);
-        m_Tooltip.UpdateUI(ingredient.name, ingredient.deskripsiKandungan, ingredient.deskripsiNutrisi, ingredient.deskripsiManfaat);
     }
 
 }

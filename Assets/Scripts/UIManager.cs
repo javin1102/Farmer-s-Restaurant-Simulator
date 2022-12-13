@@ -1,13 +1,13 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
+using System.Collections.Generic;
 
 public class UIManager : MonoBehaviour, ITimeTracker
 {
     public static UIManager Instance { get; set; }
     public UILoading LoadingUI { get => m_LoadingUI; }
+    public Queue<string> NotificationQueue { get => m_NotificationQueue; }
 
     [Header("=== CLOCK UI ===")]
     [SerializeField] private TMP_Text m_clockText;
@@ -24,6 +24,8 @@ public class UIManager : MonoBehaviour, ITimeTracker
 
     private SceneLoader m_SceneLoader;
     private TimeManager m_TimeManager;
+
+    private Queue<string> m_NotificationQueue = new();
     private void Awake()
     {
         if (Instance == null) Instance = this;
