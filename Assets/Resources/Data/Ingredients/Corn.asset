@@ -19,24 +19,4 @@ MonoBehaviour:
   sellPrice: 0
   decreaseable: 1
   itemType: 1
-  deskripsiKandungan: Vit A, thiamin, riboflavin, besi, fosfor, kalium, Vit C, folat,
-    magnesium, mangan
-  deskripsiNutrisi: Per 100 gram, memiliki 47 kalori, 50 gram lemak total, 0 gram
-    kolesterol, 8 gram karbohidrat, 3 gram protein, 4mg natrium
-  deskripsiManfaat: '- <indent=5%>Menurunkan kadar gula darah </indent>
-
-    - <indent=5%>Meredakan
-    nyeri</indent>
-
-    - <indent=5%>Menjaga kesehatan kulit</indent>
-
-    - <indent=5%>Mencegah
-    radikal bebas dan menurunkan resiko kanker</indent>
-
-    - <indent=5%>Menjaga
-    kesehatan ibu hamil</indent>
-
-    - <indent=5%>Menurunkan resiko rematik</indent>
-
-    -
-    <indent=5%>Menambah darah</indent>'
+  starterQuantity: 100

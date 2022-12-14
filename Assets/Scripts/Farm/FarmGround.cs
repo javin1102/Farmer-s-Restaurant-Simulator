@@ -19,7 +19,7 @@ public class FarmGround : MonoBehaviour
     {
         if (m_Instance == null) m_Instance = this;
         else Destroy(this);
-        DontDestroyOnLoad(this);
+        // DontDestroyOnLoad(this);
 
     }
     private void Start()

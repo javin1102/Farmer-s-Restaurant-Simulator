@@ -46,7 +46,7 @@ public abstract class Furniture : Item, IRaycastAction
         if (m_IsInstantiated)
         {
             m_Hoverable.OnHoverEnter -= ShowHelper;
-
+            m_UIManager.HideActionHelper();
         }
     }
     public void PerformRaycastAction(RaycastHit hitInfo)

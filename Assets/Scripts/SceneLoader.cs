@@ -35,7 +35,7 @@ public class SceneLoader : MonoBehaviour
     {
         if (m_Instance == null) m_Instance = this;
         else Destroy(gameObject);
-        DontDestroyOnLoad(this);
+        // DontDestroyOnLoad(this);
 
         m_MainCam = Camera.main;
     }
@@ -59,6 +59,7 @@ public class SceneLoader : MonoBehaviour
     }
     public void UnloadAndLoadSceneAsynchronous(string unloadScene, string loadScene, LoadSceneMode loadSceneMode, SPAWN_TYPE spawnType) => StartCoroutine(UnloadAndLoadSceneAsync_Coroutine(unloadScene, loadScene, loadSceneMode, spawnType));
     public void LoadSceneAsynchronous(string scene, LoadSceneMode loadSceneMode, SPAWN_TYPE spawnType) => StartCoroutine(LoadSceneAsync_Coroutine(scene, loadSceneMode, spawnType));
+    public void LoadSceneAsynchronous(string scene, LoadSceneMode loadSceneMode) => StartCoroutine(LoadSceneAsync_Coroutine(scene, loadSceneMode));
     public void UnloadSceneAsynchronous(string scene) => StartCoroutine(UnloadSceneAsync_Coroutine(scene));
     public void SpawnToScene(SPAWN_TYPE spawnType) => StartCoroutine(SpawnToScene_Coroutine(spawnType));
     private IEnumerator UnloadSceneAsync_Coroutine(string scene)
@@ -75,7 +76,19 @@ public class SceneLoader : MonoBehaviour
         m_PlayerAction.OnDisableOtherUI?.Invoke();
         OnFinishLoading?.Invoke();
     }
-
+    private IEnumerator LoadSceneAsync_Coroutine(string scene, LoadSceneMode loadSceneMode)
+    {
+        m_PlayerAction.OnEnableOtherUI?.Invoke();
+        OnStartLoading?.Invoke();
+        AsyncOperation operation = SceneManager.LoadSceneAsync(scene, loadSceneMode);
+        while (!operation.isDone)
+        {
+            yield return null;
+        }
+        m_PlayerAction.OnDisableOtherUI?.Invoke();
+        OnFinishLoading?.Invoke();
+        SceneManager.SetActiveScene(SceneManager.GetSceneByName(scene));
+    }
     private IEnumerator LoadSceneAsync_Coroutine(string scene, LoadSceneMode loadSceneMode, SPAWN_TYPE spawnType)
     {
         m_SpawnType = spawnType;
@@ -197,8 +210,8 @@ public class SceneLoader : MonoBehaviour
     {
         m_UIManager.LoadingUI.Activate(0);
         yield return StartCoroutine(LoadSceneAsync_Coroutine(Utils.SCENE_CITY, LoadSceneMode.Additive, SPAWN_TYPE.CITY_DOOR));
-        yield return StartCoroutine(LoadSceneAsync_Coroutine(Utils.SCENE_HOUSE, LoadSceneMode.Additive, SPAWN_TYPE.HOUSE_BED));
         yield return StartCoroutine(LoadSceneAsync_Coroutine(Utils.SCENE_FARM, LoadSceneMode.Additive, SPAWN_TYPE.CITY_FARM));
+        yield return StartCoroutine(LoadSceneAsync_Coroutine(Utils.SCENE_HOUSE, LoadSceneMode.Additive, SPAWN_TYPE.HOUSE_BED));
         m_UIManager.LoadingUI.Deactivate();
     }
 }

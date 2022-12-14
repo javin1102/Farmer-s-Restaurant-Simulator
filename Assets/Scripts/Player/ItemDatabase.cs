@@ -50,7 +50,6 @@ public class ItemDatabase : MonoBehaviour
             if (!itemData.decreaseable) quantity = 0;
             slot.quantity += quantity;
             m_OnStoreItem?.Invoke(slot);
-            m_UIManager.NotificationQueue.Enqueue($"<color=yellow>+{quantity}</color> {itemData.ID}");
             return true;
         }
         else
@@ -72,7 +71,7 @@ public class ItemDatabase : MonoBehaviour
                     m_ActionSlots.Slots[slotIndex] = itemSlot;
                     break;
             }
-            m_UIManager.NotificationQueue.Enqueue($"<color=yellow>+{quantity}</color> {itemData.ID}");
+
             return true;
         }
     }
@@ -155,7 +154,7 @@ public class ItemDatabase : MonoBehaviour
 
     public void OnLoadFailed()
     {
-        m_ResourcesLoader.StarterPackData.ForEach(item => Store(item, 5));
+        m_ResourcesLoader.StarterPackData.ForEach(item => Store(item, item.starterQuantity));
     }
 
     private void StoreItemFromSaveData(SerializableItemSlotData serializableItemSlotData, SET_SLOT_TYPE setSlotType)

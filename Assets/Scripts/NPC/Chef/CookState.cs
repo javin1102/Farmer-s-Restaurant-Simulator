@@ -16,7 +16,7 @@ namespace NPC.Chef
             m_CookTime = m_Food.Value.cookDuration;
             m_Chef.Animator.SetBool(Utils.NPC_COOKING_ANIM_PARAM, true);
             m_Chef.Hoverable.IsHoverable = false;
-            m_Chef.UIChef.gameObject.SetActive(true);
+            m_Chef.UIChef.EnableTimerUI();
             m_Chef.UIChef.SetIcon(m_Food.Value.icon);
         }
 

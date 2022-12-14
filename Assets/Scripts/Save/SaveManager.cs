@@ -6,27 +6,27 @@ using UnityEngine.Events;
 
 public class SaveManager : MonoBehaviour
 {
-    //private string m_PublicPath = Application.persistentDataPath + Path.AltDirectorySeparatorChar;
 
     public static SaveManager Instance { get => m_Instance; }
     public UnityAction OnSave { get; set; } //params: filename in json
     private static SaveManager m_Instance;
     private readonly float m_DefaultAutoSaveTime = 10;
     private float m_AutoSaveTime = 0;
+    private readonly bool m_IsDebugging = false;
     private void Awake()
     {
         if (m_Instance == null) m_Instance = this;
         else Destroy(this);
 
-        DontDestroyOnLoad(this);
+        // DontDestroyOnLoad(this);
         m_AutoSaveTime = m_DefaultAutoSaveTime;
     }
 
-    // private void Update() => AutoSave_Seconds(m_DefaultAutoSaveTime);
+    private void Update() => AutoSave_Seconds(m_DefaultAutoSaveTime);
 
     public async Task SaveData(string jsonText, string filename)
     {
-        string localPath = Application.dataPath + Path.AltDirectorySeparatorChar + filename;
+        string localPath = SavePath() + filename;
         await Task.Run(() =>
         {
             File.WriteAllText(localPath, jsonText);
@@ -47,7 +47,7 @@ public class SaveManager : MonoBehaviour
 
     public void LoadData(string filename, UnityAction<JSONNode> OnLoadSucceeded, UnityAction OnLoadFailed)
     {
-        string localPath = Application.dataPath + Path.AltDirectorySeparatorChar + filename;
+        string localPath = SavePath() + filename;
         if (!File.Exists(localPath))
         {
             OnLoadFailed?.Invoke();
@@ -59,4 +59,6 @@ public class SaveManager : MonoBehaviour
             OnLoadSucceeded?.Invoke(node);
         }
     }
+
+    private string SavePath() => m_IsDebugging ? Application.dataPath + Path.AltDirectorySeparatorChar : Application.persistentDataPath + Path.AltDirectorySeparatorChar;
 }

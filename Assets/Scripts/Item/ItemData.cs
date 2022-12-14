@@ -10,6 +10,7 @@ public class ItemData : ScriptableObject
     public int sellPrice;
     public bool decreaseable;
     public ItemType itemType;
+    public int starterQuantity;
 }
 
 public enum ItemType

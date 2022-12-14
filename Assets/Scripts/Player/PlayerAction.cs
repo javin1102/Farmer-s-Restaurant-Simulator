@@ -74,7 +74,7 @@ public class PlayerAction : MonoBehaviour
         //LockCursor();
         if (m_Instance == null) m_Instance = this;
         else Destroy(gameObject);
-        DontDestroyOnLoad(gameObject);
+        // DontDestroyOnLoad(gameObject);
         m_Cam = Camera.main;
         m_PlayerInput = GetComponent<PlayerInput>();
         m_ActionSlotsController = GetComponent<ActionSlotsController>();
@@ -155,6 +155,7 @@ public class PlayerAction : MonoBehaviour
                 if (m_Hovered != null && m_Hovered != hover)
                 {
                     m_Hovered.HoverExit();
+                    m_UIManager.HideActionHelper();
                     m_ActionTimeRemaining = 0;
                     m_DefaultActionTime = 0;
                 }
@@ -166,6 +167,7 @@ public class PlayerAction : MonoBehaviour
                 if (m_Hovered != null)
                 {
                     m_Hovered.HoverExit();
+                    m_UIManager.HideActionHelper();
                     m_ActionTimeRemaining = 0;
                     m_DefaultActionTime = 0;
                     m_Hovered = null;
@@ -181,7 +183,7 @@ public class PlayerAction : MonoBehaviour
                 else
                 {
                     //TODO::Handle Inventory is full
-                    Debug.Log("Inventory is full");
+
                 }
             }
         }
@@ -233,9 +235,11 @@ public class PlayerAction : MonoBehaviour
     {
         if (m_ItemDatabase.Store(item.Data, quantity))
         {
+            m_UIManager.NotificationQueue.Enqueue($"<color=yellow>+{quantity}</color> {item.Data.ID}");
             Destroy(item.gameObject);
             return true;
         }
+        m_UIManager.NotificationQueue.Enqueue($"<color=red>Inventory penuh!</color>");
         return false;
     }
     public void InvokeToggleInventoryUI() => m_ToggleInventoryUI?.Invoke();

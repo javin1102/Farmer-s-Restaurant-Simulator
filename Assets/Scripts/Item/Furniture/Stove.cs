@@ -28,14 +28,13 @@ public class Stove : Furniture, IInteractable
 
     protected override void ShowHelper()
     {
-        m_HelperText = m_Chef == null ? "Tugas Chef" : "Cabut Chef";
+        m_HelperText = m_Chef == null ? "Tugas Chef" : "<color=red>Cabut Chef</color>";
         m_UIManager.ShowActionHelperPrimary("Left", m_HelperText);
         m_UIManager.ShowActionHelperSecondary("Left", "Simpan");
     }
 
     public void Interact(PlayerAction playerAction)
     {
-        print("Set");
         if (!m_IsInstantiated) return;
         if (m_Chef == null) SetChef();
         else UnsetChef();

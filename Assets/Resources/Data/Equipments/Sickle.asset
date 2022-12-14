@@ -19,3 +19,4 @@ MonoBehaviour:
   sellPrice: 0
   decreaseable: 0
   itemType: 0
+  starterQuantity: 1

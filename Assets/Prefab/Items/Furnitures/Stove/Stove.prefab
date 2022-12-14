@@ -48,9 +48,9 @@ GameObject:
   - component: {fileID: 484754764131377998}
   - component: {fileID: 484754764131377993}
   - component: {fileID: 484754764131377994}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Stove
-  m_TagString: Untagged
+  m_TagString: Props
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -212,7 +212,7 @@ NavMeshObstacle:
   m_Shape: 1
   m_Extents: {x: 0.4, y: 0.5, z: 0.4}
   m_MoveThreshold: 0.1
-  m_Carve: 0
+  m_Carve: 1
   m_CarveOnlyStationary: 1
   m_Center: {x: 0.009000001, y: 0.136, z: -0.008}
   m_TimeToStationary: 0.5
@@ -228,8 +228,16 @@ PrefabInstance:
       value: Canvas
       objectReference: {fileID: 0}
     - target: {fileID: 2910805850573045649, guid: 7e9d457e27600ea4186e6f61cc136adb, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 2910805850573045649, guid: 7e9d457e27600ea4186e6f61cc136adb, type: 3}
       propertyPath: m_IsActive
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3433726810740131594, guid: 7e9d457e27600ea4186e6f61cc136adb, type: 3}
+      propertyPath: m_Layer
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 8596567492224220048, guid: 7e9d457e27600ea4186e6f61cc136adb, type: 3}
       propertyPath: m_Pivot.x

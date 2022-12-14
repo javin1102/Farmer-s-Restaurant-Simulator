@@ -19,6 +19,7 @@ MonoBehaviour:
   sellPrice: 0
   decreaseable: 1
   itemType: 3
+  starterQuantity: 10
   cropPrefab: {fileID: 3358945435167939137, guid: e34d3eab31793b44a808ba9c8be8bfc0, type: 3}
   dropChance: 8.5
   hourToGrow: 1

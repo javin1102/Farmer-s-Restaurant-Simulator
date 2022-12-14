@@ -14,9 +14,11 @@ namespace NPC.Citizen
         private bool m_StartWaitTimer;
         private float m_WaitTime = 30f;
         private Vector3 m_LastPos;
+        private UIManager m_UIManager;
         private bool m_PathIsInvalid => m_Citizen.Agent.pathStatus == UnityEngine.AI.NavMeshPathStatus.PathInvalid || m_Citizen.Agent.pathStatus == UnityEngine.AI.NavMeshPathStatus.PathPartial;
         public override void OnEnterState(NPCManager NPC)
         {
+            m_UIManager = UIManager.Instance;
             m_Restaurant = RestaurantManager.Instance;
             m_Citizen = NPC as Citizen;
             if (!m_Restaurant.TryGetFoodToCook(out m_FoodData, out m_FoodConfig) || !m_Restaurant.FindUnoccupiedSeat(out m_Seat) || !FindSeatDest(m_Citizen, m_Seat))
@@ -42,6 +44,7 @@ namespace NPC.Citizen
             if (m_Citizen.ServedFood != null)
             {
                 PlayerAction.Coins += m_Citizen.ServedFood.Data.dishPrice;
+                m_UIManager.NotificationQueue.Enqueue($"<color=yellow>+{m_Citizen.ServedFood.Data.dishPrice}</color> Koin");
                 GameObject.Destroy(m_Citizen.ServedFood.gameObject);
             }
 

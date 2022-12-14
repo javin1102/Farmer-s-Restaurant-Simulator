@@ -14,7 +14,7 @@ public class UIMainMenu : MonoBehaviour
 
     private void Exit()
     {
-
+        Application.Quit();
     }
 
     private void Play() => StartCoroutine(Play_Coroutine());

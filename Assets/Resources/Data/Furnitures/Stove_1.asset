@@ -19,4 +19,5 @@ MonoBehaviour:
   sellPrice: 35
   decreaseable: 1
   itemType: 2
+  starterQuantity: 5
   furnitureType: 2

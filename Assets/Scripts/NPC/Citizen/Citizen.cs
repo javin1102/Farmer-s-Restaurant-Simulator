@@ -14,16 +14,21 @@ namespace NPC.Citizen
 
         [SerializeField] private Waypoint m_CurrentWaypoint;
         private Food m_ServedFood;
+        private UIManager m_UIManager;
         [SerializeField] private bool m_TravelBackwards;
+        private void Start()
+        {
+            m_UIManager = UIManager.Instance;
+        }
 
         private void OnEnable()
         {
-            ChangeState( new IdleState() );
+            ChangeState(new IdleState());
         }
 
         private void Update()
         {
-            m_CurrentState.OnUpdateState( this );
+            m_CurrentState.OnUpdateState(this);
         }
 
         public Waypoint DetermineNextWaypoint()
@@ -47,8 +52,9 @@ namespace NPC.Citizen
         {
             if (this.transform.GetChild(2).gameObject.activeSelf == true)
             {
-                // collect coin 
-                Debug.Log("collect coin");
+                int tippedCoins = Random.Range(5, 40);
+                PlayerAction.Coins += tippedCoins;
+                m_UIManager.NotificationQueue.Enqueue($"<color=yellow>+{tippedCoins}</color> Koin");
                 this.transform.GetChild(2).gameObject.SetActive(false);
             }
         }
