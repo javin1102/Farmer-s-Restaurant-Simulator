@@ -22,7 +22,7 @@ public class UIGameController : MonoBehaviour
 
     void Update()
     {
-        m_CoinText.text = $"<indent=40%><sprite=0><color=yellow>{PlayerAction.Coins}</color>";
+        m_CoinText.text = $"<indent=40%><sprite=0><color=yellow>{m_PlayerAction.Coins}</color>";
     }
     private void OnEnable()
     {

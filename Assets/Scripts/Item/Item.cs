@@ -31,7 +31,6 @@ public abstract class Item : MonoBehaviour
     private MaterialPropertyBlock m_Mpb;
     private int m_DropQuantity;
     private bool m_CanBeStored;
-    public UnityAction OnDrop { get; set; }
 
 
     protected void Awake()
@@ -92,7 +91,7 @@ public abstract class Item : MonoBehaviour
         }
         m_DropQuantity = dropQuantity;
         m_Mpb.SetFloat(m_ShaderFloatProperty, 1);
-        m_Collider.enabled = false;
+        m_Collider.enabled = true;
         m_Rigidbody.isKinematic = false;
         m_Collider.isTrigger = false;
         if (m_MeshRenderer) m_MeshRenderer.SetPropertyBlock(m_Mpb);
@@ -100,15 +99,15 @@ public abstract class Item : MonoBehaviour
         transform.SetParent(null);
         transform.localRotation = Quaternion.identity;
         transform.localScale = Vector3.one * .25f;
+        m_Rigidbody.constraints = RigidbodyConstraints.FreezeRotation;
         m_Rigidbody.AddForce(10f * Camera.main.transform.forward, ForceMode.VelocityChange);
-        // transform.GetChild(0).gameObject.SetActive(true); //activate drop UI
         Destroy(GetComponent<NavMeshObstacle>());
     }
 
     private IEnumerator StoreCooldown()
     {
         m_CanBeStored = false;
-        yield return new WaitForSeconds(1);
+        yield return new WaitForSeconds(.2f);
         m_CanBeStored = true;
     }
 

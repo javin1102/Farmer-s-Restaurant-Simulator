@@ -18,6 +18,7 @@ public abstract class Furniture : Item, IRaycastAction
     private float m_ObjRot;
     private MaterialChanger m_MaterialChanger;
     private Matrix4x4 m_PreviewMatrix;
+    private PlayerAction m_PlayerAction;
     protected new void OnEnable()
     {
         m_Restaurant = RestaurantManager.Instance;
@@ -27,6 +28,7 @@ public abstract class Furniture : Item, IRaycastAction
         base.OnEnable();
         m_ObjRotationInputRef.action.performed += RotateObj;
         m_InstantiatedSize = transform.localScale;
+        m_PlayerAction = PlayerAction.Instance;
     }
 
     protected void OnDisable()
@@ -40,6 +42,7 @@ public abstract class Furniture : Item, IRaycastAction
         m_DecreaseableEvent.RaiseEvent();
         Vector3 pos = m_PreviewMatrix.MultiplyPoint3x4(Vector3.zero);
         SpawnFurniture(pos, m_PreviewMatrix.rotation, m_InstantiatedSize);
+        m_PlayerAction.PlayAudio("thump_sfx");
     }
     protected void OnDestroy()
     {
@@ -47,6 +50,7 @@ public abstract class Furniture : Item, IRaycastAction
         {
             m_Hoverable.OnHoverEnter -= ShowHelper;
             m_UIManager.HideActionHelper();
+
         }
     }
     public void PerformRaycastAction(RaycastHit hitInfo)

@@ -23,7 +23,7 @@ public class Tree : BaseFarmObject, IActionTime
         m_PlayerAction = playerAction;
         Debug.Log(m_PlayerAction);
         float multiplier = 1;
-        if (playerAction.CurrEquippedItem != null && playerAction.CurrEquippedItem.Data.ID.Equals("Axe")) multiplier = 3;
+        if (playerAction.CurrEquippedItem != null && playerAction.CurrEquippedItem.Data.ID.Equals("Kapak")) multiplier = 3;
         ActionTime -= Time.deltaTime * multiplier;
         playerAction.DefaultActionTime = DefaultActionTime;
         playerAction.ActionTime = ActionTime;

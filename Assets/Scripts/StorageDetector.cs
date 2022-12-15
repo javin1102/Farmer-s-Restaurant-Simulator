@@ -13,6 +13,8 @@ public class StorageDetector : MonoBehaviour
         {
             IngredientData ingredientData = ingredient.Data as IngredientData;
             m_FoodsController.StoreIngredient(ingredientData, ingredient.DropQuantity);
+            PlayerAction.Instance.PlayAudio("bubble_sfx");
+            PlayerAction.Instance.PlayAudio("thump_sfx");
             Destroy(other.gameObject);
         }
     }

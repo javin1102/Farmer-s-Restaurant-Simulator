@@ -32,6 +32,7 @@ namespace NPC.Citizen
 
         public override void OnExitState(NPCManager NPC)
         {
+            m_Citizen.StopAudio();
             m_Citizen.transform.position = m_LastPos;
             m_Citizen.Agent.enabled = true;
             if (m_Seat != null)
@@ -43,7 +44,7 @@ namespace NPC.Citizen
 
             if (m_Citizen.ServedFood != null)
             {
-                PlayerAction.Coins += m_Citizen.ServedFood.Data.dishPrice;
+                PlayerAction.Instance.IncreaseCoins(m_Citizen.ServedFood.Data.dishPrice);
                 m_UIManager.NotificationQueue.Enqueue($"<color=yellow>+{m_Citizen.ServedFood.Data.dishPrice}</color> Koin");
                 GameObject.Destroy(m_Citizen.ServedFood.gameObject);
             }
@@ -86,9 +87,10 @@ namespace NPC.Citizen
 
             if (!m_IsEating && m_Citizen.ServedFood != null)
             {
-                NPC.StartCoroutine(EatFinish(5));
+                NPC.StartCoroutine(EatFinish(10));
                 m_IsEating = true;
                 m_Citizen.Animator.SetTrigger(Utils.NPC_EAT_ANIM_PARAM);
+                m_Citizen.PlayAudio("plateclack_sfx");
             }
 
         }

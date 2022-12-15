@@ -20,7 +20,7 @@ public class PlayerAction : MonoBehaviour
     public float ActionTime { get => m_ActionTimeRemaining; set => m_ActionTimeRemaining = value; }
     public float DefaultActionTime { get => m_DefaultActionTime; set => m_DefaultActionTime = value; }
     public Item CurrEquippedItem { get => m_ActionSlotsController.CurrEquippedItem; }
-    public static int Coins { get => m_Coins; set => m_Coins = value; }
+    public int Coins { get => m_Coins; set => m_Coins = value; }
     public static PlayerAction Instance { get => m_Instance; }
     public PlayerUpgrades PlayerUpgrades { get => m_PlayerUpgrades; }
     public UnityAction OnLoadSucceeded { get => m_OnLoadSucceeded; set => m_OnLoadSucceeded = value; } //Make sure subscribed script is on the same scene
@@ -62,7 +62,7 @@ public class PlayerAction : MonoBehaviour
     private UIManager m_UIManager;
     private float m_ActionTimeRemaining; //time passed for certain action to be done (ex: chopping tree)
     private float m_DefaultActionTime; //time needed for certain action to be done (ex: chopping tree)
-    private static int m_Coins;
+    private int m_Coins;
     private SaveManager m_SaveManager;
     private PlayerUpgrades m_PlayerUpgrades;
     private AudioSource m_AudioSource;
@@ -236,6 +236,7 @@ public class PlayerAction : MonoBehaviour
         if (m_ItemDatabase.Store(item.Data, quantity))
         {
             m_UIManager.NotificationQueue.Enqueue($"<color=yellow>+{quantity}</color> {item.Data.ID}");
+            PlayAudio("bubble_sfx");
             Destroy(item.gameObject);
             return true;
         }
@@ -360,6 +361,20 @@ public class PlayerAction : MonoBehaviour
     {
         m_AudioSource.clip = m_ResourcesLoader.AudioClips[audioClipName];
         m_AudioSource.Play();
+    }
+
+    public void IncreaseCoins(int coins)
+    {
+        Coins += coins;
+        PlayAudio("coin_sfx");
+    }
+
+    public bool DecreaseCoins(int coins)
+    {
+        if (Coins < coins) return false;
+        Coins -= coins;
+        PlayAudio("coin_sfx");
+        return true;
     }
     private void InvokeToggleInventoryUI(InputAction.CallbackContext obj) => m_ToggleInventoryUI?.Invoke();
     private void InvokeToggleMiscUI(InputAction.CallbackContext obj) => m_ToggleMiscUI?.Invoke();

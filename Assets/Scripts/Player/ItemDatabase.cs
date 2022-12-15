@@ -100,7 +100,7 @@ public class ItemDatabase : MonoBehaviour
                 Drop(itemData, quantity);
                 break;
             case ItemDatabaseAction.SELL:
-                PlayerAction.Coins += itemData.sellPrice;
+                PlayerAction.Instance.IncreaseCoins(itemData.sellPrice);
                 break;
             default:
                 break;
@@ -109,7 +109,7 @@ public class ItemDatabase : MonoBehaviour
 
     private void Drop(ItemData itemData, int quantity)
     {
-        Item droppedItem = Instantiate(itemData.prefab, transform.position, transform.rotation).GetComponent<Item>();
+        Item droppedItem = Instantiate(itemData.prefab, transform.position + transform.forward * 1.5f, transform.rotation).GetComponent<Item>();
         droppedItem.DropState(quantity);
     }
 

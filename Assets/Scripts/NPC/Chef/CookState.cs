@@ -18,6 +18,7 @@ namespace NPC.Chef
             m_Chef.Hoverable.IsHoverable = false;
             m_Chef.UIChef.EnableTimerUI();
             m_Chef.UIChef.SetIcon(m_Food.Value.icon);
+            m_Chef.PlayAudio("cooking_sfx");
         }
 
         public override void OnExitState(NPCManager NPC)

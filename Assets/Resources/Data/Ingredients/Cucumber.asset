@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ID: Timun
   prefab: {fileID: 4851928877410794951, guid: 30a296f8c44333544b4257f9ff66c136, type: 3}
-  icon: {fileID: 755971026, guid: 4f730c0fb86b14b41a023e4dd9759715, type: 3}
+  icon: {fileID: 21300000, guid: b1c24cc4ea04dee49923ab2b7d5db0b3, type: 3}
   buyPrice: 0
   sellPrice: 0
   decreaseable: 1

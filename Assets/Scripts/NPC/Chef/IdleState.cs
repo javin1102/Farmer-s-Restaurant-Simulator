@@ -9,6 +9,7 @@ namespace NPC.Chef
             m_Chef = NPC as Chef;
             m_Chef.Animator.SetBool(Utils.NPC_COOKING_ANIM_PARAM, false);
             m_Chef.UIChef.DisableTimerUI();
+            m_Chef.StopAudio();
         }
 
         public override void OnExitState(NPCManager NPC)

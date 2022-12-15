@@ -36,7 +36,7 @@ public class FoodsController : MonoBehaviour
 
     private void OnLoadFailed()
     {
-        FoodData gado_gado = m_ResourcesLoader.GetFoodDataByID("Gado-gado");
+        FoodData gado_gado = m_ResourcesLoader.GetFoodDataByID("Jagung Bakar");
         gado_gado.ingredients.ForEach(ingredient =>
         {
             StockIngredient stock = new(ingredient.ingredient, 50);

@@ -19,6 +19,7 @@ namespace NPC.Citizen
         private void Start()
         {
             m_UIManager = UIManager.Instance;
+
         }
 
         private void OnEnable()
@@ -53,7 +54,7 @@ namespace NPC.Citizen
             if (this.transform.GetChild(2).gameObject.activeSelf == true)
             {
                 int tippedCoins = Random.Range(5, 40);
-                PlayerAction.Coins += tippedCoins;
+                PlayerAction.Instance.IncreaseCoins(tippedCoins);
                 m_UIManager.NotificationQueue.Enqueue($"<color=yellow>+{tippedCoins}</color> Koin");
                 this.transform.GetChild(2).gameObject.SetActive(false);
             }

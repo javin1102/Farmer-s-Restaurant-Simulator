@@ -10,8 +10,7 @@ public class UIFarmItem : UIStoreItem
 
     protected override void BuyItem()
     {
-        if (PlayerAction.Coins < m_ItemData.buyPrice) return;
-        PlayerAction.Coins -= m_ItemData.buyPrice;
+        if (!PlayerAction.Instance.DecreaseCoins(m_ItemData.buyPrice)) return;
         m_FarmStoreController.SpawnItem(m_ItemData);
     }
 }

@@ -465,10 +465,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d3b40a5fa2d439f48a58cffcef7b3040, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  prefab: {fileID: 3573735643255035216, guid: bd4bde6305b6719498cee362ed2ecfac, type: 3}
-  offset: {x: 0, y: -0.5, z: 1}
-  angles: {x: -90, y: 0, z: 0}
-  scale: {x: 0, y: 0, z: 0}
+  prefab: {fileID: 755294335816670736, guid: 1f558a1f9547c9148a9082ff7fa24d13, type: 3}
+  offset: {x: 0, y: -0.35, z: 1}
+  angles: {x: 0, y: -25, z: 0}
+  scale: {x: 0.9, y: 1.1, z: 0.9}
 --- !u!4 &1694310144
 Transform:
   m_ObjectHideFlags: 0
