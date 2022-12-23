@@ -185,7 +185,7 @@ MonoBehaviour:
   m_ObjRotationInputRef: {fileID: 6348698597332287396, guid: 7669bc3b4a375a84ab07601d14946d36, type: 3}
   m_IsInstantiated: 0
   m_Hoverable: {fileID: 0}
-  m_ChefStandTf: {fileID: 0}
+  m_ChefStandTf: {fileID: 484754764536901012}
   m_Chef: {fileID: 0}
 --- !u!65 &484754764131377993
 BoxCollider:

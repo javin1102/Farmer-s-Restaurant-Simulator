@@ -16,7 +16,7 @@ MonoBehaviour:
   prefab: {fileID: 4851928877410794951, guid: 6319ef69f46516e4b83f4050fadeb867, type: 3}
   icon: {fileID: 21300000, guid: 29adb7ce284f141428d8ce0457d68dc7, type: 3}
   buyPrice: 0
-  sellPrice: 0
+  sellPrice: 10
   decreaseable: 1
   itemType: 1
   starterQuantity: 100

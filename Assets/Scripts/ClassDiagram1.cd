@@ -1,0 +1,116 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1" MembersFormat="FullSignature">
+  <Class Name="ActionSlotsController">
+    <Position X="2" Y="12.75" Width="3.75" />
+    <TypeIdentifier>
+      <HashCode>AAQBACAAKCgAAQQAAQAAAAEAECAAEEABAAEAAAAAAGI=</HashCode>
+      <FileName>Assets\Scripts\Player\ActionSlotsController.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="FirstPersonMovement" Collapsed="true">
+    <Position X="22.25" Y="2.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>EAUAAAAAACAAgAAAAAAAIAAAAAAgAQIQBACAAAACAAE=</HashCode>
+      <FileName>Assets\Scripts\Player\FirstPersonMovement.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="FoodsController" Collapsed="true">
+    <Position X="24" Y="2.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>gAIACEAAACAAAAAAAAQAAAAQIAAAAABIwAABAACAAEA=</HashCode>
+      <FileName>Assets\Scripts\Player\FoodsController.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="InventorySlotsController">
+    <Position X="6.5" Y="12.75" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAAQAAAAAAgAAAAAAAAAAAAAAAABAAAAAAAAAAAAAEA=</HashCode>
+      <FileName>Assets\Scripts\Player\InventorySlotsController.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ItemDatabase">
+    <Position X="8" Y="25.25" Width="7.75" />
+    <NestedTypes>
+      <Enum Name="ItemDatabase.SET_SLOT_TYPE" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>Assets\Scripts\Player\ItemDatabase.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Enum>
+    </NestedTypes>
+    <TypeIdentifier>
+      <HashCode>IAAhAEQAACARAAAAAAAACAAAaAEAgABAAgIAAUAAAEA=</HashCode>
+      <FileName>Assets\Scripts\Player\ItemDatabase.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ItemSlotsController">
+    <Position X="4.25" Y="9.25" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAEAAAgAAAACAAAAEAAAAAAAAABAACAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Player\ItemSlotsController.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PlayerAction">
+    <Position X="10.25" Y="8.5" Width="4.25" />
+    <Compartments>
+      <Compartment Name="Properties" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>EgcRQkZlhDAAiEASQYAQGAgAAwA3Olx53GTIgxQAKEk=</HashCode>
+      <FileName>Assets\Scripts\Player\PlayerAction.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="m_ActionSlotsController" />
+      <Field Name="m_InventorySlotsController" />
+      <Field Name="m_PlayerUpgrades" />
+      <Field Name="m_ResourcesLoader" />
+      <Field Name="m_UIManager" />
+      <Field Name="m_ItemDatabase" />
+      <Field Name="m_Hovered" />
+      <Field Name="m_SaveManager" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="PlayerUpgrades">
+    <Position X="4.25" Y="20.25" Width="4.5" />
+    <TypeIdentifier>
+      <HashCode>AAAgggAAADEABAAAAAAAAAAAAAgAEAAAAAAABAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Player\PlayerUpgrades.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ResourcesLoader">
+    <Position X="16.25" Y="12.25" Width="4.5" />
+    <TypeIdentifier>
+      <HashCode>AgQgAkAIAAAAIAIABQEBIEBAgAAgIAAYQQQACAAUAFg=</HashCode>
+      <FileName>Assets\Scripts\ResourcesLoader.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SaveManager">
+    <Position X="8.75" Y="2.25" Width="6.5" />
+    <TypeIdentifier>
+      <HashCode>EgAIAAAAABAQAAAACAAAAAAQAAAAAAgIQAAAAAAAAEA=</HashCode>
+      <FileName>Assets\Scripts\Save\SaveManager.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="UIManager">
+    <Position X="16.5" Y="21.25" Width="4.75" />
+    <TypeIdentifier>
+      <HashCode>IAAZAAAAAGAgAAADAEABAEAAgQEABAAIQQBAAAAAAEA=</HashCode>
+      <FileName>Assets\Scripts\UIManager.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Hoverable">
+    <Position X="15.75" Y="7.25" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAQEECAAAAAAAEAAAAAAAAQAAAIIAAAAAAAAAUA=</HashCode>
+      <FileName>Assets\Scripts\Hoverable.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Enum Name="ItemDatabaseAction" Collapsed="true">
+    <Position X="22.25" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAABAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Player\ItemDatabase.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

@@ -4,18 +4,10 @@ using UnityEngine;
 public class Sickle : Item, IRaycastAction
 {
     public GameObject selectedCrop;
-    private ItemDatabase m_ItemDatabase;
-
     public ItemData harvestCropData;
 
+    private ItemDatabase m_ItemDatabase;
     private SeedData seedData;
-
-    private float dropChance;
-    private bool IsDrop = false;
-
-    private Matrix4x4 m_TileMatrix;
-    private Mesh m_PreviewTileMesh;
-    private MaterialChanger previewTileMaterialChanger;
     private AudioSource m_HarvestAudioSource;
     private new void Awake()
     {
@@ -30,16 +22,14 @@ public class Sickle : Item, IRaycastAction
         {
             seedData = selectedCrop.GetComponentInParent<PlantGrowHandler>().SeedData;
 
-            float rand = Random.Range(1f, 10f);
-            if (rand <= seedData.dropChance)
-            {
-                int randSeedQuantity = Mathf.RoundToInt(Random.Range(seedData.minSeedDropQuantity, seedData.maxSeedDropQuanitty + 1));
-                AddSeedToInventory(seedData, randSeedQuantity);
-            }
-
+            int randSeedQuantity = Mathf.RoundToInt(Random.Range(seedData.minSeedDropQuantity, seedData.maxSeedDropQuanitty + 1));
             int randIngredientQuantity = Mathf.RoundToInt(Random.Range(seedData.minIngredientDropQuantity, seedData.maxIngredientDropQuantity + 1));
+            AddSeedToInventory(seedData, randSeedQuantity);
             AddIngredientToInventory(seedData.harvestedIngredientData, randIngredientQuantity);
-            selectedCrop.GetComponentInParent<PlantTile>().IsUsed = false;
+            PlantTile plantTile = selectedCrop.GetComponentInParent<PlantTile>();
+            plantTile.IsUsed = false;
+            if (plantTile.CompareTag(Utils.TILE_WET_TAG)) plantTile.SwitchStatus(PlantTile.TileStatus.WATERED);
+            else plantTile.SwitchStatus(PlantTile.TileStatus.HOED);
             Destroy(selectedCrop.transform.parent.gameObject);
 
             // play sickle sound effect
@@ -57,7 +47,7 @@ public class Sickle : Item, IRaycastAction
             }
             selectedCrop = hitInfo.transform.gameObject;
             selectedCrop.layer = 13;
-            UIManager.Instance.ShowActionHelperPrimary("Left", "To Use Sickle...");
+            UIManager.Instance.ShowActionHelperPrimary("Left", "Ambil hasil panen");
             return;
         }
         if (selectedCrop != null)
@@ -71,12 +61,44 @@ public class Sickle : Item, IRaycastAction
 
     private void AddSeedToInventory(SeedData seed, int quantity)
     {
-        m_ItemDatabase.Store(seed, quantity);
+        if (quantity <= 0) return;
+
+        if (!m_ItemDatabase.Store(seed, quantity))
+        {
+            Item itemDrop = Instantiate(seed.prefab, selectedCrop.transform.position + RandomOffsetCircle() * .5f, Quaternion.identity).GetComponent<Item>();
+            itemDrop.DropState(quantity);
+        }
+        else
+        {
+            m_UIManager.NotificationQueue.Enqueue($"<color=yellow>+{quantity}</color> {seed.ID}");
+            PlayerAction.Instance.PlayAudio("bubble_sfx");
+        }
+
+
+    }
+
+    private Vector3 RandomOffsetCircle()
+    {
+        Vector2 randomPos = Random.insideUnitCircle * .5f;
+        Vector3 offset = new Vector3(randomPos.x, .25f, randomPos.y);
+        return offset;
     }
 
     private void AddIngredientToInventory(ItemData item, int quantity)
     {
-        m_ItemDatabase.Store(item, quantity);
+        if (quantity <= 0) return;
+
+
+        if (!m_ItemDatabase.Store(item, quantity))
+        {
+            Item itemDrop = Instantiate(item.prefab, selectedCrop.transform.position + RandomOffsetCircle(), Quaternion.identity).GetComponent<Item>();
+            itemDrop.DropState(quantity);
+        }
+        else
+        {
+            m_UIManager.NotificationQueue.Enqueue($"<color=yellow>+{quantity}</color> {item.ID}");
+            PlayerAction.Instance.PlayAudio("bubble_sfx");
+        }
     }
     private void OnDestroy()
     {

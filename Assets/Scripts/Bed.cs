@@ -28,6 +28,6 @@ public class Bed : MonoBehaviour, IInteractable
         m_Hoverable.OnHoverExit += HideHelperUI;
     }
 
-    private void ShowHelperUI() => m_UIManager.ShowActionHelperPrimary("Left", "Tidur");
+    private void ShowHelperUI() => m_UIManager.ShowActionHelperPrimary("Left", "Tidur dan Save");
     private void HideHelperUI() => m_UIManager.HideActionHelper();
 }

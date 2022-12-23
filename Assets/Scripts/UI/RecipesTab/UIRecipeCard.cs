@@ -18,6 +18,7 @@ public class UIRecipeCard : MonoBehaviour
     private TMP_Text m_SellButtonText;
     private Color m_RedColor, m_GreenColor;
     private Image m_SellButtonImage;
+    private PlayerAction m_PlayerAction;
 
     private void Start()
     {
@@ -32,16 +33,20 @@ public class UIRecipeCard : MonoBehaviour
         m_SellButtonImage = m_SellButton.GetComponent<Image>();
         m_SellButton.onClick.AddListener(SellHandler);
         m_UnlockedButton.onClick.AddListener(UnlockFoodHandler);
+        m_PlayerAction = PlayerAction.Instance;
     }
 
     private void UnlockFoodHandler()
     {
-        //TODO::check gold
+        if (m_PlayerAction.Coins < m_Food.Key.unlockPrice) return;
+        m_PlayerAction.PlayAudio("button_sfx");
+        m_PlayerAction.Coins -= m_Food.Key.unlockPrice;
         m_Food.Value.IsUnlock = true;
     }
 
     private void SellHandler()
     {
+        m_PlayerAction.PlayAudio("button_sfx");
         m_Food.Value.IsSelling = !m_Food.Value.IsSelling;
     }
 
@@ -54,7 +59,7 @@ public class UIRecipeCard : MonoBehaviour
         m_CookDurText.text = $"{m_Food.Key.cookDuration} Seconds";
         m_DishPriceText.text = $"{m_Food.Key.dishPrice}/Dish";
         m_UnlockedPriceText.text = $"Unlock For <color=yellow>${m_Food.Key.unlockPrice}</color>";
-        m_FoodNameText.text = m_Food.Key.name;
+        m_FoodNameText.text = m_Food.Key.ID;
     }
 
     private void UpdateOverlayUI()

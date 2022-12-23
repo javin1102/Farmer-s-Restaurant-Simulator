@@ -6,9 +6,11 @@ public class UIFurnitureBuy : MonoBehaviour
 {
     [SerializeField] private GameObject m_UIItemPrefab;
     [SerializeField] private GameObject m_Content;
+    [SerializeField] private TMPro.TMP_Text m_CoinText;
     [SerializeField] private Toggle m_TableToggle, m_ChairToggle, m_StoveToggle;
     private readonly List<UIFurnitureItem> m_TableItems = new(), m_ChairItems = new(), m_StoveItems = new();
     private UIFurnitureStoreController m_StoreController;
+    private PlayerAction m_PlayerAction;
     private void Start()
     {
         m_StoreController = UIFurnitureStoreController.Instance as UIFurnitureStoreController;
@@ -16,8 +18,13 @@ public class UIFurnitureBuy : MonoBehaviour
         m_TableToggle.onValueChanged.AddListener(TableFilter);
         m_ChairToggle.onValueChanged.AddListener(ChairFilter);
         m_StoveToggle.onValueChanged.AddListener(StoveFilter);
-
+        m_PlayerAction = PlayerAction.Instance;
         m_TableItems.ForEach(EnableUIItem);
+    }
+
+    void Update()
+    {
+        m_CoinText.text = $"Koin Anda :<indent=55%><sprite=0><color=yellow>{m_PlayerAction.Coins}</color>";
     }
 
     private void StoveFilter(bool arg0)

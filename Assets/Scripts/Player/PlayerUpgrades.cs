@@ -5,10 +5,11 @@ public class PlayerUpgrades : MonoBehaviour
     public int ChefQuantityLevel { get; set; }
     public int RestaurantExpandLevel { get; set; }
     public int InventoryLevel { get; set; }
-    public int INVENTORY_MAX_LEVEL { get => 3; }
+    public int INVENTORY_MAX_LEVEL { get => 2; }
+    public int CHEFQUANTITY_MAX_LEVEL { get => 6; }
     public int RESTAURANT_EXPAND_MAX_LEVEL { get => 3; }
     private InventorySlotsController m_InventorySlotsController;
-    void Start()
+    void Awake()
     {
         m_InventorySlotsController = GetComponent<InventorySlotsController>();
     }
@@ -28,7 +29,7 @@ public class PlayerUpgrades : MonoBehaviour
     public int GetSlotSize()
     {
         float tValue = Mathf.InverseLerp(1, INVENTORY_MAX_LEVEL, InventoryLevel);
-        int slotSize = Mathf.RoundToInt(Mathf.Lerp(20, 42, tValue));
+        int slotSize = Mathf.RoundToInt(Mathf.Lerp(Utils.DEFAULT_INVENTORYSLOT_SIZE, Utils.MAX_INVENTORYSLOT_SIZE, tValue));
         m_InventorySlotsController.SlotSize = slotSize;
         return slotSize;
     }

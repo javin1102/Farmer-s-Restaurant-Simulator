@@ -49,8 +49,9 @@ public abstract class Furniture : Item, IRaycastAction
         if (m_IsInstantiated)
         {
             m_Hoverable.OnHoverEnter -= ShowHelper;
+            m_UIManager = UIManager.Instance;
+            if (m_UIManager == null) return;
             m_UIManager.HideActionHelper();
-
         }
     }
     public void PerformRaycastAction(RaycastHit hitInfo)
@@ -71,8 +72,8 @@ public abstract class Furniture : Item, IRaycastAction
             {
                 m_Collided = collider.CompareTag(Utils.PROP_TAG);
             }
-            //bool isNotInsideBox = hitInfo.point.x < m_Restaurant.GroundCollider2.bounds.min.x || hitInfo.point.x > m_Restaurant.GroundCollider2.bounds.max.x || hitInfo.point.z < m_Restaurant.GroundCollider2.bounds.min.z || hitInfo.point.z > m_Restaurant.GroundCollider2.bounds.max.z;
-            if (m_Collided || !m_Restaurant.GroundCollider2.bounds.Contains(hitInfo.point))
+
+            if (m_Collided)
             {
                 m_IsInstantiable = false;
             }
@@ -95,7 +96,7 @@ public abstract class Furniture : Item, IRaycastAction
 
     protected virtual void ShowHelper()
     {
-        m_UIManager.ShowActionHelperPrimary("Left", "Simpan");
+        m_UIManager.ShowActionHelperPrimary("F", "Simpan");
     }
 
     public Furniture SpawnFurniture(Vector3 position, Quaternion rotation, Vector3 localScale)

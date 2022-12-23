@@ -15,8 +15,8 @@ MonoBehaviour:
   ID: Kursi Elit
   prefab: {fileID: 4767778158996239126, guid: 841cca00ebe1d4a40a716bf73908da7c, type: 3}
   icon: {fileID: 21300000, guid: d49aec31d9876da4584b7434f94d5d56, type: 3}
-  buyPrice: 100
-  sellPrice: 35
+  buyPrice: 115
+  sellPrice: 57
   decreaseable: 1
   itemType: 2
   starterQuantity: 5

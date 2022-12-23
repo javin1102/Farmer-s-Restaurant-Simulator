@@ -15,8 +15,8 @@ MonoBehaviour:
   ID: Kursi Bar
   prefab: {fileID: 4297716925853398324, guid: 4a5dbe3896591e8469b7763d7fb8c46d, type: 3}
   icon: {fileID: 21300000, guid: b58582707a3a50b4abe4fd76591f3197, type: 3}
-  buyPrice: 100
-  sellPrice: 35
+  buyPrice: 90
+  sellPrice: 45
   decreaseable: 1
   itemType: 2
   starterQuantity: 5

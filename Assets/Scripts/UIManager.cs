@@ -1,3 +1,4 @@
+using System.Linq;
 using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
@@ -22,6 +23,7 @@ public class UIManager : MonoBehaviour, ITimeTracker
     [SerializeField] private Image m_SecondaryActionImage;
     [SerializeField] private TMP_Text m_SecondaryActionText;
 
+    private readonly Dictionary<string, Sprite> m_HelperSprites = new();
     private SceneLoader m_SceneLoader;
     private TimeManager m_TimeManager;
 
@@ -40,6 +42,8 @@ public class UIManager : MonoBehaviour, ITimeTracker
         m_TimeManager.RegisterListener(this);
         m_SceneLoader = SceneLoader.Instance;
         m_SceneLoader.OnFinishLoading += HideActionHelper;
+        List<Sprite> sprites = Resources.LoadAll<Sprite>("ActionHelper").ToList();
+        sprites.ForEach(sprite => m_HelperSprites.Add(sprite.name, sprite));
     }
 
     private void OnDestroy()
@@ -51,7 +55,7 @@ public class UIManager : MonoBehaviour, ITimeTracker
     public void ClockUpdate(GameTimeStamp timeStamp)
     {
         m_clockText.text = timeStamp.hour.ToString("00") + " : " + timeStamp.minute.ToString("00");
-        m_DayText.text = $"Day {timeStamp.day}";
+        m_DayText.text = $"Hari {timeStamp.day}";
     }
 
     public void ShowActionHelperPrimary(string imageName, string actionText)
@@ -61,7 +65,7 @@ public class UIManager : MonoBehaviour, ITimeTracker
         m_ActionHelperPrimaryGO.SetActive(true);
 
         // load sprite for action helper
-        m_PrimaryActionImage.sprite = Resources.Load<Sprite>("ActionHelper/" + imageName);
+        m_PrimaryActionImage.sprite = m_HelperSprites[imageName];
 
         // set action helper text
         m_PrimaryActionText.text = actionText;
@@ -74,7 +78,7 @@ public class UIManager : MonoBehaviour, ITimeTracker
         m_ActionHelperSecondaryGO.SetActive(true);
 
         // load sprite for action helper
-        m_SecondaryActionImage.sprite = Resources.Load<Sprite>("ActionHelper/" + imageName);
+        m_SecondaryActionImage.sprite = m_HelperSprites[imageName];
 
         // set action helper text
         m_SecondaryActionText.text = actionText;

@@ -9,7 +9,7 @@ public abstract class UIStoreController : MonoBehaviour
 
     protected BoxCollider m_SpawnCollider;
     [SerializeField] protected GameObject m_MainMenuGO, m_BuyMenuGO, m_SellMenuGO;
-    [SerializeField] protected Button m_BuyMenuButton, m_SellMenuButton, m_QuizMenuButton, m_ExitMenuButton, m_BackButton;
+    [SerializeField] protected Button m_BuyMenuButton, m_SellMenuButton, m_ExitMenuButton, m_BackButton;
     protected PlayerAction m_PlayerAction;
     protected ResourcesLoader m_ResourcesLoader;
     protected void Awake()
@@ -49,6 +49,7 @@ public abstract class UIStoreController : MonoBehaviour
         menu.SetActive(true);
         if (menu != m_MainMenuGO) m_BackButton.gameObject.SetActive(true);
         else m_BackButton.gameObject.SetActive(false);
+        m_PlayerAction.PlayAudio("button_sfx");
     }
 
     void OpenBuyMenu() => OpenMenu(m_BuyMenuGO);
@@ -60,16 +61,22 @@ public abstract class UIStoreController : MonoBehaviour
         m_PlayerAction.IsOtherUIOpen = false;
         m_PlayerAction.OnDisableOtherUI?.Invoke();
         SpawnTf = null;
+        m_PlayerAction.PlayAudio("button_sfx");
     }
 
     public void SpawnItem(ItemData item)
     {
+        Debug.Log($"X Min: {SpawnCollider.bounds.min.x}");
+        Debug.Log($"X Max: {SpawnCollider.bounds.max.x}");
+        Debug.Log($"Z Min: {SpawnCollider.bounds.min.z}");
+        Debug.Log($"X Max: {SpawnCollider.bounds.max.z}");
         float posX = Random.Range(SpawnCollider.bounds.min.x + .25f, SpawnCollider.bounds.max.x - .25f);
-        float posY = SpawnCollider.bounds.max.y;
+        float posY = SpawnCollider.bounds.max.y * .75f;
         float posZ = Random.Range(SpawnCollider.bounds.min.z + .25f, SpawnCollider.bounds.max.z - .25f);
-        Vector3 randPos = new(posX, posY + .5f, posZ);
+        Vector3 randPos = new(posX, posY, posZ);
         Item boughtItem = Instantiate(item.prefab, randPos, Quaternion.identity).GetComponent<Item>();
         boughtItem.DropState();
+        boughtItem.transform.position = randPos;
     }
 
 }

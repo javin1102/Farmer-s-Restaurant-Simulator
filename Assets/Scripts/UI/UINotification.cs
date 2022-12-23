@@ -9,6 +9,7 @@ public class UINotification : MonoBehaviour
     void Start()
     {
         m_UIManager = UIManager.Instance;
+        for (int i = 0; i < 3; i++) m_Timers[i] = m_DefaultNotificationTimer;
     }
 
     void Update()
@@ -31,9 +32,9 @@ public class UINotification : MonoBehaviour
         child.SetSiblingIndex(transform.childCount - 1);
         TMP_Text notif = child.GetChild(0).GetComponent<TMP_Text>();
         notif.text = res;
+        m_Timers[currentIndex] = m_DefaultNotificationTimer;
         currentIndex = ++currentIndex % (transform.childCount - 1);
         m_UIManager.NotificationQueue.Dequeue();
-        m_Timers[currentIndex] = m_DefaultNotificationTimer;
 
 
     }

@@ -61,7 +61,11 @@ public class SceneLoader : MonoBehaviour
     public void LoadSceneAsynchronous(string scene, LoadSceneMode loadSceneMode, SPAWN_TYPE spawnType) => StartCoroutine(LoadSceneAsync_Coroutine(scene, loadSceneMode, spawnType));
     public void LoadSceneAsynchronous(string scene, LoadSceneMode loadSceneMode) => StartCoroutine(LoadSceneAsync_Coroutine(scene, loadSceneMode));
     public void UnloadSceneAsynchronous(string scene) => StartCoroutine(UnloadSceneAsync_Coroutine(scene));
-    public void SpawnToScene(SPAWN_TYPE spawnType) => StartCoroutine(SpawnToScene_Coroutine(spawnType));
+    public void SpawnToScene(SPAWN_TYPE spawnType)
+    {
+        if (m_MinTimeSpawnCooldown > 0) return;
+        StartCoroutine(SpawnToScene_Coroutine(spawnType));
+    }
     private IEnumerator UnloadSceneAsync_Coroutine(string scene)
     {
         OnStartLoading?.Invoke();
@@ -120,24 +124,26 @@ public class SceneLoader : MonoBehaviour
         m_PlayerAction.OnDisableOtherUI?.Invoke();
         OnFinishLoading?.Invoke();
         SceneManager.SetActiveScene(SceneManager.GetSceneByName(scene));
-        DeterminePlayerSpawnPos();
+        // DeterminePlayerSpawnPos();
     }
 
     private IEnumerator SpawnToScene_Coroutine(SPAWN_TYPE spawnType)
     {
         if (m_MinTimeSpawnCooldown > 0) yield break;
+        m_FirstPersonMovement.enabled = false;
+        m_PlayerAction.OnEnableOtherUI?.Invoke();
+        m_UIManager.LoadingUI.Activate(0);
+        OnStartLoading?.Invoke();
         m_SpawnType = spawnType;
         string scene = DetermineScene(spawnType);
-        m_PlayerAction.OnEnableOtherUI?.Invoke();
-        m_UIManager.LoadingUI.Activate();
-        OnStartLoading?.Invoke();
-        yield return new WaitForSeconds(1 / TimeManager.Instance.TimeScale);
+        DeterminePlayerSpawnPos();
+        yield return new WaitForSeconds(.5f);
         m_UIManager.LoadingUI.Deactivate();
         m_PlayerAction.OnDisableOtherUI?.Invoke();
         OnFinishLoading?.Invoke();
-        DeterminePlayerSpawnPos();
         SceneManager.SetActiveScene(SceneManager.GetSceneByName(scene));
-        m_MinTimeSpawnCooldown = 1;
+        m_FirstPersonMovement.enabled = true;
+
     }
     private string DetermineScene(SPAWN_TYPE spawnType)
     {
@@ -161,7 +167,7 @@ public class SceneLoader : MonoBehaviour
 
     private void DeterminePlayerSpawnPos()
     {
-        m_FirstPersonMovement.enabled = false;
+
         switch (m_SpawnType)
         {
             case SPAWN_TYPE.HOUSE_BED:
@@ -196,8 +202,8 @@ public class SceneLoader : MonoBehaviour
                 break;
 
         }
+        m_MinTimeSpawnCooldown = 1;
 
-        m_FirstPersonMovement.enabled = true;
     }
 
     private IEnumerator UnloadAndLoadSceneAsync_Coroutine(string unloadScene, string loadScene, LoadSceneMode loadSceneMode, SPAWN_TYPE spawnType)
@@ -212,6 +218,7 @@ public class SceneLoader : MonoBehaviour
         yield return StartCoroutine(LoadSceneAsync_Coroutine(Utils.SCENE_CITY, LoadSceneMode.Additive, SPAWN_TYPE.CITY_DOOR));
         yield return StartCoroutine(LoadSceneAsync_Coroutine(Utils.SCENE_FARM, LoadSceneMode.Additive, SPAWN_TYPE.CITY_FARM));
         yield return StartCoroutine(LoadSceneAsync_Coroutine(Utils.SCENE_HOUSE, LoadSceneMode.Additive, SPAWN_TYPE.HOUSE_BED));
+        DeterminePlayerSpawnPos();
         m_UIManager.LoadingUI.Deactivate();
     }
 }

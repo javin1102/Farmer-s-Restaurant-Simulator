@@ -13,7 +13,6 @@ public class RestaurantManager : MonoBehaviour
     public List<Chef> Chefs => m_Chefs;
     public Queue<KeyValuePair<Seat, FoodData>> OrderQueue => m_OrderQueue;
     public Queue<Food> FoodsToServe => m_FoodsToServe;
-    public Transform RestaurantGround { get => m_RestaurantGround; }
     public BoxCollider GroundCollider { get => m_GroundCollider; }
 
 
@@ -33,7 +32,6 @@ public class RestaurantManager : MonoBehaviour
     //Others
     private static RestaurantManager m_Instance;
     [SerializeField] private Transform m_RestaurantGround;
-    [SerializeField] private Transform m_RestaurantGround2;
     [SerializeField] private Transform m_WallBoundary;
 
     private BoxCollider m_GroundCollider;
@@ -51,8 +49,7 @@ public class RestaurantManager : MonoBehaviour
         if (m_Instance == null) m_Instance = this;
         else Destroy(gameObject);
 
-        m_GroundCollider = m_RestaurantGround.GetComponent<BoxCollider>();
-        m_GroundCollider2 = m_RestaurantGround2.GetComponent<BoxCollider>();
+        m_GroundCollider2 = m_RestaurantGround.GetComponent<BoxCollider>();
     }
 
     private void Start()
@@ -135,11 +132,11 @@ public class RestaurantManager : MonoBehaviour
     public void ExpandRestaurant()
     {
         (float posX, float scaleX, float wallXBoundary) = m_PlayerAction.PlayerUpgrades.SetRestaurantSize();
-        Vector3 helperGroundPos = m_RestaurantGround2.position;
-        Vector3 helperGroundScale = m_RestaurantGround2.lossyScale;
+        Vector3 helperGroundPos = m_RestaurantGround.position;
+        Vector3 helperGroundScale = m_RestaurantGround.lossyScale;
         Vector3 wallBoundaryPos = m_WallBoundary.position;
-        m_RestaurantGround2.position = new(posX, helperGroundPos.y, helperGroundPos.z);
-        m_RestaurantGround2.localScale = new(scaleX, helperGroundScale.y, helperGroundScale.z);
+        m_RestaurantGround.position = new(posX, helperGroundPos.y, helperGroundPos.z);
+        m_RestaurantGround.localScale = new(scaleX, helperGroundScale.y, helperGroundScale.z);
         m_WallBoundary.position = new(wallXBoundary, wallBoundaryPos.y, wallBoundaryPos.z);
         if (m_PlayerAction.PlayerUpgrades.RestaurantExpandLevel == m_PlayerAction.PlayerUpgrades.RESTAURANT_EXPAND_MAX_LEVEL)
             m_WallBoundary.gameObject.SetActive(false);
@@ -160,8 +157,8 @@ public class RestaurantManager : MonoBehaviour
 
     private void OnLoadSucceeded(JSONNode jsonNode)
     {
+        ExpandRestaurant();
         AddChefsFromUpgradeData(m_PlayerAction.PlayerUpgrades.ChefQuantityLevel);
-
         JSONNode tableNode = jsonNode["tables"];
         JSONNode seatNode = jsonNode["seats"];
         JSONNode stoveNode = jsonNode["stoves"];

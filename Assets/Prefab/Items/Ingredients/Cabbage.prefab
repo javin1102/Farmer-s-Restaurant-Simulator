@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 430624903810713471}
   - component: {fileID: -3191615461304540964}
   - component: {fileID: 5564639492843754971}
-  - component: {fileID: -4856883772183951646}
+  - component: {fileID: 9169296346796867281}
   m_Layer: 0
   m_Name: Cabbage
   m_TagString: Untagged
@@ -44,7 +44,7 @@ MeshFilter:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4851928877410794951}
-  m_Mesh: {fileID: 1275450907069471206, guid: 47d4471920149d744b5dcbdf4eb4ef3d, type: 3}
+  m_Mesh: {fileID: 3760286561286826541, guid: 83322024c02f407449754791d28a9e64, type: 3}
 --- !u!23 &430624903810713471
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -65,7 +65,8 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: e5db41e4df353234d8eb6a05e65bd61d, type: 2}
+  - {fileID: 2100000, guid: dbbb4e6f06d0f9947ac2be57c3eed6e2, type: 2}
+  - {fileID: 2100000, guid: 843457c35ba350f428f3b675f1c018a3, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -116,12 +117,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Data: {fileID: 11400000, guid: 23cd1256483e16149b60e8bbc710ee11, type: 2}
-  m_HandPosOffset: {x: 0, y: 0, z: 0}
-  m_HandEulerAngles: {x: 0, y: 0, z: 0}
-  m_HandScale: {x: 0.3, y: 0.3, z: 0.3}
+  m_HandPosOffset: {x: 0, y: -0.37, z: 0}
+  m_HandEulerAngles: {x: 310.53, y: -0.00000065690443, z: 11.429997}
+  m_HandScale: {x: 0.5, y: 0.5, z: 0.5}
   m_TileManager: {fileID: 0}
---- !u!65 &-4856883772183951646
-BoxCollider:
+--- !u!135 &9169296346796867281
+SphereCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -131,8 +132,8 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 0.6522751, y: 0.9029802, z: 0.27890372}
-  m_Center: {x: -0.0108796805, y: -0.00000008940697, z: 0.0119307265}
+  m_Radius: 0.75
+  m_Center: {x: 0.001183629, y: 0.65322787, z: -0.0072526336}
 --- !u!1001 &692565243902879404
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -144,8 +145,8 @@ PrefabInstance:
       propertyPath: m_Name
       value: DropCanvas
       objectReference: {fileID: 0}
-    - target: {fileID: 2910805850573045649, guid: 7e9d457e27600ea4186e6f61cc136adb, type: 3}
-      propertyPath: m_IsActive
+    - target: {fileID: 3089214349646224602, guid: 7e9d457e27600ea4186e6f61cc136adb, type: 3}
+      propertyPath: m_PresetInfoIsWorld
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8596567492224220048, guid: 7e9d457e27600ea4186e6f61cc136adb, type: 3}

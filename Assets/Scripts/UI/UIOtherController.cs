@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.Events;
 
 public class UIOtherController : MonoBehaviour
 {
@@ -18,9 +19,16 @@ public class UIOtherController : MonoBehaviour
         m_PlayerAction.ToggleInventoryUI += m_UIMiscController.ToggleInventoryUI;
         m_PlayerAction.ToggleFurnitureStoreUI += m_FurnitureStoreController.ToggleUI;
         m_PlayerAction.ToggleSeedStoreUI += m_SeedStoreController.ToggleUI;
-        m_PlayerAction.TogglePause += m_PauseController.ToggleUI;
+        m_PlayerAction.TogglePause += ToglePauseUI;
 
     }
+
+    private void ToglePauseUI()
+    {
+        if (m_PlayerAction.IsOtherUIOpen) return;
+        m_PauseController.ToggleUI();
+    }
+
     private void OnDisable()
     {
 

@@ -44,7 +44,7 @@ MeshFilter:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4851928877410794951}
-  m_Mesh: {fileID: 1275450907069471206, guid: 47d4471920149d744b5dcbdf4eb4ef3d, type: 3}
+  m_Mesh: {fileID: -5334319646617103679, guid: c17ce092a402ecc489c31f1cd29baa08, type: 3}
 --- !u!23 &430624903810713471
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -65,7 +65,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: e5db41e4df353234d8eb6a05e65bd61d, type: 2}
+  - {fileID: 2100000, guid: dbbb4e6f06d0f9947ac2be57c3eed6e2, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -116,9 +116,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Data: {fileID: 11400000, guid: 649cc935bdb143642b49f2ec5c18dd11, type: 2}
-  m_HandPosOffset: {x: 0, y: 0, z: 0}
+  m_HandPosOffset: {x: 0, y: -0.3, z: 0}
   m_HandEulerAngles: {x: 0, y: 0, z: 0}
-  m_HandScale: {x: 0.3, y: 0.3, z: 0.3}
+  m_HandScale: {x: 0.7, y: 0.7, z: 0.7}
   m_TileManager: {fileID: 0}
 --- !u!65 &-4856883772183951646
 BoxCollider:
@@ -131,8 +131,8 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 0.6522751, y: 0.9029802, z: 0.27890372}
-  m_Center: {x: -0.0108796805, y: -0.00000008940697, z: 0.0119307265}
+  m_Size: {x: 0.9109795, y: 0.87846327, z: 0.19036445}
+  m_Center: {x: 0.01649654, y: 0.00505583, z: -0.00082374737}
 --- !u!1001 &692565243902879404
 PrefabInstance:
   m_ObjectHideFlags: 0

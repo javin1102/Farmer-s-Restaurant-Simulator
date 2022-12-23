@@ -56,6 +56,7 @@ public class Utils
 
     //Anim
     public static int NPC_WALK_ANIM_PARAM = Animator.StringToHash("Walk");
+    public static int NPC_STAND_ANIM_PARAM = Animator.StringToHash("Stand");
     public static int NPC_EAT_ANIM_PARAM = Animator.StringToHash("Eat");
     public static int NPC_SIT_ANIM_PARAM = Animator.StringToHash("Sit");
     public static int NPC_SPEED_ANIM_PARAM = Animator.StringToHash("Speed");
@@ -77,6 +78,10 @@ public class Utils
     public const string PLAYERDATA_FILENAME = "playerdata.json";
 
     public const string BUTTON_SFX = "button_sfx";
+
+    //Upgrades
+    public const int DEFAULT_INVENTORYSLOT_SIZE = 10;
+    public const int MAX_INVENTORYSLOT_SIZE = 20;
 
 
 }

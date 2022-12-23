@@ -12,7 +12,7 @@ public abstract class UIItemSlot : MonoBehaviour, IDropHandler
     [SerializeField] protected TMP_Text m_QuantityText;
     [SerializeField] protected int m_SlotIndex;
     protected ItemSlotsController m_SlotsController;
-    void Start()
+    protected void Start()
     {
         m_SlotIndex = transform.GetSiblingIndex();
     }
@@ -22,26 +22,26 @@ public abstract class UIItemSlot : MonoBehaviour, IDropHandler
     }
     public void UpdateUI()
     {
-        if ( Slot == null || Slot.quantity == 0 )
+        if (Slot == null || Slot.quantity == 0)
         {
-            transform.GetChild( 0 ).gameObject.SetActive( false );
+            transform.GetChild(0).gameObject.SetActive(false);
             return;
         }
-        transform.GetChild( 0 ).gameObject.SetActive( true );
+        transform.GetChild(0).gameObject.SetActive(true);
         m_IconImage.sprite = Slot.data.icon;
         m_QuantityText.text = Slot.quantity.ToString();
     }
 
-    public void OnDrop( PointerEventData eventData )
+    public void OnDrop(PointerEventData eventData)
     {
         Transform targetContentTf = eventData.pointerDrag.transform;
         UIItemSlot OriginUISlot = targetContentTf.parent.GetComponent<UIItemSlot>();
-        SwapItemSlot( OriginUISlot );
+        SwapItemSlot(OriginUISlot);
 
-        targetContentTf.GetComponent<UIDraggable>().OnEndDrag( eventData );
+        targetContentTf.GetComponent<UIDraggable>().OnEndDrag(eventData);
     }
 
-    protected void SwapItemSlot( UIItemSlot ui )
+    protected void SwapItemSlot(UIItemSlot ui)
     {
         (m_SlotsController.Slots[m_SlotIndex], ui.m_SlotsController.Slots[ui.m_SlotIndex]) = (ui.m_SlotsController.Slots[ui.m_SlotIndex], m_SlotsController.Slots[m_SlotIndex]);
     }

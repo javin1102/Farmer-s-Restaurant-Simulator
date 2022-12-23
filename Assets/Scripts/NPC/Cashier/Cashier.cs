@@ -1,5 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
+using System;
 using UnityEngine;
 
 namespace NPC.Cashier
@@ -11,13 +10,21 @@ namespace NPC.Cashier
         [SerializeField] protected PlayerAction m_PlayerAction;
         [SerializeField] protected Transform m_SpawnedItemTf;
         protected Hoverable m_Hoverable;
-        private void Start()
+        protected UIManager m_UIManager;
+        private new void Awake()
         {
+            base.Awake();
             m_Hoverable = GetComponent<Hoverable>();
+            Animator.SetTrigger(Utils.NPC_STAND_ANIM_PARAM);
+            m_UIManager = UIManager.Instance;
         }
+
+
+
         public void Interact(PlayerAction playerAction)
         {
             m_PlayerAction = playerAction;
+            m_PlayerAction.PlayAudio("button_sfx");
             OnInteract();
         }
 

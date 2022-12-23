@@ -4,12 +4,24 @@ using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 public class UIMainMenu : MonoBehaviour
 {
-    [SerializeField] private Button m_PlayButton, m_CreditsButton, m_ExitButton;
-    [SerializeField] private GameObject m_LoadingUI;
+    [SerializeField] private Button m_PlayButton, m_CreditsButton, m_ExitButton, m_CloseCreditButton;
+    [SerializeField] private GameObject m_LoadingUI, m_CreditsUI;
     void Start()
     {
         m_PlayButton.onClick.AddListener(Play);
+        m_CreditsButton.onClick.AddListener(Credits);
+        m_CloseCreditButton.onClick.AddListener(CloseCredits);
         m_ExitButton.onClick.AddListener(Exit);
+    }
+
+    private void CloseCredits()
+    {
+        m_CreditsUI.SetActive(false);
+    }
+
+    private void Credits()
+    {
+        m_CreditsUI.SetActive(true);
     }
 
     private void Exit()

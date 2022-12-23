@@ -9,6 +9,6 @@ public class UIFarmQuiz : UIStoreQuiz
     }
     protected override void SetReward()
     {
-        m_FarmStoreController.SpawnItem( m_FarmStoreController.FarmsData[Random.Range( 0, m_FarmStoreController.FarmsData.Count )] );
+        m_FarmStoreController.SpawnItem(m_FarmStoreController.SeedsData[Random.Range(0, m_FarmStoreController.SeedsData.Count)]);
     }
 }

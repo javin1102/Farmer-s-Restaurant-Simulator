@@ -43,7 +43,7 @@ MeshFilter:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4753668527235454625}
-  m_Mesh: {fileID: 4300000, guid: 2e6eccd0ea7515c49b62b643e222faef, type: 3}
+  m_Mesh: {fileID: -3531201685936004515, guid: ef0bc115d418f7744924a17f846afbd7, type: 3}
 --- !u!23 &4753668527237681701
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -64,7 +64,8 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 12c3bb36b9272f649892f91c9d7121cd, type: 2}
+  - {fileID: 2100000, guid: 32ab75e78ea1ef8428eebc8f3faeae42, type: 2}
+  - {fileID: 2100000, guid: 1fbb5d5d54d7b9e4a80cbc1535e2aad9, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -115,9 +116,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Data: {fileID: 11400000, guid: 2cce4ff8fa787ea46b25107604858858, type: 2}
-  m_HandPosOffset: {x: 0.1, y: -0.6, z: 0}
-  m_HandEulerAngles: {x: 88.66031, y: 69.80015, z: 0.0001460353}
-  m_HandScale: {x: 0.03, y: 0.03, z: 0.03}
+  m_HandPosOffset: {x: 0.1, y: -0.7, z: 0}
+  m_HandEulerAngles: {x: 0, y: -30, z: 0}
+  m_HandScale: {x: 1.25, y: 1.25, z: 1.25}
   m_TileManager: {fileID: 0}
   selectedCrop: {fileID: 0}
   harvestCropData: {fileID: 0}

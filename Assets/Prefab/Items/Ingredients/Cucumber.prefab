@@ -44,7 +44,7 @@ MeshFilter:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4851928877410794951}
-  m_Mesh: {fileID: 1275450907069471206, guid: 47d4471920149d744b5dcbdf4eb4ef3d, type: 3}
+  m_Mesh: {fileID: 989697595907042063, guid: 867e8514c6b8a8c44a05450b3f0b7bb2, type: 3}
 --- !u!23 &430624903810713471
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -65,7 +65,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: e5db41e4df353234d8eb6a05e65bd61d, type: 2}
+  - {fileID: 2100000, guid: 8c73b302b49b8ac49851d6201be89ee1, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -116,9 +116,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Data: {fileID: 11400000, guid: 64c2b33252b342e458cd2a5748b34d08, type: 2}
-  m_HandPosOffset: {x: 0, y: 0, z: 0}
+  m_HandPosOffset: {x: 0, y: -0.3, z: 0}
   m_HandEulerAngles: {x: 0, y: 0, z: 0}
-  m_HandScale: {x: 0.3, y: 0.3, z: 0.3}
+  m_HandScale: {x: 0.7, y: 0.7, z: 0.7}
   m_TileManager: {fileID: 0}
 --- !u!65 &-4856883772183951646
 BoxCollider:
@@ -131,8 +131,8 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 0.6522751, y: 0.9029802, z: 0.27890372}
-  m_Center: {x: -0.0108796805, y: -0.00000008940697, z: 0.0119307265}
+  m_Size: {x: 0.33551508, y: 0.7626655, z: 0.39509308}
+  m_Center: {x: 0.0020130277, y: -0.008588925, z: -0.0015301257}
 --- !u!1001 &692565243902879404
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -144,8 +144,8 @@ PrefabInstance:
       propertyPath: m_Name
       value: DropCanvas
       objectReference: {fileID: 0}
-    - target: {fileID: 2910805850573045649, guid: 7e9d457e27600ea4186e6f61cc136adb, type: 3}
-      propertyPath: m_IsActive
+    - target: {fileID: 3089214349646224602, guid: 7e9d457e27600ea4186e6f61cc136adb, type: 3}
+      propertyPath: m_PresetInfoIsWorld
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8596567492224220048, guid: 7e9d457e27600ea4186e6f61cc136adb, type: 3}
@@ -175,10 +175,6 @@ PrefabInstance:
     - target: {fileID: 8596567492224220048, guid: 7e9d457e27600ea4186e6f61cc136adb, type: 3}
       propertyPath: m_AnchorMin.y
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8596567492224220048, guid: 7e9d457e27600ea4186e6f61cc136adb, type: 3}
-      propertyPath: m_SizeDelta.x
-      value: 50
       objectReference: {fileID: 0}
     - target: {fileID: 8596567492224220048, guid: 7e9d457e27600ea4186e6f61cc136adb, type: 3}
       propertyPath: m_SizeDelta.y

@@ -17,8 +17,8 @@ MonoBehaviour:
     eulerAngles: {x: 0, y: 0, z: 0}
     localScale: {x: 0, y: 0, z: 0}
   farmCitySpawnTf:
-    position: {x: -47.45, y: 0.399, z: 46.1}
-    eulerAngles: {x: 0, y: 0, z: 0}
+    position: {x: -41.89, y: 0.399, z: 0.5}
+    eulerAngles: {x: 0, y: 90, z: 0}
     localScale: {x: 0, y: 0, z: 0}
   cityFarmSpawnTf:
     position: {x: 499.67, y: 0.44, z: -173.04}

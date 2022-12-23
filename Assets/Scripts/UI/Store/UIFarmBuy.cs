@@ -5,30 +5,28 @@ using UnityEngine.UI;
 public class UIFarmBuy : MonoBehaviour
 {
     private UIFarmStoreController m_FarmStoreController;
-    [SerializeField] private Toggle m_SeedToggle, m_CropToggle;
+    [SerializeField] private Toggle m_SeedToggle;
     [SerializeField] private GameObject m_UIItemPrefab;
     [SerializeField] private GameObject m_Content;
+    [SerializeField] private TMPro.TMP_Text m_CoinText;
     private readonly List<UIFarmItem> m_SeedItems = new(), m_CropItems = new();
+    private PlayerAction m_PlayerAction;
     void OnEnable()
     {
         m_FarmStoreController = UIFarmStoreController.Instance as UIFarmStoreController;
     }
     private void Start()
     {
-
+        m_PlayerAction = PlayerAction.Instance;
         m_FarmStoreController.SeedsData.ForEach(InstantiateSeedUIItem);
-        m_FarmStoreController.CropsData.ForEach(InstantiateCropUIItem);
         m_SeedToggle.onValueChanged.AddListener(SeedsFilter);
-        m_CropToggle.onValueChanged.AddListener(CropsFilter);
         m_SeedItems.ForEach(EnableUIItem);
     }
-
-    private void CropsFilter(bool arg0)
+    void Update()
     {
-        if (arg0 == false) return;
-        m_SeedItems.ForEach(DisableUIItem);
-        m_CropItems.ForEach(EnableUIItem);
+        m_CoinText.text = $"Koin Anda :<indent=55%><sprite=0><color=yellow>{m_PlayerAction.Coins}</color>";
     }
+
 
     private void SeedsFilter(bool arg0)
     {
@@ -42,14 +40,6 @@ public class UIFarmBuy : MonoBehaviour
         UIFarmItem uiItem = Instantiate(m_UIItemPrefab, m_Content.transform).GetComponent<UIFarmItem>();
         uiItem.ItemData = seedData;
         m_SeedItems.Add(uiItem);
-        uiItem.gameObject.SetActive(false);
-    }
-
-    void InstantiateCropUIItem(ItemData cropData)
-    {
-        UIFarmItem uiItem = Instantiate(m_UIItemPrefab, m_Content.transform).GetComponent<UIFarmItem>();
-        uiItem.ItemData = cropData;
-        m_CropItems.Add(uiItem);
         uiItem.gameObject.SetActive(false);
     }
 

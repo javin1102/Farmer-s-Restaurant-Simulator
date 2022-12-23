@@ -23,7 +23,6 @@ public class PlayerAction : MonoBehaviour
     public int Coins { get => m_Coins; set => m_Coins = value; }
     public static PlayerAction Instance { get => m_Instance; }
     public PlayerUpgrades PlayerUpgrades { get => m_PlayerUpgrades; }
-    public UnityAction OnLoadSucceeded { get => m_OnLoadSucceeded; set => m_OnLoadSucceeded = value; } //Make sure subscribed script is on the same scene
 
     //Event Listener
     private event UnityAction m_OnEnableUI;
@@ -34,7 +33,6 @@ public class PlayerAction : MonoBehaviour
     private UnityAction<Transform> m_ToggleSeedStoreUI;
     private UnityAction m_OnDropInventory;
     private UnityAction m_TogglePause;
-    private UnityAction m_OnLoadSucceeded;
 
 
     //Player Input Action
@@ -176,15 +174,7 @@ public class PlayerAction : MonoBehaviour
 
             if (m_StoreInputAction.triggered && hitInfo.collider.TryGetComponent(out Item raycastedItem))
             {
-                if (Store(raycastedItem))
-                {
-
-                }
-                else
-                {
-                    //TODO::Handle Inventory is full
-
-                }
+                Store(raycastedItem);
             }
         }
         else
@@ -215,18 +205,19 @@ public class PlayerAction : MonoBehaviour
 
     private void LoadSucceeded(JSONNode jsonNode)
     {
-        m_ItemDatabase.OnLoadSucceded(jsonNode);
         m_Coins = jsonNode["coins"];
         SerializablePlayerUpgradesData upgradesData = new(jsonNode["upgrades"]);
         m_PlayerUpgrades.Set(upgradesData.chefQuantityLevel, upgradesData.restaurantExpandLevel, upgradesData.inventoryLevel);
-        // OnLoadSucceeded?.Invoke();
+        m_PlayerUpgrades.GetSlotSize();
+        m_ItemDatabase.OnLoadSucceded(jsonNode);
     }
 
     private void LoadFailed()
     {
-        m_ItemDatabase.OnLoadFailed();
-        m_Coins = 100;
+        m_Coins = 50;
         m_PlayerUpgrades.Reset();
+        m_PlayerUpgrades.GetSlotSize();
+        m_ItemDatabase.OnLoadFailed();
     }
 
 

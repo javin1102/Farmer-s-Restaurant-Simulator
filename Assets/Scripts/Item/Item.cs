@@ -100,7 +100,7 @@ public abstract class Item : MonoBehaviour
         transform.localRotation = Quaternion.identity;
         transform.localScale = Vector3.one * .25f;
         m_Rigidbody.constraints = RigidbodyConstraints.FreezeRotation;
-        m_Rigidbody.AddForce(10f * Camera.main.transform.forward, ForceMode.VelocityChange);
+        m_Rigidbody.AddForce(10f * Camera.main.transform.forward + PlayerAction.Instance.transform.up * 3.25f, ForceMode.Impulse);
         Destroy(GetComponent<NavMeshObstacle>());
     }
 

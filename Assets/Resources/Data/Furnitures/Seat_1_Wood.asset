@@ -15,9 +15,9 @@ MonoBehaviour:
   ID: Kursi Kayu
   prefab: {fileID: 6232863821200892145, guid: d8ce643f9b1051143aad01ce86ab084a, type: 3}
   icon: {fileID: 21300000, guid: e14ab93d32b5be84d865c1252383d523, type: 3}
-  buyPrice: 100
-  sellPrice: 35
+  buyPrice: 15
+  sellPrice: 7
   decreaseable: 1
   itemType: 2
-  starterQuantity: 5
+  starterQuantity: 2
   furnitureType: 1

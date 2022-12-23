@@ -12,7 +12,7 @@ public class SaveManager : MonoBehaviour
     private static SaveManager m_Instance;
     private readonly float m_DefaultAutoSaveTime = 10;
     private float m_AutoSaveTime = 0;
-    private readonly bool m_IsDebugging = true;
+    private readonly bool m_IsDebugging = false;
     private void Awake()
     {
         if (m_Instance == null) m_Instance = this;
@@ -22,7 +22,7 @@ public class SaveManager : MonoBehaviour
         m_AutoSaveTime = m_DefaultAutoSaveTime;
     }
 
-    // private void Update() => AutoSave_Seconds(m_DefaultAutoSaveTime);
+    private void Update() => AutoSave_Seconds(m_DefaultAutoSaveTime);
 
     public async Task SaveData(string jsonText, string filename)
     {

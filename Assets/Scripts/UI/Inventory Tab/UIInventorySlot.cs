@@ -14,16 +14,23 @@ public class UIInventorySlot : UIItemSlot, IPointerEnterHandler, IPointerExitHan
     private UnityAction<ItemData, Vector3> m_OnHoverEnter;
     private UnityAction m_OnHoverExit;
     private RectTransform m_RectTf;
+    private PlayerUpgrades m_PlayerUpgrades;
     private void Awake()
     {
         m_SlotsController = transform.root.GetComponent<InventorySlotsController>();
         m_UIInventoryController = transform.parent.parent.GetComponent<UIInventoryController>();
+        m_PlayerUpgrades = transform.root.GetComponent<PlayerUpgrades>();
         m_Image = GetComponent<Image>();
         m_Button = GetComponent<Button>();
         m_RectTf = GetComponent<RectTransform>();
         m_Button.onClick.AddListener(Select);
-    }
 
+    }
+    private new void Start()
+    {
+        base.Start();
+        if (m_SlotIndex > m_PlayerUpgrades.GetSlotSize() - 1) gameObject.SetActive(false);
+    }
     private new void Update()
     {
         base.Update();

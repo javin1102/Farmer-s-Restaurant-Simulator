@@ -21,6 +21,7 @@ namespace NPC.Citizen
             m_UIManager = UIManager.Instance;
             m_Restaurant = RestaurantManager.Instance;
             m_Citizen = NPC as Citizen;
+
             if (!m_Restaurant.TryGetFoodToCook(out m_FoodData, out m_FoodConfig) || !m_Restaurant.FindUnoccupiedSeat(out m_Seat) || !FindSeatDest(m_Citizen, m_Seat))
             {
                 TravelState travelState = new();
@@ -28,6 +29,7 @@ namespace NPC.Citizen
                 return;
             }
 
+            m_Citizen.Animator.SetTrigger(Utils.NPC_WALK_ANIM_PARAM);
         }
 
         public override void OnExitState(NPCManager NPC)
@@ -101,7 +103,6 @@ namespace NPC.Citizen
             if (citizen.Agent.SetDestination(seat.transform.position))
             {
                 seat.IsOccupied = true;
-                //m_Restaurant.Seats.Remove( seat );
                 seat.Citizen = m_Citizen;
                 return true;
             }
@@ -114,7 +115,6 @@ namespace NPC.Citizen
         private IEnumerator EatFinish(float delay)
         {
             yield return new WaitForSeconds(delay);
-
             m_Citizen.StartCoroutine("CoinTipDrop");
             TravelState travelState = new();
             m_Citizen.ChangeState(travelState);

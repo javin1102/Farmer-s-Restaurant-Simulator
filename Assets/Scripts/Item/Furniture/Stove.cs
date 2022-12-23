@@ -8,11 +8,13 @@ public class Stove : Furniture, IInteractable
 
     [SerializeField] private Transform m_ChefStandTf;
     [SerializeField] private Chef m_Chef;
-    private string m_HelperText = "Test";
+    private string m_HelperText = "";
 
     protected override void OnInstantiate()
     {
-        m_Restaurant.Stoves.Add(m_InstantiatedGO.GetComponent<Stove>());
+        Stove instantiatedStove = m_InstantiatedGO.GetComponent<Stove>();
+        m_Restaurant.Stoves.Add(instantiatedStove);
+        instantiatedStove.UpdateHelper();
     }
 
     private new void OnDestroy()
@@ -30,7 +32,7 @@ public class Stove : Furniture, IInteractable
     {
         m_HelperText = m_Chef == null ? "Tugas Chef" : "<color=red>Cabut Chef</color>";
         m_UIManager.ShowActionHelperPrimary("Left", m_HelperText);
-        m_UIManager.ShowActionHelperSecondary("Left", "Simpan");
+        m_UIManager.ShowActionHelperSecondary("F", "Simpan");
     }
 
     public void Interact(PlayerAction playerAction)

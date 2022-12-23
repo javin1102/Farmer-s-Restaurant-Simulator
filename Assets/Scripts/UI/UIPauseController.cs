@@ -32,6 +32,7 @@ public class UIPauseController : MonoBehaviour
 
     private void Pause()
     {
+
         gameObject.SetActive(true);
         m_PlayerAction.IsOtherUIOpen = true;
         m_PlayerAction.EnterCursorMode();

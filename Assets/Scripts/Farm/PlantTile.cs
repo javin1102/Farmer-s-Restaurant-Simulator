@@ -24,7 +24,7 @@ public class PlantTile : BaseFarmObject, ITimeTracker
     public enum TileStatus { NORMAL, WATERED, HOED, PLANTED };
     public TileStatus Status;
     private GameTimeStamp m_Time;
-    private PlantGrowHandler m_plantGrowHandler;
+    [SerializeField] private PlantGrowHandler m_plantGrowHandler;
     [SerializeField] private TimeManager m_TimeManager;
 
 

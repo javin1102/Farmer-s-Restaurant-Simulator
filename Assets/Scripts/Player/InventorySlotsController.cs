@@ -3,9 +3,8 @@ public class InventorySlotsController : ItemSlotsController
     private PlayerAction m_PlayerAction;
     private void Awake()
     {
-        m_MaxSlotSize = 42;
+        m_MaxSlotSize = Utils.MAX_INVENTORYSLOT_SIZE;
         m_Slots = new ItemSlot[m_MaxSlotSize];
-        m_SlotSize = 20;
     }
 
     public void CheckItem()

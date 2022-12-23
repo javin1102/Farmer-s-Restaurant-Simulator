@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 [RequireComponent(typeof(Hoverable))]
@@ -8,14 +9,21 @@ public class Tree : BaseFarmObject, IActionTime
     public float DefaultActionTime => 3.5f;
     private PlayerAction m_PlayerAction;
     private Hoverable m_Hoverable;
-    private static int m_ResoucesIndex;
+    private UIManager m_UIManager;
 
     private new void Start()
     {
         base.Start();
         m_Hoverable = GetComponent<Hoverable>();
         ActionTime = DefaultActionTime;
+        m_UIManager = UIManager.Instance;
+        m_Hoverable.OnHoverEnter += ShowHelper;
         m_Hoverable.OnHoverExit += OnHoverExit;
+    }
+
+    private void ShowHelper()
+    {
+        m_UIManager.ShowActionHelperPrimary("Left", "Tahan untuk menebang");
     }
 
     public void OnHoldMainAction(PlayerAction playerAction)
@@ -39,6 +47,7 @@ public class Tree : BaseFarmObject, IActionTime
     private void OnHoverExit()
     {
         ActionTime = DefaultActionTime;
+        m_UIManager.HideActionHelper();
     }
 
     private void Update()
@@ -52,6 +61,9 @@ public class Tree : BaseFarmObject, IActionTime
     private new void OnDestroy()
     {
         base.OnDestroy();
+        if (m_PlayerAction != null)
+            m_PlayerAction.PlayAudio("thump_sfx");
         m_Hoverable.OnHoverExit -= OnHoverExit;
+        m_Hoverable.OnHoverEnter -= ShowHelper;
     }
 }

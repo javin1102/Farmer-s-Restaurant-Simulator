@@ -15,8 +15,8 @@ MonoBehaviour:
   ID: Meja Bar
   prefab: {fileID: 5230036692580212780, guid: b2e51103e9b3b2e4db74d56e726e0662, type: 3}
   icon: {fileID: 21300000, guid: b14330994ef67a748a3a1503d210e26a, type: 3}
-  buyPrice: 100
-  sellPrice: 35
+  buyPrice: 90
+  sellPrice: 45
   decreaseable: 1
   itemType: 2
   starterQuantity: 5

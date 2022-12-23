@@ -43,7 +43,8 @@ public class ItemDatabase : MonoBehaviour
     private void RemoveFromDB(string id) => m_ItemDB.Remove(id);
     public bool Store(ItemData itemData, int quantity = 1, int slotIndex = -1, SET_SLOT_TYPE setSlotType = SET_SLOT_TYPE.AUTO)
     {
-        if (m_ItemDB.Count >= MaxSize) return false;
+        if (quantity == 0) return false;
+
 
         if (m_ItemDB.TryGetValue(itemData.ID, out ItemSlot slot))
         {
@@ -54,6 +55,7 @@ public class ItemDatabase : MonoBehaviour
         }
         else
         {
+            if (m_ItemDB.Count >= MaxSize) return false;
             if (!itemData.decreaseable) quantity = 1;
             ItemSlot itemSlot = new(itemData, quantity);
             m_ItemDB.Add(itemData.ID, itemSlot);

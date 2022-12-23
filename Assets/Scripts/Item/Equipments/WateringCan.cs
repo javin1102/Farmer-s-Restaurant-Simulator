@@ -17,7 +17,6 @@ public class WateringCan : Item, IRaycastAction
     {
         if (selectedTile != null && !selectedTile.CompareTag(Utils.TILE_WET_TAG))
         {
-            Debug.Log("WATER SCRIPT : WATERED");
             selectedTile.GetComponent<PlantTile>().SwitchStatus(PlantTile.TileStatus.WATERED);
 
             // play water can sound effect
@@ -41,11 +40,12 @@ public class WateringCan : Item, IRaycastAction
             m_TileMatrix = Matrix4x4.TRS(tilePos, tileRot, Vector3.one);
             previewTileMaterialChanger.ChangePreviewMaterialColor(true);
             Graphics.DrawMesh(m_PreviewTileMesh, m_TileMatrix, previewTileMaterialChanger.PreviewMaterial, 0);
-            UIManager.Instance.ShowActionHelperPrimary("Left", "To Use Water Can...");
+            UIManager.Instance.ShowActionHelperPrimary("Left", "Siram");
             return;
         }
         if (previewTileMaterialChanger != null) previewTileMaterialChanger.ChangePreviewMaterialColor(false);
         UIManager.Instance.HideActionHelper();
+        selectedTile = null;
         return;
     }
 
