@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.078755155, g: 0.14211719, b: 0.41281396, a: 1}
+  m_IndirectSpecularColor: {r: 0.070500046, g: 0.35370678, b: 0.97079957, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -1423,7 +1423,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Expand Restaurant
+  m_text: Tambah Luas Tanah
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: d8dca2fd6a99010459642ce4cc4992b6, type: 2}
   m_sharedMaterial: {fileID: -5490110543839942583, guid: d8dca2fd6a99010459642ce4cc4992b6, type: 2}
@@ -11174,7 +11174,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Resume
+  m_text: Lanjut
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 0c3690628cb81d34193947c8721337b9, type: 2}
   m_sharedMaterial: {fileID: -2935662107163021134, guid: 0c3690628cb81d34193947c8721337b9, type: 2}
@@ -19708,7 +19708,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Chef Quanity +1
+  m_text: Kuantitas Chef +1
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: d8dca2fd6a99010459642ce4cc4992b6, type: 2}
   m_sharedMaterial: {fileID: -5490110543839942583, guid: d8dca2fd6a99010459642ce4cc4992b6, type: 2}
@@ -21073,7 +21073,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Close
+  m_text: Tutup
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -21305,7 +21305,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Inventory Slot +10
+  m_text: Slot Inventory +10
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: d8dca2fd6a99010459642ce4cc4992b6, type: 2}
   m_sharedMaterial: {fileID: -5490110543839942583, guid: d8dca2fd6a99010459642ce4cc4992b6, type: 2}

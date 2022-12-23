@@ -1,4 +1,5 @@
 using Cinemachine;
+using System;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.Events;
@@ -19,7 +20,7 @@ public class SceneLoader : MonoBehaviour
     public SPAWN_TYPE SpawnType { get => m_SpawnType; set => m_SpawnType = value; }
 
     private static SceneLoader m_Instance;
-    private float m_MinTimeSpawnCooldown = 1f;
+    private float m_MinTimeSpawnCooldown;
     public event UnityAction OnStartLoading;
     public event UnityAction OnFinishLoading;
     [SerializeField] private PlayerAction m_PlayerAction;
@@ -35,16 +36,26 @@ public class SceneLoader : MonoBehaviour
     {
         if (m_Instance == null) m_Instance = this;
         else Destroy(gameObject);
-        // DontDestroyOnLoad(this);
-
         m_MainCam = Camera.main;
     }
 
     private void Start()
     {
+        m_PlayerAction = PlayerAction.Instance;
         m_UIManager = UIManager.Instance;
         m_FirstPersonMovement = m_PlayerAction.GetComponent<FirstPersonMovement>();
-        StartCoroutine(InitializeScene());
+        StartCoroutine(Init());
+        // SceneManager.activeSceneChanged += ActiveSceneChanged;
+    }
+
+    void OnDestroy()
+    {
+        // SceneManager.activeSceneChanged -= ActiveSceneChanged;
+    }
+
+    private void ActiveSceneChanged(Scene arg0, Scene arg1)
+    {
+        DeterminePlayerSpawnPos();
     }
 
     private void Update()
@@ -57,8 +68,6 @@ public class SceneLoader : MonoBehaviour
 
         m_MinTimeSpawnCooldown -= Time.deltaTime;
     }
-    public void UnloadAndLoadSceneAsynchronous(string unloadScene, string loadScene, LoadSceneMode loadSceneMode, SPAWN_TYPE spawnType) => StartCoroutine(UnloadAndLoadSceneAsync_Coroutine(unloadScene, loadScene, loadSceneMode, spawnType));
-    public void LoadSceneAsynchronous(string scene, LoadSceneMode loadSceneMode, SPAWN_TYPE spawnType) => StartCoroutine(LoadSceneAsync_Coroutine(scene, loadSceneMode, spawnType));
     public void LoadSceneAsynchronous(string scene, LoadSceneMode loadSceneMode) => StartCoroutine(LoadSceneAsync_Coroutine(scene, loadSceneMode));
     public void UnloadSceneAsynchronous(string scene) => StartCoroutine(UnloadSceneAsync_Coroutine(scene));
     public void SpawnToScene(SPAWN_TYPE spawnType)
@@ -93,7 +102,7 @@ public class SceneLoader : MonoBehaviour
         OnFinishLoading?.Invoke();
         SceneManager.SetActiveScene(SceneManager.GetSceneByName(scene));
     }
-    private IEnumerator LoadSceneAsync_Coroutine(string scene, LoadSceneMode loadSceneMode, SPAWN_TYPE spawnType)
+    private IEnumerator LoadSceneAsync_Coroutine(string scene, bool setActiveScene, LoadSceneMode loadSceneMode, SPAWN_TYPE spawnType)
     {
         m_SpawnType = spawnType;
         m_PlayerAction.OnEnableOtherUI?.Invoke();
@@ -108,7 +117,7 @@ public class SceneLoader : MonoBehaviour
                 m_UIManager.LoadingUI.Deactivate();
                 m_PlayerAction.OnDisableOtherUI?.Invoke();
                 OnFinishLoading?.Invoke();
-                DeterminePlayerSpawnPos();
+                // DeterminePlayerSpawnPos();
                 SceneManager.SetActiveScene(SceneManager.GetSceneByName(scene));
                 yield break;
             }
@@ -123,7 +132,7 @@ public class SceneLoader : MonoBehaviour
 
         m_PlayerAction.OnDisableOtherUI?.Invoke();
         OnFinishLoading?.Invoke();
-        SceneManager.SetActiveScene(SceneManager.GetSceneByName(scene));
+        if (setActiveScene) SceneManager.SetActiveScene(SceneManager.GetSceneByName(scene));
         // DeterminePlayerSpawnPos();
     }
 
@@ -138,10 +147,10 @@ public class SceneLoader : MonoBehaviour
         string scene = DetermineScene(spawnType);
         DeterminePlayerSpawnPos();
         yield return new WaitForSeconds(.5f);
+        SceneManager.SetActiveScene(SceneManager.GetSceneByName(scene));
         m_UIManager.LoadingUI.Deactivate();
         m_PlayerAction.OnDisableOtherUI?.Invoke();
         OnFinishLoading?.Invoke();
-        SceneManager.SetActiveScene(SceneManager.GetSceneByName(scene));
         m_FirstPersonMovement.enabled = true;
 
     }
@@ -168,40 +177,47 @@ public class SceneLoader : MonoBehaviour
     private void DeterminePlayerSpawnPos()
     {
 
+        // m_VCam.PreviousStateIsValid = false;
         switch (m_SpawnType)
         {
             case SPAWN_TYPE.HOUSE_BED:
                 m_PlayerAction.transform.position = m_SpawnPosData.houseBedSpawnTf.position;
+                m_PlayerAction.transform.eulerAngles = m_SpawnPosData.houseBedSpawnTf.eulerAngles;
                 m_VCam.ForceCameraPosition(m_SpawnPosData.houseBedSpawnTf.position, Quaternion.Euler(m_SpawnPosData.houseBedSpawnTf.eulerAngles));
                 m_PostProcessingVolume.profile = m_HouseProfile;
                 m_MainCam.cullingMask = Utils.HouseMask;
                 break;
             case SPAWN_TYPE.HOUSE_DOOR:
                 m_PlayerAction.transform.position = m_SpawnPosData.houseDoorSpawnTf.position;
+                m_PlayerAction.transform.eulerAngles = m_SpawnPosData.houseDoorSpawnTf.eulerAngles;
                 m_VCam.ForceCameraPosition(m_SpawnPosData.houseDoorSpawnTf.position, Quaternion.Euler(m_SpawnPosData.houseDoorSpawnTf.eulerAngles));
                 m_PostProcessingVolume.profile = m_HouseProfile;
                 m_MainCam.cullingMask = Utils.HouseMask;
                 break;
             case SPAWN_TYPE.CITY_DOOR:
                 m_PlayerAction.transform.position = m_SpawnPosData.cityDoorSpawnTf.position;
+                m_PlayerAction.transform.eulerAngles = m_SpawnPosData.cityDoorSpawnTf.eulerAngles;
                 m_VCam.ForceCameraPosition(m_SpawnPosData.cityDoorSpawnTf.position, Quaternion.Euler(m_SpawnPosData.cityDoorSpawnTf.eulerAngles));
                 m_PostProcessingVolume.profile = m_CityProfile;
                 m_MainCam.cullingMask = Utils.CityMask;
                 break;
             case SPAWN_TYPE.CITY_FARM:
                 m_PlayerAction.transform.position = m_SpawnPosData.cityFarmSpawnTf.position;
+                m_PlayerAction.transform.eulerAngles = m_SpawnPosData.cityFarmSpawnTf.eulerAngles;
                 m_VCam.ForceCameraPosition(m_SpawnPosData.cityFarmSpawnTf.position, Quaternion.Euler(m_SpawnPosData.cityFarmSpawnTf.eulerAngles));
                 m_PostProcessingVolume.profile = m_CityProfile;
                 m_MainCam.cullingMask = Utils.FarmMask;
                 break;
             case SPAWN_TYPE.FARM_CITY:
                 m_PlayerAction.transform.position = m_SpawnPosData.farmCitySpawnTf.position;
+                m_PlayerAction.transform.eulerAngles = m_SpawnPosData.farmCitySpawnTf.eulerAngles;
                 m_VCam.ForceCameraPosition(m_SpawnPosData.cityFarmSpawnTf.position, Quaternion.Euler(m_SpawnPosData.farmCitySpawnTf.eulerAngles));
                 m_PostProcessingVolume.profile = m_CityProfile;
                 m_MainCam.cullingMask = Utils.CityMask;
                 break;
 
         }
+        // m_VCam.PreviousStateIsValid = true;
         m_MinTimeSpawnCooldown = 1;
 
     }
@@ -209,16 +225,28 @@ public class SceneLoader : MonoBehaviour
     private IEnumerator UnloadAndLoadSceneAsync_Coroutine(string unloadScene, string loadScene, LoadSceneMode loadSceneMode, SPAWN_TYPE spawnType)
     {
         yield return StartCoroutine(UnloadSceneAsync_Coroutine(unloadScene));
-        yield return StartCoroutine(LoadSceneAsync_Coroutine(loadScene, loadSceneMode, spawnType));
+        yield return StartCoroutine(LoadSceneAsync_Coroutine(loadScene, true, loadSceneMode, spawnType));
     }
 
-    private IEnumerator InitializeScene()
+    private IEnumerator LoadAllGameScene()
+    {
+
+        yield return StartCoroutine(LoadSceneAsync_Coroutine(Utils.SCENE_HOUSE, true, LoadSceneMode.Additive, SPAWN_TYPE.HOUSE_BED));
+        yield return StartCoroutine(LoadSceneAsync_Coroutine(Utils.SCENE_CITY, false, LoadSceneMode.Additive, SPAWN_TYPE.CITY_DOOR));
+        yield return StartCoroutine(LoadSceneAsync_Coroutine(Utils.SCENE_FARM, false, LoadSceneMode.Additive, SPAWN_TYPE.CITY_FARM));
+
+    }
+
+    private IEnumerator Init()
     {
         m_UIManager.LoadingUI.Activate(0);
-        yield return StartCoroutine(LoadSceneAsync_Coroutine(Utils.SCENE_CITY, LoadSceneMode.Additive, SPAWN_TYPE.CITY_DOOR));
-        yield return StartCoroutine(LoadSceneAsync_Coroutine(Utils.SCENE_FARM, LoadSceneMode.Additive, SPAWN_TYPE.CITY_FARM));
-        yield return StartCoroutine(LoadSceneAsync_Coroutine(Utils.SCENE_HOUSE, LoadSceneMode.Additive, SPAWN_TYPE.HOUSE_BED));
-        DeterminePlayerSpawnPos();
+        yield return StartCoroutine(LoadAllGameScene());
+        yield return new WaitForEndOfFrame();
+        SpawnToScene(SPAWN_TYPE.HOUSE_BED);
+        m_PlayerAction.transform.position = m_SpawnPosData.houseBedSpawnTf.position;
+        m_PlayerAction.transform.eulerAngles = m_SpawnPosData.houseBedSpawnTf.eulerAngles;
+        m_VCam.ForceCameraPosition(m_SpawnPosData.houseBedSpawnTf.position, Quaternion.Euler(m_SpawnPosData.houseBedSpawnTf.eulerAngles));
         m_UIManager.LoadingUI.Deactivate();
+
     }
 }

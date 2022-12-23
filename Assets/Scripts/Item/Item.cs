@@ -60,6 +60,7 @@ public abstract class Item : MonoBehaviour
             m_Rigidbody.useGravity = false;
             m_Collider.enabled = true;
             m_Collider.isTrigger = true;
+            m_Rigidbody.velocity = Vector3.zero;
             m_MeshRenderer.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off;
             return;
         }
@@ -120,7 +121,7 @@ public abstract class Item : MonoBehaviour
     }
 
 
-    private bool CheckGround() => Physics.Raycast(transform.position, Vector3.down, out RaycastHit hitInfo, .5f, ~Utils.PlayerMask);
+    private bool CheckGround() => Physics.Raycast(transform.position, Vector3.down, out RaycastHit hitInfo, .2f, ~Utils.PlayerMask);
 
 }
 

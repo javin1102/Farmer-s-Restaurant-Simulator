@@ -56,9 +56,9 @@ public class UIRecipeCard : MonoBehaviour
         UpdateOverlayUI();
         UpdateSellButtonUI();
         m_FoodIcon.sprite = m_Food.Key.icon;
-        m_CookDurText.text = $"{m_Food.Key.cookDuration} Seconds";
-        m_DishPriceText.text = $"{m_Food.Key.dishPrice}/Dish";
-        m_UnlockedPriceText.text = $"Unlock For <color=yellow>${m_Food.Key.unlockPrice}</color>";
+        m_CookDurText.text = $"{m_Food.Key.cookDuration} Detik";
+        m_DishPriceText.text = $"{m_Food.Key.dishPrice}/Piring";
+        m_UnlockedPriceText.text = $"Beli <indent=23%><sprite=0><color=yellow>{m_Food.Key.unlockPrice}</color>";
         m_FoodNameText.text = m_Food.Key.ID;
     }
 

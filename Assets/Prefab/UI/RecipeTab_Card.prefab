@@ -450,7 +450,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 43/Dish
+  m_text: 43/Piring
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: fce240865bc2eb24894c7827a0f9bda4, type: 2}
   m_sharedMaterial: {fileID: -609280086858086234, guid: fce240865bc2eb24894c7827a0f9bda4, type: 2}
@@ -899,7 +899,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 4f730c0fb86b14b41a023e4dd9759715, type: 3}
+  m_Sprite: {fileID: 755971026, guid: 4f730c0fb86b14b41a023e4dd9759715, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -975,7 +975,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 990 Seconds
+  m_text: 990 Detik
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: fce240865bc2eb24894c7827a0f9bda4, type: 2}
   m_sharedMaterial: {fileID: -609280086858086234, guid: fce240865bc2eb24894c7827a0f9bda4, type: 2}

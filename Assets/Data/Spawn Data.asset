@@ -26,7 +26,7 @@ MonoBehaviour:
     localScale: {x: 0, y: 0, z: 0}
   houseDoorSpawnTf:
     position: {x: 23.638, y: 1, z: 174.377}
-    eulerAngles: {x: 0, y: 0, z: 0}
+    eulerAngles: {x: 0, y: -90, z: 0}
     localScale: {x: 0, y: 0, z: 0}
   houseBedSpawnTf:
     position: {x: 10.201, y: 1, z: 169.45999}
