@@ -36,7 +36,7 @@ public class UIPauseController : MonoBehaviour
         gameObject.SetActive(true);
         m_PlayerAction.IsOtherUIOpen = true;
         m_PlayerAction.EnterCursorMode();
-        // m_PlayerAction.OnEnableOtherUI?.Invoke();
+        m_PlayerAction.PlayAudio("button_sfx");
         Time.timeScale = 0;
     }
 
@@ -45,7 +45,7 @@ public class UIPauseController : MonoBehaviour
         gameObject.SetActive(false);
         m_PlayerAction.IsOtherUIOpen = false;
         m_PlayerAction.ExitCursorMode();
-        // m_PlayerAction.OnDisableOtherUI?.Invoke();
+        m_PlayerAction.PlayAudio("button_sfx");
         Time.timeScale = 1f;
     }
 }

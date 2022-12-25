@@ -81,6 +81,7 @@ public class ItemDatabase : MonoBehaviour
     public void Decrease(ItemData itemData, int quantity, ItemDatabaseAction action)
     {
         if (action == ItemDatabaseAction.DROP && !itemData.decreaseable) return;
+        if (quantity <= 0) return;
         if (m_ItemDB.TryGetValue(itemData.ID, out ItemSlot slot))
         {
             slot.quantity -= quantity;

@@ -11,6 +11,7 @@ public class UIMiscController : MonoBehaviour
     [SerializeField] private UIMarker m_Marker;
     [SerializeField] private Button m_CloseButton;
     [SerializeField] private UITab[] m_Tabs;
+    [SerializeField] private TMPro.TMP_Text m_CoinText;
     private static int m_TabIndex = 1;
     private PlayerAction m_PlayerAction;
     private void Awake()
@@ -52,6 +53,11 @@ public class UIMiscController : MonoBehaviour
             }
         }
 
+    }
+
+    void Update()
+    {
+        m_CoinText.text = $"Koin Anda :<indent=65%><sprite=0><color=yellow>{m_PlayerAction.Coins}</color>";
     }
 
     public void ToggleInventoryUI()

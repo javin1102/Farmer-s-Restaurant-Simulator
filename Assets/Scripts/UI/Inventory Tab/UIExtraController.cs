@@ -10,7 +10,7 @@ public abstract class UIExtraController : MonoBehaviour
     protected UIInventoryController m_UIInventoryController;
     protected ItemDatabase m_ItemDatabase;
     protected PlayerAction m_PlayerAction;
-    protected int m_Quantity;
+    [SerializeField] protected int m_Quantity;
 
     private void Start()
     {
@@ -75,6 +75,7 @@ public abstract class UIExtraController : MonoBehaviour
     {
 
         Int32.TryParse(arg0, out m_Quantity);
+        Debug.Log(m_Quantity);
     }
 
     private void IncreaseQuantity()
@@ -88,6 +89,7 @@ public abstract class UIExtraController : MonoBehaviour
 
         m_Quantity += 1;
         m_InputField.text = m_Quantity.ToString();
+        Validate(m_InputField.text);
     }
 
     private void DecreaseQuantity()
@@ -95,5 +97,6 @@ public abstract class UIExtraController : MonoBehaviour
         if (m_Quantity <= 0) return;
         m_Quantity -= 1;
         m_InputField.text = m_Quantity.ToString();
+        Validate(m_InputField.text);
     }
 }

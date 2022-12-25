@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 3312541664567819176}
   - component: {fileID: 5044887201282083897}
   m_Layer: 0
-  m_Name: Gado-Gado
+  m_Name: Lalapan
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -42,7 +42,7 @@ MeshFilter:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8735650615285411582}
-  m_Mesh: {fileID: -8477706602937800460, guid: 319ae64356185d746bd585e58252765f, type: 3}
+  m_Mesh: {fileID: 6840956239517031211, guid: d2883a3f4a2caf74aa57ce4b6f5007c7, type: 3}
 --- !u!23 &5897511240109841796
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -63,7 +63,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 1c3bd2b0d29980440aed57c54537f6cb, type: 2}
+  - {fileID: 2100000, guid: 77b23d9b9f3aa104cba52dc2fd06af1c, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -97,7 +97,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a1f931247d5f939478f010c6f05358da, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Data: {fileID: 11400000, guid: f81770fff1e1d0f4e916564aa53a9e9d, type: 2}
+  m_Data: {fileID: 11400000, guid: 8de5cbfb52ed21c478f215a0262c14ce, type: 2}
   m_Seat: {fileID: 0}
 --- !u!65 &5044887201282083897
 BoxCollider:

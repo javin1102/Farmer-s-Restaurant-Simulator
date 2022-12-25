@@ -12,16 +12,17 @@ public class UIRecipesContent : MonoBehaviour
         m_HorizontalLayoutGroup = GetComponent<HorizontalLayoutGroup>();
         m_RectTransform = GetComponent<RectTransform>();
         m_FoodsController = FoodsController.Instance;
-        foreach ( var food in m_FoodsController.AllFoods )
+        foreach (var food in m_FoodsController.AllFoods)
         {
-            UIRecipeCard card = Instantiate( m_CardPrefab, transform ).GetComponent<UIRecipeCard>();
+            UIRecipeCard card = Instantiate(m_CardPrefab, transform).GetComponent<UIRecipeCard>();
             card.Food = food;
+            // m_RectTransform.sizeDelta = new Vector2(m_HorizontalLayoutGroup.preferredWidth, 380);
         }
     }
 
 
     private void Update()
     {
-        m_RectTransform.sizeDelta = new Vector2( m_HorizontalLayoutGroup.preferredWidth, 380 );
+
     }
 }

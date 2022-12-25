@@ -28,7 +28,7 @@ namespace Upgrades
 
         private int CalculateCost()
         {
-            return Mathf.RoundToInt(Mathf.Lerp(m_Cost, m_Cost * m_CurrentLevel, Mathf.InverseLerp(1, m_MaxLevel, m_CurrentLevel)));
+            return Mathf.RoundToInt(Mathf.Lerp(m_Cost, m_Cost * m_MaxLevel, Mathf.InverseLerp(1, m_MaxLevel, m_CurrentLevel)));
         }
 
         private void UpdateUI()

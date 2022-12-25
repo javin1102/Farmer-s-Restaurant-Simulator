@@ -21,7 +21,7 @@ public class Snapshot : MonoBehaviour
         _snapshotCamera.defaultPositionOffset = Vector3.zero;
         _snapshotCamera.transform.position = _cam.transform.position;
         _snapshotCamera.transform.rotation = _cam.transform.rotation;
-        scale = prefab.transform.localScale;
+        // scale = prefab.transform.localScale;
         //TakeAllFurnituresSnapshot();
         TakeSnapshot();
 

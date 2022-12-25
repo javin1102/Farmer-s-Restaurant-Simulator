@@ -17,7 +17,7 @@ MonoBehaviour:
   dishPrice: 4
   unlockPrice: 0
   cookDuration: 7
-  icon: {fileID: 21300000, guid: 893f45d32ac5370409d685864d6011da, type: 3}
+  icon: {fileID: 21300000, guid: ff83155905348de40bcfcfe8504ef763, type: 3}
   ingredients:
   - ingredient: {fileID: 11400000, guid: 9957313e5b8ab5242859e710868382ff, type: 2}
     quantity: 1

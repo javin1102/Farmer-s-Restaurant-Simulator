@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 3312541664567819176}
   - component: {fileID: 5044887201282083897}
   m_Layer: 0
-  m_Name: Gado-Gado
+  m_Name: Jagung Bakar
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -42,7 +42,7 @@ MeshFilter:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8735650615285411582}
-  m_Mesh: {fileID: -8477706602937800460, guid: 319ae64356185d746bd585e58252765f, type: 3}
+  m_Mesh: {fileID: 4281405308173386388, guid: da912ae60a8eedf47871447dae769f87, type: 3}
 --- !u!23 &5897511240109841796
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -63,7 +63,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 1c3bd2b0d29980440aed57c54537f6cb, type: 2}
+  - {fileID: 2100000, guid: 5662f134a67073f409d0bb6bcaa84320, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -97,7 +97,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a1f931247d5f939478f010c6f05358da, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Data: {fileID: 11400000, guid: f81770fff1e1d0f4e916564aa53a9e9d, type: 2}
+  m_Data: {fileID: 11400000, guid: 4a888338ae2e139469bbef89341d4dd7, type: 2}
   m_Seat: {fileID: 0}
 --- !u!65 &5044887201282083897
 BoxCollider:

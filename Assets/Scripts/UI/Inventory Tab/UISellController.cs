@@ -20,6 +20,7 @@ public class UISellController : UIExtraController
     {
         m_PlayerAction = PlayerAction.Instance;
         m_SellPriceText.text = "Harga:<indent=40%><sprite=0><color=yellow>0</color>";
+        m_CoinsText.text = $"Koin Anda :<indent=50%><sprite=0><color=yellow>{m_PlayerAction.Coins}</color>";
     }
     private new void OnDisable()
     {
