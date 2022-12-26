@@ -16,7 +16,7 @@ MonoBehaviour:
   ID: Lalapan
   dishPrice: 11
   unlockPrice: 125
-  cookDuration: 5
+  cookDuration: 10
   icon: {fileID: 21300000, guid: 541d46d5842d7f4479d6c870eae22d10, type: 3}
   ingredients:
   - ingredient: {fileID: 11400000, guid: 23cd1256483e16149b60e8bbc710ee11, type: 2}

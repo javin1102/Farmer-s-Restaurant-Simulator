@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.07605015, g: 0.21267459, b: 0.5987626, a: 1}
+  m_IndirectSpecularColor: {r: 0.07176343, g: 0.3219946, b: 0.88708925, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -10398,6 +10398,7 @@ MonoBehaviour:
   m_DecreaseButton: {fileID: 349630698}
   m_ActionButton: {fileID: 743094006}
   m_InputField: {fileID: 1995969067}
+  m_Quantity: 0
 --- !u!1 &847506267
 GameObject:
   m_ObjectHideFlags: 0
@@ -11079,8 +11080,8 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 3752d1eccebe3dc44a8b82066a42e1c5, type: 2}
   - {fileID: 11400000, guid: 2cce4ff8fa787ea46b25107604858858, type: 2}
   - {fileID: 11400000, guid: 0a2359ac638a880499a069b4de2c1af7, type: 2}
-  - {fileID: 11400000, guid: 0b7597aaf4cbab34d85a75a332cf7299, type: 2}
-  - {fileID: 11400000, guid: 1db87eb2f1b03c84ab288de0db5323e8, type: 2}
+  - {fileID: 11400000, guid: bad53f7ad78abc447948811385f79546, type: 2}
+  - {fileID: 11400000, guid: 27c935fafbaf2f749a067ce1c8cbb81f, type: 2}
   - {fileID: 11400000, guid: 8bd298afa4083a8498f595b9efca8f51, type: 2}
   - {fileID: 11400000, guid: abfc2db7e14a83644826e3eec9a6e2b5, type: 2}
 --- !u!224 &906480231 stripped

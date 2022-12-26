@@ -20,20 +20,17 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Seat_Pink_Preview
-  m_Shader: {fileID: 4800000, guid: 650dd9526735d5b46b79224bc6e94025, type: 3}
-  m_ValidKeywords:
-  - _SURFACE_TYPE_TRANSPARENT
+  m_Name: Seat_Wooden-New
+  m_Shader: {fileID: -6465566751694194690, guid: f119c996bbf15df4ab5046430a17b694, type: 3}
+  m_ValidKeywords: []
   m_InvalidKeywords: []
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
-  m_CustomRenderQueue: 3000
+  m_CustomRenderQueue: -1
   stringTagMap:
-    RenderType: Transparent
-  disabledShaderPasses:
-  - DepthOnly
-  - SHADOWCASTER
+    RenderType: Opaque
+  disabledShaderPasses: []
   m_SavedProperties:
     serializedVersion: 3
     m_TexEnvs:
@@ -58,7 +55,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _Diffuse_Texture:
-        m_Texture: {fileID: 0}
+        m_Texture: {fileID: 2800000, guid: f3d1c74f478041149b5f86617a111065, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _EmissionMap:
@@ -114,62 +111,49 @@ Material:
     - _Alpha: 0
     - _AlphaClip: 0
     - _Blend: 0
-    - _BlendOp: 0
     - _BumpScale: 1
-    - _CameraFadingEnabled: 0
-    - _CameraFarFadeDistance: 2
-    - _CameraNearFadeDistance: 1
     - _CastShadows: 1
     - _ClearCoatMask: 0
     - _ClearCoatSmoothness: 0
-    - _ColorMode: 0
     - _Cull: 2
     - _Cutoff: 0.5
     - _DetailAlbedoMapScale: 1
     - _DetailNormalMapScale: 1
-    - _DistortionBlend: 0.5
-    - _DistortionEnabled: 0
-    - _DistortionStrength: 1
-    - _DistortionStrengthScaled: 0.1
-    - _DstBlend: 10
+    - _DstBlend: 0
     - _Emission: 0
     - _EnvironmentReflections: 1
-    - _FlipbookBlending: 0
-    - _FlipbookMode: 0
+    - _Float: 0
     - _GlossMapScale: 0
     - _Glossiness: 0
     - _GlossyReflections: 0
+    - _Hard_Shaded: 1
+    - _Intensity: 1
+    - _Max_Height: 0.25
     - _Metallic: 0
-    - _Mode: 0
     - _OcclusionStrength: 1
     - _Occlusion_Multiplier: 1
     - _Parallax: 0.005
     - _QueueControl: 0
     - _QueueOffset: 0
     - _ReceiveShadows: 1
-    - _SampleGI: 0
+    - _Rotation_Speed: 5
     - _Smoothness: 0
     - _SmoothnessTextureChannel: 0
-    - _SoftParticlesEnabled: 0
-    - _SoftParticlesFarFadeDistance: 1
-    - _SoftParticlesNearFadeDistance: 0
     - _SpecularHighlights: 1
-    - _SrcBlend: 5
-    - _Surface: 1
+    - _SrcBlend: 1
+    - _Surface: 0
+    - _Vertical_Speed: 3
     - _WorkflowMode: 1
     - _ZTest: 4
-    - _ZWrite: 0
+    - _ZWrite: 1
     - _ZWriteControl: 0
     m_Colors:
-    - _BaseColor: {r: 0.90588236, g: 0.62352943, b: 0.6, a: 0.5019608}
-    - _BaseColorAddSubDiff: {r: 0, g: 0, b: 0, a: 0}
-    - _CameraFadeParams: {r: 0, g: 0, b: 0, a: 0}
-    - _Color: {r: 0.90588236, g: 0.62352943, b: 0.6, a: 0.5019608}
-    - _Diffuse_Color: {r: 0.45973924, g: 0.754717, b: 0.33107865, a: 0}
+    - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
+    - _Color: {r: 1, g: 1, b: 1, a: 1}
+    - _Diffuse_Color: {r: 0.90588236, g: 0.7192188, b: 0.6, a: 0}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _Offset: {r: 0, g: 0, b: 0, a: 0}
-    - _SoftParticleFadeParams: {r: 0, g: 0, b: 0, a: 0}
     - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
     - _Specular_Color: {r: 0, g: 0, b: 0, a: 0}
-    - _Tiling: {r: 3, g: 3, b: 0, a: 0}
+    - _Tiling: {r: 5, g: 5, b: 0, a: 0}
   m_BuildTextureStacks: []

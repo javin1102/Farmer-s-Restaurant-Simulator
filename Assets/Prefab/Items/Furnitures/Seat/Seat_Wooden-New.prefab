@@ -49,7 +49,7 @@ GameObject:
   - component: {fileID: -1956155624651767045}
   - component: {fileID: -7266630794316366201}
   m_Layer: 8
-  m_Name: Seat_Pink
+  m_Name: Seat_Wooden-New
   m_TagString: Props
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

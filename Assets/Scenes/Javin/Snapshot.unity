@@ -236,7 +236,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 6
+  m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 20.4, y: 325.9, z: 0}
 --- !u!1001 &487936445
 PrefabInstance:
@@ -519,7 +519,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4753668527235776005, guid: 22157a346337c76489b1a299b3f09adb, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0.86
+      value: 1.89
       objectReference: {fileID: 0}
     - target: {fileID: 4753668527235776005, guid: 22157a346337c76489b1a299b3f09adb, type: 3}
       propertyPath: m_LocalRotation.w
@@ -551,6 +551,67 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 22157a346337c76489b1a299b3f09adb, type: 3}
+--- !u!1001 &1252331665
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 469190715165115041, guid: 56bae003c50021948b7566c468f64fe2, type: 3}
+      propertyPath: m_RootOrder
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 469190715165115041, guid: 56bae003c50021948b7566c468f64fe2, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 469190715165115041, guid: 56bae003c50021948b7566c468f64fe2, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.18
+      objectReference: {fileID: 0}
+    - target: {fileID: 469190715165115041, guid: 56bae003c50021948b7566c468f64fe2, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0.82
+      objectReference: {fileID: 0}
+    - target: {fileID: 469190715165115041, guid: 56bae003c50021948b7566c468f64fe2, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: -0.31846294
+      objectReference: {fileID: 0}
+    - target: {fileID: 469190715165115041, guid: 56bae003c50021948b7566c468f64fe2, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 469190715165115041, guid: 56bae003c50021948b7566c468f64fe2, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0.9479354
+      objectReference: {fileID: 0}
+    - target: {fileID: 469190715165115041, guid: 56bae003c50021948b7566c468f64fe2, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 469190715165115041, guid: 56bae003c50021948b7566c468f64fe2, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 469190715165115041, guid: 56bae003c50021948b7566c468f64fe2, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: -217.14
+      objectReference: {fileID: 0}
+    - target: {fileID: 469190715165115041, guid: 56bae003c50021948b7566c468f64fe2, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 993385479923849243, guid: 56bae003c50021948b7566c468f64fe2, type: 3}
+      propertyPath: m_Name
+      value: Seat_Wooden-New
+      objectReference: {fileID: 0}
+    - target: {fileID: 993385479923849243, guid: 56bae003c50021948b7566c468f64fe2, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 56bae003c50021948b7566c468f64fe2, type: 3}
 --- !u!1001 &1686989252
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -661,10 +722,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d3b40a5fa2d439f48a58cffcef7b3040, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  prefab: {fileID: 8735650615285411582, guid: bdd29cf47e2e7d64491e280c7dcdd2fb, type: 3}
-  offset: {x: 0, y: -0.5, z: 0.79}
-  angles: {x: -0.00000021344341, y: 245.26999, z: 5.809996}
-  scale: {x: 5, y: 5, z: 5}
+  prefab: {fileID: 993385479923849243, guid: 56bae003c50021948b7566c468f64fe2, type: 3}
+  offset: {x: 0, y: -0.5, z: 0.82}
+  angles: {x: 0, y: -217.14, z: 0}
+  scale: {x: 1, y: 1, z: 1}
 --- !u!4 &1694310144
 Transform:
   m_ObjectHideFlags: 0
