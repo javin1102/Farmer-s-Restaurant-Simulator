@@ -22,6 +22,7 @@ public class ResourcesLoader : MonoBehaviour
     private List<IngredientData> m_IngredientsData;
     private List<FoodData> m_FoodsData;
     private List<GameObject> m_FarmObjects;
+    private List<FunfactSO> m_Funfacts;
     private readonly Dictionary<string, AudioClip> m_AudioClips = new();
     private static ResourcesLoader m_Instance;
     private void Awake()
@@ -37,6 +38,7 @@ public class ResourcesLoader : MonoBehaviour
         m_FurnituresData = Resources.LoadAll<FurnitureData>("Data/Furnitures").ToList();
         m_FoodsData = Resources.LoadAll<FoodData>("Data/Recipes").ToList();
         m_FarmObjects = Resources.LoadAll<GameObject>("Prefabs/FarmObjects").ToList();
+        m_Funfacts = Resources.LoadAll<FunfactSO>("Data/Funfacts").ToList();
         LoadAudioClips();
     }
 
@@ -52,6 +54,7 @@ public class ResourcesLoader : MonoBehaviour
     public FoodData GetFoodDataByID(string id) => m_FoodsData.Where(data => data.ID == id).First();
     public FurnitureData GetFurnitureDataByID(string id) => m_FurnituresData.Where(data => data.ID == id).First();
     public SeedData GetSeedDataByID(string id) => m_SeedsData.Where(data => data.ID == id).First();
+    public FunfactSO GetRandomFunfact() => m_Funfacts[Random.Range(0, m_Funfacts.Count)];
     public ItemData GetEquipmentDataByID(string id) => m_EquipmentsData.Where(data => data.ID == id).First();
     public ItemData GetCropDataByID(string id) => m_CropsData.Where(data => data.ID == id).First();
     private int GetFarmResourcesIndexByType<T>(GameObject obj, int index)
@@ -62,4 +65,5 @@ public class ResourcesLoader : MonoBehaviour
         }
         return -1;
     }
+
 }

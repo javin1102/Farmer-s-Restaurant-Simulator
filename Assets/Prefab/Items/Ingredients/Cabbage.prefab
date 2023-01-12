@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 430624903810713471}
   - component: {fileID: -3191615461304540964}
   - component: {fileID: 5564639492843754971}
-  - component: {fileID: 9169296346796867281}
+  - component: {fileID: 4866070607911605321}
   m_Layer: 0
   m_Name: Cabbage
   m_TagString: Untagged
@@ -121,8 +121,8 @@ MonoBehaviour:
   m_HandEulerAngles: {x: 310.53, y: -0.00000065690443, z: 11.429997}
   m_HandScale: {x: 0.5, y: 0.5, z: 0.5}
   m_TileManager: {fileID: 0}
---- !u!135 &9169296346796867281
-SphereCollider:
+--- !u!65 &4866070607911605321
+BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -132,8 +132,8 @@ SphereCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 0.75
-  m_Center: {x: 0.001183629, y: 0.65322787, z: -0.0072526336}
+  m_Size: {x: 0.71233445, y: 0.4756779, z: 0.7295553}
+  m_Center: {x: -0.012228191, y: 0.022428222, z: -0.00029814243}
 --- !u!1001 &692565243902879404
 PrefabInstance:
   m_ObjectHideFlags: 0

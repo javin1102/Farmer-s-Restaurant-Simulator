@@ -4,8 +4,7 @@ using UnityEngine.InputSystem;
 [RequireComponent(typeof(CharacterController))]
 public class FirstPersonMovement : MonoBehaviour
 {
-    [SerializeField][Range(10, 25)] private float m_MoveSpeed;
-    [SerializeField] private float m_MouseHorizontalSensitivity;
+    [SerializeField][Range(5, 25)] private float m_MoveSpeed;
     [SerializeField] private float m_JumpForce;
     [SerializeField][Readonly] private bool m_IsGrounded;
 

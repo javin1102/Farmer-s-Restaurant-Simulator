@@ -22,7 +22,7 @@ MonoBehaviour:
   starterQuantity: 10
   cropPrefab: {fileID: 3358945435167939137, guid: fc7d56e673841f649b264187294b9eca, type: 3}
   dropChance: 8.5
-  hourToGrow: 16
+  hourToGrow: 12
   minSeedDropQuantity: 0
   maxSeedDropQuanitty: 5
   harvestedIngredientData: {fileID: 11400000, guid: 649cc935bdb143642b49f2ec5c18dd11, type: 2}

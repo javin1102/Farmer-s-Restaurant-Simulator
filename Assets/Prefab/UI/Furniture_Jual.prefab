@@ -1107,13 +1107,14 @@ GameObject:
   - component: {fileID: 6877791696953318562}
   - component: {fileID: 6877791696953318561}
   - component: {fileID: 6877791696953318560}
+  - component: {fileID: 6092163261742083931}
   m_Layer: 5
   m_Name: Furniture_Jual
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &6877791696953318575
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1194,6 +1195,19 @@ MonoBehaviour:
   m_ExtraUI: {fileID: 6877791696985760621}
   m_SelectedSprite: {fileID: 21300000, guid: b4eaf283c173bb841b760dd8bd9a6805, type: 3}
   m_UnselectedSprite: {fileID: 10905, guid: 0000000000000000f000000000000000, type: 0}
+--- !u!114 &6092163261742083931
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6877791696953318574}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 72a13f379e3d8b2459dc405a33cbd6b0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_CoinsText: {fileID: 3003086159787879966}
 --- !u!1 &6877791696985760621
 GameObject:
   m_ObjectHideFlags: 0
@@ -1252,8 +1266,8 @@ MonoBehaviour:
   m_DecreaseButton: {fileID: 6877791696406249143}
   m_ActionButton: {fileID: 6877791696405149998}
   m_InputField: {fileID: 6877791696562587625}
+  m_Quantity: 0
   m_SellPriceText: {fileID: 6877791698152066478}
-  m_CoinsText: {fileID: 3003086159787879966}
 --- !u!1 &6877791697037105094
 GameObject:
   m_ObjectHideFlags: 0

@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.07176343, g: 0.3219946, b: 0.88708925, a: 1}
+  m_IndirectSpecularColor: {r: 0.08264237, g: 0.036087736, b: 0.13360934, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -1790,8 +1790,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ea5d292530814b94790189b26c07b72a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_MoveSpeed: 10
-  m_MouseHorizontalSensitivity: 3.5
+  m_MoveSpeed: 8.5
   m_JumpForce: 1.5
   m_IsGrounded: 0
 --- !u!143 &145241765
@@ -3387,7 +3386,7 @@ MonoBehaviour:
   m_VerticalAxis:
     Value: 0
     m_SpeedMode: 1
-    m_MaxSpeed: 0.075
+    m_MaxSpeed: 0.05
     m_AccelTime: 0
     m_DecelTime: 0
     m_InputAxisName: Mouse Y
@@ -3411,7 +3410,7 @@ MonoBehaviour:
   m_HorizontalAxis:
     Value: 0
     m_SpeedMode: 1
-    m_MaxSpeed: 0.1
+    m_MaxSpeed: 0.04
     m_AccelTime: 0
     m_DecelTime: 0
     m_InputAxisName: Mouse X
@@ -24677,10 +24676,6 @@ PrefabInstance:
     - target: {fileID: 6877791696953318574, guid: 1813132642192fe42a4b11cf718b5ec3, type: 3}
       propertyPath: m_Name
       value: Furniture_Jual
-      objectReference: {fileID: 0}
-    - target: {fileID: 6877791696953318574, guid: 1813132642192fe42a4b11cf718b5ec3, type: 3}
-      propertyPath: m_IsActive
-      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6877791696953318575, guid: 1813132642192fe42a4b11cf718b5ec3, type: 3}
       propertyPath: m_Pivot.x
