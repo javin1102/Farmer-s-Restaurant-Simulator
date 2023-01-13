@@ -108,6 +108,8 @@ public class FarmObjectsGenerator : MonoBehaviour, ITimeTracker
                     plantTile.SwitchStatus((PlantTile.TileStatus)plantTileData.plantStatus);
                 }
                 plantTile.Time = plantTileData.time;
+                plantTile.transform.SetParent(m_TileManager.TileParent);
+
             }
 
             else

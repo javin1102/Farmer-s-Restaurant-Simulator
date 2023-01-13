@@ -6,7 +6,7 @@ using System.Linq;
 [RequireComponent(typeof(BaseFarmObject))]
 public class Shovel : Item, IRaycastAction
 {
-    private static Transform tileParent;
+    // private static Transform tileParent;
     [SerializeField] private int m_TileResourcesIndex;
     private GameObject m_TileGO;
     [SerializeField][Readonly] private GameObject m_PreviewTile;
@@ -33,7 +33,7 @@ public class Shovel : Item, IRaycastAction
     }
     private void Start()
     {
-        tileParent = GameObject.FindGameObjectWithTag(Utils.TILE_PARENT_TAG).transform;
+        // tileParent = GameObject.FindGameObjectWithTag(Utils.TILE_PARENT_TAG).transform;
         m_PreviewTileMesh = m_TileGO.GetComponent<MeshFilter>().sharedMesh;
     }
     private void OnDisable()
@@ -54,7 +54,7 @@ public class Shovel : Item, IRaycastAction
 
         GameObject tileCopyGO = Instantiate(m_TileGO, m_TileMatrix.MultiplyPoint3x4(Vector3.zero), m_TileMatrix.rotation);
         tileCopyGO.name = "Tile";
-        tileCopyGO.transform.parent = tileParent;
+        tileCopyGO.transform.parent = m_TileManager.TileParent;
 
         MaterialChanger materialChanger = tileCopyGO.GetComponent<MaterialChanger>();
         materialChanger.ChangeToFinalMaterial();
