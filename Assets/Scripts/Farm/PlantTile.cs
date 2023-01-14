@@ -26,6 +26,7 @@ public class PlantTile : BaseFarmObject, ITimeTracker
     private GameTimeStamp m_Time;
     [SerializeField] private PlantGrowHandler m_plantGrowHandler;
     [SerializeField] private TimeManager m_TimeManager;
+    public TimeManager TimeManager { get => m_TimeManager; }
 
 
     private new void Start()
