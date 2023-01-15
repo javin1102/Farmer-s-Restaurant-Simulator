@@ -15,6 +15,8 @@ public class PestSystem : MonoBehaviour, ITimeTracker
     {
         m_timeManager = TimeManager.Instance;
         m_timeManager.RegisterListener(this);
+
+        Debug.Log("Pest Day : " + PlayerPrefs.GetInt("day1") + " , " + PlayerPrefs.GetInt("day2"));
     }
 
     public void ClockUpdate(GameTimeStamp timeStamp)
@@ -50,18 +52,29 @@ public class PestSystem : MonoBehaviour, ITimeTracker
     
     private void PestDay(bool IsDay1)
     {
-        // IsDay1 : True = Day1 , False = Day2
-        foreach (Transform childTf in tileParent)
+        if (PesticideSystem.Instance.isAlreadyPesticide != true)
         {
-            childTf.GetComponent<PlantTile>().TimeManager.UnRegisterListener(childTf.GetComponent<ITimeTracker>());
-            Destroy(childTf.gameObject);
-        }
-        StartCoroutine("SetPestDayUI");
-        
-        if (IsDay1) IsAlreadyTriggerDay1 = true;
-        else IsAlreadyTriggerDay2 = true;
+            // IsDay1 : True = Day1 , False = Day2
+            foreach (Transform childTf in tileParent)
+            {
+                childTf.GetComponent<PlantTile>().TimeManager.UnRegisterListener(childTf.GetComponent<ITimeTracker>());
+                Destroy(childTf.gameObject);
+            }
+            StartCoroutine("SetPestDayUI");
 
-        IsAlreadyRandom = false;
+            if (IsDay1) IsAlreadyTriggerDay1 = true;
+            else IsAlreadyTriggerDay2 = true;
+
+            IsAlreadyRandom = false;
+        }
+        else
+        {
+            if (IsDay1) IsAlreadyTriggerDay1 = true;
+            else IsAlreadyTriggerDay2 = true;
+
+            Debug.Log("Survive from PestDay :)");
+            
+        }
     }
 
     IEnumerator SetPestDayUI()

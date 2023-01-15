@@ -54,7 +54,7 @@ public class GameTimeStamp : ISerializable
             day++;
         }
 
-        if (day >= 30)
+        if (day > 30)
         {
             day = 1;
         }

@@ -7043,7 +7043,7 @@ Canvas:
   m_SortingBucketNormalizedSize: 0
   m_AdditionalShaderChannelsFlag: 25
   m_SortingLayerID: 0
-  m_SortingOrder: 10
+  m_SortingOrder: 1
   m_TargetDisplay: 0
 --- !u!224 &538843428
 RectTransform:
@@ -16733,7 +16733,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   tileParent: {fileID: 423569029}
-  tryToTriggerPestDay: 0
   pestDayUICanvas: {fileID: 538843424}
 --- !u!4 &1354668910
 Transform:
