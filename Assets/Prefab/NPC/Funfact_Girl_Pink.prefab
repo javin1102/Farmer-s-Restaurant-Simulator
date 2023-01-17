@@ -917,49 +917,9 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 7766108503389967647}
     m_Modifications:
-    - target: {fileID: 491789622533923888, guid: 0790ded8a4c13d042a69a201c9086c66, type: 3}
-      propertyPath: m_AnchorMax.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 491789622533923888, guid: 0790ded8a4c13d042a69a201c9086c66, type: 3}
-      propertyPath: m_AnchorMin.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 491789622533923888, guid: 0790ded8a4c13d042a69a201c9086c66, type: 3}
-      propertyPath: m_SizeDelta.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 491789622533923888, guid: 0790ded8a4c13d042a69a201c9086c66, type: 3}
-      propertyPath: m_AnchoredPosition.x
-      value: 1.755
-      objectReference: {fileID: 0}
-    - target: {fileID: 491789622533923888, guid: 0790ded8a4c13d042a69a201c9086c66, type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 1801479349666014816, guid: 0790ded8a4c13d042a69a201c9086c66, type: 3}
       propertyPath: m_Name
       value: UI_Funfact
-      objectReference: {fileID: 0}
-    - target: {fileID: 4503890386082808796, guid: 0790ded8a4c13d042a69a201c9086c66, type: 3}
-      propertyPath: m_SizeDelta.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6137653671501138305, guid: 0790ded8a4c13d042a69a201c9086c66, type: 3}
-      propertyPath: m_AnchorMax.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6137653671501138305, guid: 0790ded8a4c13d042a69a201c9086c66, type: 3}
-      propertyPath: m_AnchorMin.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6137653671501138305, guid: 0790ded8a4c13d042a69a201c9086c66, type: 3}
-      propertyPath: m_AnchoredPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6137653671501138305, guid: 0790ded8a4c13d042a69a201c9086c66, type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8033777990661575270, guid: 0790ded8a4c13d042a69a201c9086c66, type: 3}
       propertyPath: m_PresetInfoIsWorld

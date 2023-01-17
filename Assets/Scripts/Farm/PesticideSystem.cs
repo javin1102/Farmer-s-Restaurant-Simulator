@@ -2,7 +2,7 @@ using System;
 using UnityEngine;
 
 
-public class PesticideSystem : MonoBehaviour,ITimeTracker
+public class PesticideSystem : MonoBehaviour, ITimeTracker
 {
     public static PesticideSystem Instance { get; set; }
     public int pesticideDay { get => m_pesticideDay; }
@@ -24,31 +24,30 @@ public class PesticideSystem : MonoBehaviour,ITimeTracker
         TimeManager.Instance.RegisterListener(this);
 
         m_pesticideDay = PlayerPrefs.GetInt(PESTICEDAY_KEYWORD, 0);
-        m_isAlreadyPesticide = Convert.ToBoolean(PlayerPrefs.GetString(ISALREADYPESTICIDE_KEYWORD,"false"));
+        m_isAlreadyPesticide = Convert.ToBoolean(PlayerPrefs.GetString(ISALREADYPESTICIDE_KEYWORD, "false"));
     }
 
-    private void OnTriggerEnter(Collider other)
+    public bool TriggerPesticide()
     {
-        if (other.CompareTag("Player") && m_isAlreadyPesticide == false)
-        {
-            Debug.Log("enter ontrigger enter");
-            
-            m_pesticideDay = 3;
-            PlayerPrefs.SetInt(PESTICEDAY_KEYWORD, m_pesticideDay);
+        if (m_isAlreadyPesticide) return false;
+        Debug.Log("enter ontrigger enter");
 
-            m_isAlreadyPesticide = true;
-            PlayerPrefs.SetString(ISALREADYPESTICIDE_KEYWORD, "true");
+        m_pesticideDay = 3;
+        PlayerPrefs.SetInt(PESTICEDAY_KEYWORD, m_pesticideDay);
 
-            m_isAlreadySet = false;
-            Debug.Log("Success Pesticide Plant ~");
-        }
+        m_isAlreadyPesticide = true;
+        PlayerPrefs.SetString(ISALREADYPESTICIDE_KEYWORD, "true");
+
+        m_isAlreadySet = false;
+        Debug.Log("Success Pesticide Plant ~");
+        return true;
     }
 
     public void ClockUpdate(GameTimeStamp timeStamp)
     {
-        if(timeStamp.hour == 6 && timeStamp.minute == 1 && m_isAlreadyPesticide == true)
+        if (timeStamp.hour == 6 && timeStamp.minute == 1 && m_isAlreadyPesticide == true)
         {
-            if(m_pesticideDay <= 0)
+            if (m_pesticideDay <= 0)
             {
                 Debug.Log("END of pesticide duration");
                 m_isAlreadyPesticide = false;
