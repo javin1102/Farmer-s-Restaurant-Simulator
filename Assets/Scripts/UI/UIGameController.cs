@@ -6,7 +6,7 @@ public class UIGameController : MonoBehaviour
 {
     [SerializeField] private GameObject m_ActionSlots;
     [SerializeField] private GameObject m_Crosshair;
-    [SerializeField] private Button m_UIButton;
+    [SerializeField] private Button m_UIMenuButton, m_UIHelperButton;
     [SerializeField] private TMP_Text m_CoinText;
     private PlayerAction m_PlayerAction;
     private void Awake()
@@ -16,8 +16,10 @@ public class UIGameController : MonoBehaviour
 
     private void Start()
     {
-        m_UIButton.onClick.AddListener(m_PlayerAction.InvokeToggleMiscUI);
-        m_UIButton.onClick.AddListener(() => m_PlayerAction.PlayAudio(Utils.BUTTON_SFX));
+        m_UIHelperButton.onClick.AddListener(m_PlayerAction.InvokeToggleHelperUI);
+        m_UIHelperButton.onClick.AddListener(() => m_PlayerAction.PlayAudio(Utils.BUTTON_SFX));
+        m_UIMenuButton.onClick.AddListener(m_PlayerAction.InvokeToggleMiscUI);
+        m_UIMenuButton.onClick.AddListener(() => m_PlayerAction.PlayAudio(Utils.BUTTON_SFX));
     }
 
     void Update()
@@ -39,6 +41,7 @@ public class UIGameController : MonoBehaviour
 
     private void EnableChilds()
     {
+        if (PlayerPrefs.GetInt("HASSHOWHELPER", 0) == 0) return;
         foreach (Transform child in transform)
         {
             child.gameObject.SetActive(true);

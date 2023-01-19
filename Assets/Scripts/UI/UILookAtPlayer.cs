@@ -1,6 +1,6 @@
 using UnityEngine;
 using DG.Tweening;
-public class UIStorage : MonoBehaviour
+public class UILookAtPlayer : MonoBehaviour
 {
     private PlayerAction m_PlayerAction;
     private void Start()

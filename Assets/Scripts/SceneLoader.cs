@@ -45,17 +45,6 @@ public class SceneLoader : MonoBehaviour
         m_UIManager = UIManager.Instance;
         m_FirstPersonMovement = m_PlayerAction.GetComponent<FirstPersonMovement>();
         StartCoroutine(Init());
-        // SceneManager.activeSceneChanged += ActiveSceneChanged;
-    }
-
-    void OnDestroy()
-    {
-        // SceneManager.activeSceneChanged -= ActiveSceneChanged;
-    }
-
-    private void ActiveSceneChanged(Scene arg0, Scene arg1)
-    {
-        DeterminePlayerSpawnPos();
     }
 
     private void Update()
@@ -152,8 +141,9 @@ public class SceneLoader : MonoBehaviour
         m_PlayerAction.OnDisableOtherUI?.Invoke();
         OnFinishLoading?.Invoke();
         m_FirstPersonMovement.enabled = true;
-
     }
+
+
     private string DetermineScene(SPAWN_TYPE spawnType)
     {
         if (spawnType == SPAWN_TYPE.HOUSE_BED || spawnType == SPAWN_TYPE.HOUSE_DOOR)
@@ -242,11 +232,11 @@ public class SceneLoader : MonoBehaviour
         m_UIManager.LoadingUI.Activate(0);
         yield return StartCoroutine(LoadAllGameScene());
         yield return new WaitForEndOfFrame();
-        SpawnToScene(SPAWN_TYPE.HOUSE_BED);
+        yield return  StartCoroutine(SpawnToScene_Coroutine(SPAWN_TYPE.HOUSE_BED));
         m_PlayerAction.transform.position = m_SpawnPosData.houseBedSpawnTf.position;
         m_PlayerAction.transform.eulerAngles = m_SpawnPosData.houseBedSpawnTf.eulerAngles;
         m_VCam.ForceCameraPosition(m_SpawnPosData.houseBedSpawnTf.position, Quaternion.Euler(m_SpawnPosData.houseBedSpawnTf.eulerAngles));
         m_UIManager.LoadingUI.Deactivate();
-
+        m_PlayerAction.CheckShowHelperUI();
     }
 }

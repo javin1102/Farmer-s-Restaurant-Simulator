@@ -23,11 +23,13 @@ public class PlayerAction : MonoBehaviour
     public int Coins { get => m_Coins; set => m_Coins = value; }
     public static PlayerAction Instance { get => m_Instance; }
     public PlayerUpgrades PlayerUpgrades { get => m_PlayerUpgrades; }
+    public UnityAction ToggleHelperUI { get => m_ToggleHelperUI; set => m_ToggleHelperUI = value; }
 
     //Event Listener
     private event UnityAction m_OnEnableUI;
     private event UnityAction m_OnDisableUI;
     private UnityAction m_ToggleInventoryUI;
+    private UnityAction m_ToggleHelperUI;
     private UnityAction m_ToggleMiscUI;
     private UnityAction<Transform> m_ToggleFurnitureStoreUI;
     private UnityAction<Transform> m_ToggleSeedStoreUI;
@@ -91,6 +93,15 @@ public class PlayerAction : MonoBehaviour
         m_SaveManager.LoadData(Utils.PLAYERDATA_FILENAME, LoadSucceeded, LoadFailed);
         m_ActionSlotsController.SelectActionSlot(0);
         LockCursor();
+    }
+
+    public void CheckShowHelperUI()
+    {
+        if (PlayerPrefs.GetInt("HASSHOWHELPER", 0) == 0)
+        {
+            InvokeToggleHelperUI();
+            PlayerPrefs.SetInt("HASSHOWHELPER", 1);
+        }
     }
 
     private void OnEnable()
@@ -367,6 +378,8 @@ public class PlayerAction : MonoBehaviour
         PlayAudio("coin_sfx");
         return true;
     }
+
+    public void InvokeToggleHelperUI() => m_ToggleHelperUI?.Invoke();
     private void InvokeToggleInventoryUI(InputAction.CallbackContext obj) => m_ToggleInventoryUI?.Invoke();
     private void InvokeToggleMiscUI(InputAction.CallbackContext obj) => m_ToggleMiscUI?.Invoke();
     private void InvokeTogglePauseUI(InputAction.CallbackContext obj) => m_TogglePause?.Invoke();
