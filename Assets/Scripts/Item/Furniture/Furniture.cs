@@ -1,82 +1,87 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 
+[RequireComponent(typeof(MaterialChanger))]
+[RequireComponent(typeof(Hoverable))]
 public abstract class Furniture : Item, IRaycastAction
 {
     [SerializeField] private ItemMainActionChannel m_DecreaseableEvent;
     [SerializeField] private InputActionReference m_ObjRotationInputRef;
 
-    [SerializeField] protected bool m_IsInstantiable;
-    [SerializeField] protected Mesh m_PreviewMesh;
+    protected bool m_IsInstantiable;
+    protected Mesh m_PreviewMesh;
     protected GameObject m_InstantiatedGO;
     protected RestaurantManager m_Restaurant;
-
-
+    [SerializeField] protected bool m_IsInstantiated;
+    [SerializeField] protected Hoverable m_Hoverable;
+    private Vector3 m_InstantiatedSize;
     private float m_ObjRot;
     private MaterialChanger m_MaterialChanger;
     private Matrix4x4 m_PreviewMatrix;
-
-
-    private new void OnEnable()
+    private PlayerAction m_PlayerAction;
+    protected new void OnEnable()
     {
         m_Restaurant = RestaurantManager.Instance;
         m_PreviewMesh = GetComponent<MeshFilter>().sharedMesh;
+        m_Hoverable = GetComponent<Hoverable>();
         m_TileManager = TileManager.instance;
         base.OnEnable();
         m_ObjRotationInputRef.action.performed += RotateObj;
+        m_InstantiatedSize = transform.localScale;
+        m_PlayerAction = PlayerAction.Instance;
     }
 
-    private void OnDisable()
+    protected void OnDisable()
     {
         m_ObjRotationInputRef.action.performed -= RotateObj;
     }
 
     public override void MainAction()
     {
-        //if ( !gameObject.activeInHierarchy || !m_IsInstantiable ) return;
+        if (!gameObject.activeInHierarchy || !m_IsInstantiable) return;
         m_DecreaseableEvent.RaiseEvent();
-
-        m_InstantiatedGO = Instantiate( gameObject );
-        m_InstantiatedGO.name = m_Data.id;
-        m_InstantiatedGO.layer = 8;
-        m_InstantiatedGO.SetActive( true );
-        m_InstantiatedGO.transform.SetParent( null );
-
-        Vector3 pos = m_PreviewMatrix.MultiplyPoint3x4( Vector3.zero );
-        pos.Set( pos.x, pos.y, pos.z );
-        m_InstantiatedGO.transform.SetPositionAndRotation( pos, m_PreviewMatrix.rotation );
-        m_InstantiatedGO.transform.localScale = m_PreviewMatrix.lossyScale;
-        m_InstantiatedGO.GetComponent<Collider>().enabled = true;
-        Furniture furniture = m_InstantiatedGO.GetComponent<Furniture>();
-        furniture.m_ObjRotationInputRef.action.performed -= furniture.RotateObj;
-        ResetProps();
+        Vector3 pos = m_PreviewMatrix.MultiplyPoint3x4(Vector3.zero);
+        SpawnFurniture(pos, m_PreviewMatrix.rotation, m_InstantiatedSize);
+        m_PlayerAction.PlayAudio("thump_sfx");
     }
-    public void PerformRaycastAction( RaycastHit hitInfo )
+    protected void OnDestroy()
     {
-        if ( m_MaterialChanger == null ) m_MaterialChanger = GetComponent<MaterialChanger>();
-        if ( hitInfo.collider.CompareTag( Utils.RESTAURANT_GROUND_TAG ) )
+        if (m_IsInstantiated)
         {
-            Vector3 objPos = m_TileManager.WorldToTilePos( hitInfo.point ) + Vector3.up * m_PreviewMesh.bounds.size.y / 2;
-            //float rotPressedValue = m_ObjRotationInputRef.action.ReadValue<float>();
-            //m_ObjRot += rotPressedValue * 40 * Time.deltaTime;
-            Quaternion objRotation = Quaternion.Euler( 0, m_ObjRot, 0 );
+            m_Hoverable.OnHoverEnter -= ShowHelper;
+            m_UIManager = UIManager.Instance;
+            if (m_UIManager == null) return;
+            m_UIManager.HideActionHelper();
+        }
+    }
+    public void PerformRaycastAction(RaycastHit hitInfo)
+    {
+        if (m_Restaurant == null) m_Restaurant = RestaurantManager.Instance;
+        if (m_MaterialChanger == null) m_MaterialChanger = GetComponent<MaterialChanger>();
+        if (hitInfo.collider.CompareTag(Utils.RESTAURANT_GROUND_TAG))
+        {
 
-            m_PreviewMatrix = Matrix4x4.TRS( objPos, objRotation, transform.localScale );
+            Vector3 objPos = m_TileManager.WorldToTilePos(hitInfo.point) + Vector3.up * m_PreviewMesh.bounds.size.y / 2;
+            Quaternion objRotation = Quaternion.Euler(0, m_ObjRot, 0);
 
-            bool m_Collided = Physics.CheckBox( objPos,
-                m_PreviewMesh.bounds.size / 2 - Vector3.one * .01f, objRotation, Utils.RaycastableMask | Utils.RestaurantMask );
+            m_PreviewMatrix = Matrix4x4.TRS(objPos, objRotation, m_InstantiatedSize);
+            Collider[] colliders = Physics.OverlapBox(objPos, Vector3.Scale(m_PreviewMesh.bounds.size / 2 - Vector3.one * .01f, m_InstantiatedSize), objRotation, Utils.RaycastableMask);
+            bool m_Collided = false;
 
-            if ( m_Collided )
+            foreach (var collider in colliders)
             {
-                m_MaterialChanger.ChangePreviewMaterialColor( false );
+                m_Collided = collider.CompareTag(Utils.PROP_TAG);
+            }
+
+            if (m_Collided)
+            {
                 m_IsInstantiable = false;
             }
             else
             {
-                m_MaterialChanger.ChangePreviewMaterialColor( true );
+                Graphics.DrawMesh(m_PreviewMesh, m_PreviewMatrix, m_MaterialChanger.PreviewMaterial, 0);
                 m_IsInstantiable = true;
             }
-            Graphics.DrawMesh( m_PreviewMesh, m_PreviewMatrix, m_MaterialChanger.PreviewMaterial, 0 );
             return;
         }
 
@@ -84,12 +89,41 @@ public abstract class Furniture : Item, IRaycastAction
 
 
     }
-    private void RotateObj( InputAction.CallbackContext context )
+    private void RotateObj(InputAction.CallbackContext context)
     {
         m_ObjRot += context.ReadValue<float>() * 90;
     }
-    private void ResetProps()
+
+    protected virtual void ShowHelper()
     {
-        m_IsInstantiable = false;
+        m_UIManager.ShowActionHelperPrimary("F", "Simpan");
     }
+
+    public Furniture SpawnFurniture(Vector3 position, Quaternion rotation, Vector3 localScale)
+    {
+        m_UIManager = UIManager.Instance;
+        m_Restaurant = RestaurantManager.Instance;
+        m_InstantiatedGO = Instantiate(m_Data.prefab, position, rotation);
+        m_InstantiatedGO.layer = 8;
+        m_InstantiatedGO.transform.localScale = localScale;
+        m_InstantiatedGO.name = m_Data.ID;
+        m_InstantiatedGO.SetActive(true);
+        m_InstantiatedGO.transform.SetParent(null);
+        m_InstantiatedGO.GetComponent<Collider>().enabled = true;
+        Furniture furniture = m_InstantiatedGO.GetComponent<Furniture>();
+        furniture.m_IsInstantiated = true;
+        furniture.m_ObjRotationInputRef.action.performed -= furniture.RotateObj;
+        furniture.m_Hoverable.OnHoverEnter += ShowHelper;
+        OnInstantiate();
+        return furniture;
+    }
+    public Furniture SpawnFurniture(Vector3 position, Vector3 eulerAngles, Vector3 localScale) =>
+    SpawnFurniture(position, Quaternion.Euler(eulerAngles), localScale);
+
+    protected abstract void OnInstantiate();
+
+
+
+
+
 }

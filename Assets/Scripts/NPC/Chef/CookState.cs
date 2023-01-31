@@ -9,51 +9,66 @@ namespace NPC.Chef
         private float m_CookTime;
         private Vector3 m_FoodPos = new();
         private Vector3 m_FoodPlace;
-        private RestaurantManager m_Restaurant;
-        private bool m_HasFood;
-        public override void OnEnterState( NPCManager NPC )
+        public override void OnEnterState(NPCManager NPC)
         {
             m_Chef = NPC as Chef;
-            m_Restaurant = RestaurantManager.Instance;
-            m_FoodPlace = m_Restaurant.FoodPlace.position;
-            m_Food = m_Chef.OrderQueue.Peek();
+            m_Food = m_Chef.OrderedFood;
             m_CookTime = m_Food.Value.cookDuration;
+            m_Chef.Animator.SetBool(Utils.NPC_COOKING_ANIM_PARAM, true);
+            m_Chef.Hoverable.IsHoverable = false;
+            m_Chef.UIChef.EnableTimerUI();
+            m_Chef.UIChef.SetIcon(m_Food.Value.icon);
+            m_Chef.PlayAudio("cooking_sfx");
         }
 
-        public override void OnExitState( NPCManager NPC )
+        public override void OnExitState(NPCManager NPC)
         {
         }
 
-        public override void OnUpdateState( NPCManager NPC )
+        public override void OnUpdateState(NPCManager NPC)
         {
-
-
-            //TODO::Switch to cook anim
-            if ( m_CookTime <= 0 )
+            if (m_Chef.Stove == null)
             {
-                m_CookTime = 0;
-                GameObject foodGO = GameObject.Instantiate( m_Food.Value.foodPrefab, RandomPos(), Quaternion.identity );
-                ServedFood servedFood = new( foodGO, m_Food.Value.price );
-                m_Restaurant.Waiters[m_Restaurant.WaiterIndex].FoodsToServe.Enqueue( KeyValuePair.Create( m_Food.Key, servedFood ) );
-                m_Chef.OrderQueue.Dequeue();
-                m_Restaurant.DecreaseStock( m_Food.Value );
-                if ( m_Chef.OrderQueue.TryPeek( out m_Food ) ) m_CookTime = m_Food.Value.cookDuration;
-                else
-                {
-                    IdleState idleState = new();
-                    NPC.ChangeState( idleState );
-                }
+                IdleState idleState = new();
+                NPC.ChangeState(idleState);
+                m_Chef.Restaurant.OrderQueue.Enqueue(m_Food);
                 return;
             }
+
+            if (m_Food.Key == null || m_Food.Key.Citizen == null)
+            {
+                IdleState idleState = new();
+                NPC.ChangeState(idleState);
+                return;
+            }
+
+            m_Chef.transform.forward = m_Chef.Stove.transform.forward;
+            //TODO::Switch to cook anim
+            m_Chef.UIChef.SetFillAmount(m_CookTime, m_Food.Value.cookDuration);
+            if (m_CookTime <= 0)
+            {
+                m_CookTime = 0;
+                Food food = GameObject.Instantiate(m_Food.Value.foodPrefab).GetComponent<Food>();
+                food.Seat = m_Food.Key;
+                //m_Chef.Restaurant.FoodsToServe.Enqueue( food );
+                food.transform.position = food.Seat.Table.GetFoodPlace(food.Seat).position;
+                food.Seat.Citizen.ServedFood = food;
+                m_Chef.Restaurant.DecreaseStock(m_Food.Value);
+                IdleState idleState = new();
+                NPC.ChangeState(idleState);
+                return;
+            }
+
+
 
             m_CookTime -= Time.deltaTime;
         }
 
-        private float RandomZ => Random.Range( m_FoodPlace.z - 2.5f, m_FoodPlace.z + 2.5f );
-        private float RandomX => Random.Range( m_FoodPlace.x - 1, m_FoodPlace.x + 1 );
+        private float RandomZ => Random.Range(m_FoodPlace.z - 2.5f, m_FoodPlace.z + 2.5f);
+        private float RandomX => Random.Range(m_FoodPlace.x - 1, m_FoodPlace.x + 1);
         private Vector3 RandomPos()
         {
-            m_FoodPos.Set( RandomX, m_FoodPlace.y + .5f, RandomZ );
+            m_FoodPos.Set(RandomX, m_FoodPlace.y + .5f, RandomZ);
             return m_FoodPos;
         }
 

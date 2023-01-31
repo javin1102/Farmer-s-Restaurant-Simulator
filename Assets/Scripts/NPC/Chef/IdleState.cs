@@ -1,27 +1,34 @@
-using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
 namespace NPC.Chef
 {
     public class IdleState : NPCBaseState
     {
         private Chef m_Chef;
-        public override void OnEnterState( NPCManager NPC )
+        public override void OnEnterState(NPCManager NPC)
         {
             m_Chef = NPC as Chef;
-            //Set to idle anim
+            m_Chef.Animator.SetBool(Utils.NPC_COOKING_ANIM_PARAM, false);
+            m_Chef.UIChef.DisableTimerUI();
+            m_Chef.StopAudio();
         }
 
-        public override void OnExitState( NPCManager NPC )
+        public override void OnExitState(NPCManager NPC)
         {
         }
 
-        public override void OnUpdateState( NPCManager NPC )
+        public override void OnUpdateState(NPCManager NPC)
         {
-            if ( !m_Chef.OrderQueue.TryPeek( out _ ) ) return;
+            if (m_Chef.Stove == null)
+            {
+                m_Chef.Hoverable.IsHoverable = true;
+                return;
+            }
+            m_Chef.transform.forward = m_Chef.Stove.transform.forward;
+            if (!m_Chef.Restaurant.OrderQueue.TryPeek(out KeyValuePair<Seat, FoodData> food)) return;
+            m_Chef.OrderedFood = food;
+            m_Chef.Restaurant.OrderQueue.Dequeue();
             CookState cookState = new();
-            NPC.ChangeState( cookState );
-            Debug.Log( "Cook State" );
+            NPC.ChangeState(cookState);
         }
     }
 }

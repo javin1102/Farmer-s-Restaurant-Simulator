@@ -1,0 +1,34 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0b87c901a03597d4cb3f49af3d976b10, type: 3}
+  m_Name: Spawn Data
+  m_EditorClassIdentifier: 
+  cityDoorSpawnTf:
+    position: {x: -1.5150001, y: 1.2, z: -83.394}
+    eulerAngles: {x: 0, y: 0, z: 0}
+    localScale: {x: 0, y: 0, z: 0}
+  farmCitySpawnTf:
+    position: {x: -41.89, y: 0.399, z: 0.5}
+    eulerAngles: {x: 0, y: 90, z: 0}
+    localScale: {x: 0, y: 0, z: 0}
+  cityFarmSpawnTf:
+    position: {x: 499.67, y: 0.44, z: -173.04}
+    eulerAngles: {x: 0, y: 92.072, z: 0}
+    localScale: {x: 0, y: 0, z: 0}
+  houseDoorSpawnTf:
+    position: {x: 23.638, y: 1, z: 174.377}
+    eulerAngles: {x: 0, y: -90, z: 0}
+    localScale: {x: 0, y: 0, z: 0}
+  houseBedSpawnTf:
+    position: {x: 10.201, y: 1, z: 169.45999}
+    eulerAngles: {x: 0, y: 0, z: 0}
+    localScale: {x: 0, y: 0, z: 0}

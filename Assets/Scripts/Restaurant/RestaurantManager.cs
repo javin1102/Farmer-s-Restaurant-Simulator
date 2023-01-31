@@ -1,128 +1,188 @@
 using NPC.Chef;
-using NPC.Waiter;
+using SimpleJSON;
 using System.Collections.Generic;
 using System.Linq;
-using UnityEditor;
 using UnityEngine;
-
+using UnityEngine.AI;
 public class RestaurantManager : MonoBehaviour
 {
     public static RestaurantManager Instance { get => m_Instance; }
     public List<Table> Tables { get => m_Tables; }
-    public List<Seat> UnoccupiedSeats { get => m_Seats; }
-    public Transform FoodPlace { get => m_FoodPlace; }
+    public List<Seat> Seats { get => m_Seats; }
+    public List<Stove> Stoves { get => m_Stoves; }
     public List<Chef> Chefs => m_Chefs;
-    public List<Waiter> Waiters => m_Waiters;
-    public int WaiterIndex => m_WaiterIndexOffset > m_Waiters.Count - 1 ? m_WaiterIndexOffset = 0 : m_WaiterIndexOffset++;
+    public Queue<KeyValuePair<Seat, FoodData>> OrderQueue => m_OrderQueue;
+    public Queue<Food> FoodsToServe => m_FoodsToServe;
+    public BoxCollider GroundCollider { get => m_GroundCollider; }
+
+
+    public BoxCollider GroundCollider2 { get => m_GroundCollider2; }
+
+    private readonly Queue<KeyValuePair<Seat, FoodData>> m_OrderQueue = new();
+    private readonly Queue<Food> m_FoodsToServe = new();
+
 
     //Furniture
-    [SerializeField] private List<Table> m_Tables = new();
-    [SerializeField] private List<Seat> m_Seats = new();
-    private int RandomSeatIndex { get => Random.Range( 0, m_Seats.Count ); }
-
-    //Food
-    private readonly Dictionary<FoodData, bool> m_AllFoods = new();
-    private readonly List<FoodData> m_UnlockedFoods = new();
-    private readonly Dictionary<string, StockIngredient> m_StockIngredients = new();
-
+    private readonly List<Table> m_Tables = new();
+    private readonly List<Seat> m_Seats = new();
+    private readonly List<Stove> m_Stoves = new();
     //Chefs
     [SerializeField] private List<Chef> m_Chefs = new();
-    [SerializeField] private int m_ChefIndexOffset = 0;
-    private int ChefIndex => m_ChefIndexOffset > m_Chefs.Count - 1 ? m_ChefIndexOffset = 0 : m_ChefIndexOffset++;
-
-    //Waiters
-    [SerializeField] private List<Waiter> m_Waiters = new();
-    private int m_WaiterIndexOffset;
 
     //Others
     private static RestaurantManager m_Instance;
-    [SerializeField] private Transform m_FoodPlace;
-    private bool m_FirstLoad = true;
+    [SerializeField] private Transform m_RestaurantGround;
+    [SerializeField] private Transform m_WallBoundary;
 
-    //Debug
-    [SerializeField] private ItemData garlic;
-    [SerializeField] private ItemData onion;
-    [SerializeField] private ItemData carrot;
+    private BoxCollider m_GroundCollider;
+    private BoxCollider m_GroundCollider2;
 
+    //Upgrades
+    [SerializeField] private GameObject m_ChefPrefab;
+
+    private FoodsController m_FoodsController;
+    private SaveManager m_SaveManager;
+    private ResourcesLoader m_ResourcesLoader;
+    private PlayerAction m_PlayerAction;
     private void Awake()
     {
-        if ( m_Instance == null ) m_Instance = this;
-        else Destroy( gameObject );
+        if (m_Instance == null) m_Instance = this;
+        else Destroy(gameObject);
 
-        //Check if player has save file
-        if ( m_FirstLoad ) LoadRecipeData();
-        m_AllFoods.ToList().ForEach( AddUnlockRecipeToList );
-        StockIngredient garlicStock = new( garlic, 10 );
-        StockIngredient onionStock = new( onion, 10 );
-        StockIngredient carrotStock = new( carrot, 10 );
-        m_StockIngredients.Add( garlic.id, garlicStock );
-        m_StockIngredients.Add( onion.id, onionStock );
-        m_StockIngredients.Add( carrot.id, carrotStock );
+        m_GroundCollider2 = m_RestaurantGround.GetComponent<BoxCollider>();
     }
-    public bool FindUnoccupiedSeat( out Seat seat )
+
+    private void Start()
     {
-        if ( m_Seats.Count == 0 )
+        m_FoodsController = FoodsController.Instance;
+        m_SaveManager = SaveManager.Instance;
+        m_ResourcesLoader = ResourcesLoader.Instance;
+        m_PlayerAction = PlayerAction.Instance;
+        m_SaveManager.OnSave += SaveRestaurantObjectsData;
+        m_SaveManager.LoadData(Utils.RESTAURANT_OBJECTS_FILENAME, OnLoadSucceeded, OnLoadFailed);
+    }
+
+    private void OnLoadFailed()
+    {
+        AddChef();
+    }
+
+    private void AddChefsFromUpgradeData(int quantity)
+    {
+        for (int i = 0; i < quantity; i++) AddChef();
+    }
+
+    private void OnDisable()
+    {
+        m_SaveManager.OnSave -= SaveRestaurantObjectsData;
+    }
+
+    public bool FindUnoccupiedSeat(out Seat seat)
+    {
+        List<Seat> seats = m_Seats.Where(seat => !seat.IsOccupied).ToList();
+        if (seats.Count == 0)
         {
             seat = null;
             return false;
         }
 
-        seat = m_Seats[RandomSeatIndex];
+        int randomSeatIndex = Random.Range(0, seats.Count);
+        seat = seats[randomSeatIndex];
         return true;
     }
-    public void OrderFood( Seat seat,FoodData food )
+    public void OrderFood(Seat seat, FoodData food) => m_OrderQueue.Enqueue(KeyValuePair.Create(seat, food));
+    public void DecreaseStock(FoodData food) => m_FoodsController.DecreaseStock(food);
+    public bool TryGetFoodToCook(out FoodData foodData, out FoodConfig foodConfig)
     {
-        int index = ChefIndex;
-        m_Chefs[index].OrderQueue.Enqueue( KeyValuePair.Create( seat, food ) );
-    }
-    public void StoreIngredient( ItemData itemData )
-    {
-        if ( itemData.type != ItemType.Ingredient ) return;
-        if ( m_StockIngredients.TryGetValue( itemData.id, out StockIngredient stockIngredient ) )
+        var availableRecipes = m_FoodsController.AllFoods.Where(IsFoodAvailable).ToList();
+        if (availableRecipes.Count == 0)
         {
-            stockIngredient.quantity += 1;
-        }
-        else
-        {
-            stockIngredient = new StockIngredient( itemData );
-            m_StockIngredients.Add( itemData.id, stockIngredient );
-        }
-    }
-    public void DecreaseStock( FoodData food ) => food.ingredients.ForEach( i => m_StockIngredients[i.ingredient.id].quantity -= i.quantity );
-
-    public bool TryGetRecipeToCook( out FoodData recipe )
-    {
-        var availableRecipes = m_UnlockedFoods.Where( StockIsSufficient ).ToList();
-        if ( availableRecipes.Count == 0 )
-        {
-            recipe = null;
+            foodData = null;
+            foodConfig = null;
             return false;
         }
-        recipe = availableRecipes[Random.Range( 0, availableRecipes.Count )];
+        int rand = Random.Range(0, availableRecipes.Count);
+        foodData = availableRecipes[rand].Key;
+        foodConfig = availableRecipes[rand].Value;
         return true;
     }
 
-
-    //Check stock is sufficient to make food/recipe
-    public bool StockIsSufficient( FoodData recipe )
-    => recipe.ingredients.All( i => m_StockIngredients.TryGetValue( i.ingredient.id, out StockIngredient stockIngredient ) && stockIngredient.quantity >= i.quantity );
-    private void LoadRecipeData()
+    public bool IsFoodAvailable(KeyValuePair<FoodData, FoodConfig> food)
     {
-        //ItemData[] x = Resources.LoadAll<ItemData>( "Data" );
-        //foreach ( var item in x )
-        //{
-        //    Debug.Log( item.id );
-        //}
-
-        var guids = AssetDatabase.FindAssets( "t:FoodData", new[] { "Assets/Data/Recipes" } );
-        var paths = guids.Select( AssetDatabase.GUIDToAssetPath );
-        var recipeData = paths.Select( AssetDatabase.LoadAssetAtPath<FoodData> ).ToList();
-        recipeData.ForEach( recipe => m_AllFoods.Add( recipe, true ) );
+        if (!food.Value.IsUnlock || !food.Value.IsSelling) return false;
+        return food.Key.ingredients.All(i => m_FoodsController.StockIngredients.TryGetValue(i.ingredient.ID, out StockIngredient stockIngredient) && stockIngredient.quantity >= i.quantity);
     }
-    private void AddUnlockRecipeToList( KeyValuePair<FoodData, bool> recipe )
+    public bool FindNoStoveChef(out Chef chef) => chef = m_Chefs.FirstOrDefault(c => c.Stove == null);
+    public bool AnyChefHasStove() => m_Chefs.Any(chef => chef.Stove != null);
+    public Vector3 GetGroundRandPos()
     {
-        if ( recipe.Value == false ) return;
-        m_UnlockedFoods.Add( recipe.Key );
+        float randX = Random.Range(GroundCollider2.bounds.min.x, GroundCollider2.bounds.max.x);
+        float randZ = Random.Range(GroundCollider2.bounds.min.z, GroundCollider2.bounds.max.z);
+        return new(randX, transform.position.y, randZ);
     }
 
+    public void AddChef()
+    {
+        Chef chef = Instantiate(m_ChefPrefab).GetComponent<Chef>();
+        m_Chefs.Add(chef);
+        chef.Agent.Warp(GetGroundRandPos());
+        chef.transform.SetParent(transform);
+    }
+
+    public void ExpandRestaurant()
+    {
+        (float posX, float scaleX, float wallXBoundary) = m_PlayerAction.PlayerUpgrades.SetRestaurantSize();
+        Vector3 helperGroundPos = m_RestaurantGround.position;
+        Vector3 helperGroundScale = m_RestaurantGround.lossyScale;
+        Vector3 wallBoundaryPos = m_WallBoundary.position;
+        m_RestaurantGround.position = new(posX, helperGroundPos.y, helperGroundPos.z);
+        m_RestaurantGround.localScale = new(scaleX, helperGroundScale.y, helperGroundScale.z);
+        m_WallBoundary.position = new(wallXBoundary, wallBoundaryPos.y, wallBoundaryPos.z);
+        if (m_PlayerAction.PlayerUpgrades.RestaurantExpandLevel == m_PlayerAction.PlayerUpgrades.RESTAURANT_EXPAND_MAX_LEVEL)
+            m_WallBoundary.gameObject.SetActive(false);
+    }
+
+    private async void SaveRestaurantObjectsData()
+    {
+        JSONObject rootObject = new();
+        JSONArray tableJsonArray = new(), seatJsonArray = new(), stoveJsonArray = new();
+        m_Seats.ForEach(seat => seatJsonArray.Add(new SerializableFurnitureData(seat).Serialize()));
+        m_Tables.ForEach(table => tableJsonArray.Add(new SerializableFurnitureData(table).Serialize()));
+        m_Stoves.ForEach(stove => stoveJsonArray.Add(new SerializableStoveData(stove).Serialize()));
+        rootObject.Add("tables", tableJsonArray);
+        rootObject.Add("seats", seatJsonArray);
+        rootObject.Add("stoves", stoveJsonArray);
+        await m_SaveManager.SaveData(rootObject.ToString(), Utils.RESTAURANT_OBJECTS_FILENAME);
+    }
+
+    private void OnLoadSucceeded(JSONNode jsonNode)
+    {
+        ExpandRestaurant();
+        AddChefsFromUpgradeData(m_PlayerAction.PlayerUpgrades.ChefQuantityLevel);
+        JSONNode tableNode = jsonNode["tables"];
+        JSONNode seatNode = jsonNode["seats"];
+        JSONNode stoveNode = jsonNode["stoves"];
+
+        SpawnFromJsonData(tableNode);
+        SpawnFromJsonData(seatNode);
+        SpawnFromJsonData(stoveNode);
+
+
+        void SpawnFromJsonData(JSONNode jsonNode)
+        {
+            foreach (var node in jsonNode)
+            {
+                SerializableFurnitureData jsonData = new(node);
+                FurnitureData furnitureData = m_ResourcesLoader.GetFurnitureDataByID(jsonData.ID);
+                Furniture furniturePrefab = furnitureData.prefab.GetComponent<Furniture>();
+                Furniture spawnedFurniture = furniturePrefab.SpawnFurniture(jsonData.transform.position, jsonData.transform.eulerAngles, jsonData.transform.localScale);
+                if (furnitureData.furnitureType == FurnitureType.STOVE)
+                {
+                    Stove stove = (Stove)spawnedFurniture;
+                    SerializableStoveData stoveJsonData = new(node);
+                    if (stoveJsonData.hasChef) stove.SetChef_Warp();
+                }
+            }
+        }
+    }
 }

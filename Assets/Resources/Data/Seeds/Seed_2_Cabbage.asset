@@ -1,0 +1,30 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2a54363710fad7244940268cb148ef5a, type: 3}
+  m_Name: Seed_2_Cabbage
+  m_EditorClassIdentifier: 
+  ID: Biji Kol
+  prefab: {fileID: 3950250274840500283, guid: d00e4a2c8bc08864796e8310ffbca876, type: 3}
+  icon: {fileID: 21300000, guid: dc9ecc83709e98c4d9e6fd04f56b2f35, type: 3}
+  buyPrice: 6
+  sellPrice: 2
+  decreaseable: 1
+  itemType: 3
+  starterQuantity: 10
+  cropPrefab: {fileID: 5921232687818495706, guid: 952b08730855c734bb40f124801e0f46, type: 3}
+  dropChance: 8.5
+  hourToGrow: 2
+  minSeedDropQuantity: 0
+  maxSeedDropQuanitty: 4
+  harvestedIngredientData: {fileID: 11400000, guid: 23cd1256483e16149b60e8bbc710ee11, type: 2}
+  minIngredientDropQuantity: 1
+  maxIngredientDropQuantity: 5

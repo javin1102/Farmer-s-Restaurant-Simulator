@@ -1,11 +1,10 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-[RequireComponent( typeof( CharacterController ) )]
+[RequireComponent(typeof(CharacterController))]
 public class FirstPersonMovement : MonoBehaviour
 {
-    [SerializeField][Range( 10, 25 )] private float m_MoveSpeed;
-    [SerializeField] private float m_MouseHorizontalSensitivity;
+    [SerializeField][Range(5, 25)] private float m_MoveSpeed;
     [SerializeField] private float m_JumpForce;
     [SerializeField][Readonly] private bool m_IsGrounded;
 
@@ -17,13 +16,10 @@ public class FirstPersonMovement : MonoBehaviour
 
     private float m_JumpVelocity;
     private float m_Gravity;
-    private int m_GroundMask;
     private Camera m_Cam;
-    private Vector3 move;
 
     void Start()
     {
-        m_GroundMask = Utils.FarmGroundMask | Utils.RestaurantGroundMask | Utils.GroundMask;
 
         m_PlayerInput = GetComponent<PlayerInput>();
         m_MoveAction = m_PlayerInput.actions[Utils.MOVE_ACTION];
@@ -38,19 +34,22 @@ public class FirstPersonMovement : MonoBehaviour
     {
         //Move in X and Z axis
         Vector2 moveValue = m_MoveAction.ReadValue<Vector2>();
-        Vector3 moveZ = transform.forward * ( moveValue.y * Time.deltaTime * m_MoveSpeed );
-        Vector3 moveX = transform.right * ( moveValue.x * Time.deltaTime * m_MoveSpeed );
-        m_CharacterController.Move( moveZ + moveX );
+        Vector3 moveZ = transform.forward * (moveValue.y * Time.deltaTime * m_MoveSpeed);
+        Vector3 moveX = transform.right * (moveValue.x * Time.deltaTime * m_MoveSpeed);
+        m_CharacterController.Move(moveZ + moveX);
 
         //Jump
-        m_IsGrounded = Physics.Raycast( transform.position, Vector3.down, 1.1f, m_GroundMask );
+        m_IsGrounded = Physics.Raycast(transform.position, Vector3.down, .85f, ~Utils.PlayerMask);
 
-        if ( m_JumpAction.triggered && m_IsGrounded ) m_JumpVelocity += Mathf.Sqrt( m_JumpForce * -3.0f * m_Gravity );
+
+
+
+        if (m_JumpAction.triggered && m_IsGrounded) m_JumpVelocity += Mathf.Sqrt(m_JumpForce * -3.0f * m_Gravity);
 
         m_JumpVelocity += m_Gravity * Time.deltaTime;
 
-        if ( m_IsGrounded && m_JumpVelocity < 0 ) m_JumpVelocity = 0;
-        m_CharacterController.Move( Vector3.up * ( m_JumpVelocity * Time.deltaTime ) );
+        if (m_IsGrounded && m_JumpVelocity < 0) m_JumpVelocity = 0;
+        m_CharacterController.Move(Vector3.up * (m_JumpVelocity * Time.deltaTime));
 
     }
 

@@ -5,16 +5,17 @@ TagManager:
   serializedVersion: 2
   tags:
   - Tile
-  - Ground
   - Props
   - Restaurant Ground
   - Farm Ground
   - Tile Parent
   - Restaurant
-  - Seat
-  - Table
   - Wet Tile
   - Crop
+  - Seat
+  - Table
+  - Tree Obstacle
+  - Ground
   layers:
   - Default
   - TransparentFX
@@ -22,17 +23,17 @@ TagManager:
   - 
   - Water
   - UI
-  - Restaurant Ground
-  - PlayerBody
+  - Helper
+  - Player
   - Raycastable
-  - Farm Ground
+  - Farm
   - Ground
   - Hand
   - Restaurant
-  - 
-  - 
-  - 
-  - 
+  - Outline
+  - Roof
+  - Walls
+  - Snapshot Camera
   - 
   - 
   - 

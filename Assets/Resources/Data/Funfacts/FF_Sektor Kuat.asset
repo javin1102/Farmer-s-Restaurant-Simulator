@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: df5316f9cd67312479c13c2326abf076, type: 3}
+  m_Name: FF_Sektor Kuat
+  m_EditorClassIdentifier: 
+  funfactDescription: 'Pertanian merupakan salah satu sektor ekonomi yang kuat di
+    Indonesia dalam kesempatan di sebuah acara kementerian Pertanian, Jokowi juga
+    mengungkap bahwa hampir semua sektor mencatat pertumbuhan negatif pada 2020 kecuali
+    sektor pertanian yang tumbuh positif sebesar 1,75 persen (sumber: https://frogs.id/).
+
+
+
+'

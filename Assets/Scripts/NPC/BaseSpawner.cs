@@ -9,20 +9,28 @@ namespace NPC
     {
         public static BaseSpawner Instance { get => m_Instance; }
         //Debug
-        [SerializeField] protected GameObject m_Prefab;
+        [SerializeField] protected GameObject[] m_Prefabs;
         [SerializeField] protected int m_SpawnSize = 20;
         protected ObjectPool<NPCManager> m_Pool;
         protected bool m_HasSpawn;
         private static BaseSpawner m_Instance;
         private Vector2 delayTimeRange;
-
-
+        private readonly List<NPCManager> m_SpawnList = new();   
         private void Awake()
         {
             if ( m_Instance == null ) m_Instance = this;
-            m_Pool = new( () => Instantiate( m_Prefab ).GetComponent<NPCManager>(), npc => Get( npc ), npc => npc.gameObject.SetActive( false ), npc => Destroy( npc.gameObject ), false, m_SpawnSize, 60 );
+            int i = 0;
+            m_Pool = new( () => Instantiate( m_Prefabs[i++ % m_Prefabs.Length] ).GetComponent<NPCManager>(), npc => Get( npc ), npc => npc.gameObject.SetActive( false ), npc => Destroy( npc.gameObject ), false, m_SpawnSize, 60 );
+            Init();
         }
 
+        private void Start()
+        {
+            for ( int i = 0; i < m_SpawnSize; i++ )
+            {
+                m_Pool.Release( m_SpawnList[i] );
+            }
+        }
         private void Update()
         {
             if ( m_Pool.CountActive >= m_SpawnSize ) return;
@@ -36,6 +44,15 @@ namespace NPC
 
         protected abstract void Get( NPCManager npc );
         public void ReleaseNPC( NPCManager npc ) => m_Pool.Release( npc );
+
+        private void Init()
+        {
+            for ( int i = 0; i < m_SpawnSize; i++ )
+            {
+                m_Pool.Get( out NPCManager npc );
+                m_SpawnList.Add( npc );
+            }
+        }
 
         IEnumerator SpawnWithDelay( float delay )
         {

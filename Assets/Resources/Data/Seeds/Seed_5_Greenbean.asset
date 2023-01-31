@@ -1,0 +1,30 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2a54363710fad7244940268cb148ef5a, type: 3}
+  m_Name: Seed_5_Greenbean
+  m_EditorClassIdentifier: 
+  ID: Biji Kacang Hijau
+  prefab: {fileID: 3950250274840500283, guid: 3aa27a584fbd3c143ae02508ec3e68da, type: 3}
+  icon: {fileID: 21300000, guid: d70846dfa6aac034cbcb600fc70675b0, type: 3}
+  buyPrice: 15
+  sellPrice: 5
+  decreaseable: 1
+  itemType: 3
+  starterQuantity: 10
+  cropPrefab: {fileID: 3358945435167939137, guid: fc7d56e673841f649b264187294b9eca, type: 3}
+  dropChance: 8.5
+  hourToGrow: 12
+  minSeedDropQuantity: 0
+  maxSeedDropQuanitty: 5
+  harvestedIngredientData: {fileID: 11400000, guid: 649cc935bdb143642b49f2ec5c18dd11, type: 2}
+  minIngredientDropQuantity: 2
+  maxIngredientDropQuantity: 9

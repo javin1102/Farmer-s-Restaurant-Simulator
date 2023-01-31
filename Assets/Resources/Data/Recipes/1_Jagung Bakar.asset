@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d20252b2dcb71444fae5929b07c72cdb, type: 3}
+  m_Name: 1_Jagung Bakar
+  m_EditorClassIdentifier: 
+  foodPrefab: {fileID: 8735650615285411582, guid: 7209ff9f5b188ce4d85b47211d310d2f, type: 3}
+  ID: Jagung Bakar
+  dishPrice: 4
+  unlockPrice: 0
+  cookDuration: 7
+  icon: {fileID: 21300000, guid: ff83155905348de40bcfcfe8504ef763, type: 3}
+  ingredients:
+  - ingredient: {fileID: 11400000, guid: 9957313e5b8ab5242859e710868382ff, type: 2}
+    quantity: 1

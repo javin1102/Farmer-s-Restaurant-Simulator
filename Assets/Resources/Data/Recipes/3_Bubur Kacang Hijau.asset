@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d20252b2dcb71444fae5929b07c72cdb, type: 3}
+  m_Name: 3_Bubur Kacang Hijau
+  m_EditorClassIdentifier: 
+  foodPrefab: {fileID: 8735650615285411582, guid: e7b4a176aa76c39449b7c78be685c6af, type: 3}
+  ID: Bubur Kacang Hijau
+  dishPrice: 25
+  unlockPrice: 250
+  cookDuration: 13
+  icon: {fileID: 21300000, guid: d7fee7857ca86c8449bb0c6a36d7e84f, type: 3}
+  ingredients:
+  - ingredient: {fileID: 11400000, guid: 649cc935bdb143642b49f2ec5c18dd11, type: 2}
+    quantity: 2
