@@ -8,9 +8,9 @@ public class PestSystem : MonoBehaviour, ITimeTracker
 
     private TimeManager m_timeManager;
     private bool IsAlreadyRandom;
-    private bool IsAlreadyTriggerDay1 , IsAlreadyTriggerDay2;
+    private bool IsAlreadyTriggerDay1, IsAlreadyTriggerDay2;
 
-   
+
     private void Start()
     {
         m_timeManager = TimeManager.Instance;
@@ -37,19 +37,19 @@ public class PestSystem : MonoBehaviour, ITimeTracker
         else if (timeStamp.day == PlayerPrefs.GetInt("day1") && IsAlreadyTriggerDay1 == false) PestDay(true);
         else if (timeStamp.day == PlayerPrefs.GetInt("day2") && IsAlreadyTriggerDay2 == false) PestDay(false);
 
-      /*  else if( (timeStamp.day == PlayerPrefs.GetInt("day1") || timeStamp.day == PlayerPrefs.GetInt("day2")) && IsAlreadyTrigger == false )
-        {
-            // Pest Day
-            foreach(Transform childTf in tileParent)
-            {
-                childTf.GetComponent<PlantTile>().TimeManager.UnRegisterListener(childTf.GetComponent<ITimeTracker>());
-                Destroy(childTf.gameObject);
-            }
-            IsAlreadyRandom = false;
-            StartCoroutine("SetPestDayUI");
-        }*/
-    } 
-    
+        /*  else if( (timeStamp.day == PlayerPrefs.GetInt("day1") || timeStamp.day == PlayerPrefs.GetInt("day2")) && IsAlreadyTrigger == false )
+          {
+              // Pest Day
+              foreach(Transform childTf in tileParent)
+              {
+                  childTf.GetComponent<PlantTile>().TimeManager.UnRegisterListener(childTf.GetComponent<ITimeTracker>());
+                  Destroy(childTf.gameObject);
+              }
+              IsAlreadyRandom = false;
+              StartCoroutine("SetPestDayUI");
+          }*/
+    }
+
     private void PestDay(bool IsDay1)
     {
         if (PesticideSystem.Instance.isAlreadyPesticide != true)
@@ -59,8 +59,10 @@ public class PestSystem : MonoBehaviour, ITimeTracker
             {
                 childTf.GetComponent<PlantTile>().TimeManager.UnRegisterListener(childTf.GetComponent<ITimeTracker>());
                 Destroy(childTf.gameObject);
+
             }
-            StartCoroutine("SetPestDayUI");
+
+            StartCoroutine(SetPestDayUI());
 
             if (IsDay1) IsAlreadyTriggerDay1 = true;
             else IsAlreadyTriggerDay2 = true;
@@ -73,7 +75,6 @@ public class PestSystem : MonoBehaviour, ITimeTracker
             else IsAlreadyTriggerDay2 = true;
 
             Debug.Log("Survive from PestDay :)");
-            
         }
     }
 
@@ -83,5 +84,4 @@ public class PestSystem : MonoBehaviour, ITimeTracker
         yield return new WaitForSeconds(5f);
         pestDayUICanvas.SetActive(false);
     }
-    
 }
