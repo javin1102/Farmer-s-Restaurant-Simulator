@@ -9,24 +9,42 @@ using UnityEngine;
 /// </summary>
 public class PlantTile : BaseFarmObject, ITimeTracker
 {
-    public PlantGrowHandler PlantGrowHandler { get => m_plantGrowHandler; }
-    public GameTimeStamp Time { get => m_Time; set => m_Time = value; }
+    public PlantGrowHandler PlantGrowHandler
+    {
+        get => m_plantGrowHandler;
+    }
+
+    public GameTimeStamp Time
+    {
+        get => m_Time;
+        set => m_Time = value;
+    }
 
     public bool IsUsed = false;
     public GameObject crop;
 
-    [Header("Material Switcher")]
-    public Material m_defaultMaterial;
+    [Header("Material Switcher")] public Material m_defaultMaterial;
     public Material m_hoedMaterial;
     public Material m_wateredMaterial;
     public Material m_planteMaterial;
 
-    public enum TileStatus { NORMAL, WATERED, HOED, PLANTED };
+    public enum TileStatus
+    {
+        NORMAL,
+        WATERED,
+        HOED,
+        PLANTED
+    };
+
     public TileStatus Status;
     private GameTimeStamp m_Time;
     [SerializeField] private PlantGrowHandler m_plantGrowHandler;
     [SerializeField] private TimeManager m_TimeManager;
-    public TimeManager TimeManager { get => m_TimeManager; }
+
+    public TimeManager TimeManager
+    {
+        get => m_TimeManager;
+    }
 
 
     private new void Start()
@@ -36,6 +54,7 @@ public class PlantTile : BaseFarmObject, ITimeTracker
         m_TimeManager.RegisterListener(this);
         m_Time = m_TimeManager.GetCurrentTimeStamp();
     }
+
     public void SpawnCrop(GameObject cropPrefab)
     {
         IsUsed = true;
@@ -70,27 +89,22 @@ public class PlantTile : BaseFarmObject, ITimeTracker
         }
 
         GetComponent<Renderer>().material = materialSwitch;
-
     }
 
     public void ClockUpdate(GameTimeStamp timeStamp)
     {
         float timeElapsed = GameTimeStamp.CompareTimeStamps(m_Time, timeStamp);
+
         if (this.Status == TileStatus.HOED)
         {
-            if (this.transform.childCount > 0)
+            Debug.Log(timeElapsed);
+            if (timeElapsed > 36)
             {
-                // do nothing
-            }
-            else
-            {
-                if (timeElapsed > 36)
-                {
-                    this.m_TimeManager.UnRegisterListener(this);
-                    Destroy(this.gameObject);
-                }
+                this.m_TimeManager.UnRegisterListener(this);
+                Destroy(this.gameObject);
             }
         }
+
         if (this.Status == TileStatus.WATERED)
         {
             if (this.transform.childCount > 0)
@@ -105,6 +119,7 @@ public class PlantTile : BaseFarmObject, ITimeTracker
                 }
             }
         }
+
         if (this.Status == TileStatus.PLANTED)
         {
             if (timeElapsed >= m_plantGrowHandler.SeedData.hourToGrow && this.CompareTag(Utils.TILE_WET_TAG))
@@ -115,9 +130,9 @@ public class PlantTile : BaseFarmObject, ITimeTracker
             else if (timeElapsed > 35 && this.CompareTag(Utils.TILE_TAG))
             {
                 this.m_TimeManager.UnRegisterListener(this);
+                this.SwitchStatus(TileStatus.HOED);
                 Destroy(this.transform.GetChild(0).gameObject);
             }
         }
-
     }
 }
