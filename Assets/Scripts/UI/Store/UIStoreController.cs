@@ -66,10 +66,6 @@ public abstract class UIStoreController : MonoBehaviour
 
     public void SpawnItem(ItemData item)
     {
-        Debug.Log($"X Min: {SpawnCollider.bounds.min.x}");
-        Debug.Log($"X Max: {SpawnCollider.bounds.max.x}");
-        Debug.Log($"Z Min: {SpawnCollider.bounds.min.z}");
-        Debug.Log($"X Max: {SpawnCollider.bounds.max.z}");
         float posX = Random.Range(SpawnCollider.bounds.min.x + .25f, SpawnCollider.bounds.max.x - .25f);
         float posY = SpawnCollider.bounds.max.y * .75f;
         float posZ = Random.Range(SpawnCollider.bounds.min.z + .25f, SpawnCollider.bounds.max.z - .25f);

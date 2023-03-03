@@ -36,15 +36,15 @@ public class FoodsController : MonoBehaviour
 
     private void OnLoadFailed()
     {
-        FoodData gado_gado = m_ResourcesLoader.GetFoodDataByID("Jagung Bakar");
-        gado_gado.ingredients.ForEach(ingredient =>
+        FoodData jagungBakar = m_ResourcesLoader.GetFoodDataByID("Jagung Bakar");
+        jagungBakar.ingredients.ForEach(ingredient =>
         {
             StockIngredient stock = new(ingredient.ingredient, 25);
             m_StockIngredients.Add(ingredient.ingredient.ID, stock);
         });
 
-        m_AllFoods[gado_gado].IsUnlock = true;
-        m_AllFoods[gado_gado].IsSelling = true;
+        m_AllFoods[jagungBakar].IsUnlock = true;
+        m_AllFoods[jagungBakar].IsSelling = true;
     }
 
     private void OnLoadSucceded(JSONNode jsonNode)
